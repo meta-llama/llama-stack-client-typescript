@@ -7,7 +7,11 @@ const client = new LlamaStackClient({ baseURL: 'http://localhost:8321' });
 
 async function main() {
   const availableModels = (await client.models.list())
-    .filter((model: any) => model.model_type === 'llm')
+    .filter((model: any) => 
+      model.model_type === 'llm' && 
+      !model.identifier.includes('guard') &&
+      !model.identifier.includes('405')
+    )
     .map((model: any) => model.identifier);
 
   if (availableModels.length === 0) {
@@ -31,12 +35,13 @@ async function main() {
     },
     toolgroups: process.env["TAVILY_SEARCH_API_KEY"] ? ['builtin::websearch'] : [],
     tool_choice: 'auto',
-    tool_prompt_format: 'json',
+    tool_prompt_format: 'python_list',
     input_shields: [],
     output_shields: [],
     enable_session_persistence: false,
     max_infer_iters: 10,
   };
+  console.log('Agent Configuration:', JSON.stringify(agentConfig, null, 2));
 
   const agentic_system_create_response = await client.agents.create({agent_config: agentConfig});
   const agent_id = agentic_system_create_response.agent_id;

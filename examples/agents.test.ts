@@ -13,7 +13,7 @@ describe('RAG Integration Tests', () => {
   it('should create an agent and handle conversation successfully', async () => {
     // Get available models
     const models = await client.models.list();
-    const llmModel = models.find(model => model.model_type === 'llm');
+    const llmModel = models.find(model => model.model_type === 'llm' && !model.identifier.includes('guard') && !model.identifier.includes('405'));
     expect(llmModel).toBeTruthy();
 
     // Create agent with configuration
