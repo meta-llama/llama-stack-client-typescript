@@ -9,6 +9,9 @@ import * as AgentsAPI from './agents';
 import { Stream } from '../../streaming';
 
 export class TurnResource extends APIResource {
+  /**
+   * Create a new turn for an agent.
+   */
   create(
     agentId: string,
     sessionId: string,
@@ -40,6 +43,9 @@ export class TurnResource extends APIResource {
     }) as APIPromise<Turn> | APIPromise<Stream<AgentTurnResponseStreamChunk>>;
   }
 
+  /**
+   * Retrieve an agent turn by its ID.
+   */
   retrieve(
     agentId: string,
     sessionId: string,
@@ -128,9 +134,12 @@ export interface Turn {
 }
 
 export namespace Turn {
+  /**
+   * An attachment to an agent turn.
+   */
   export interface OutputAttachment {
     /**
-     * A image content item
+     * The content of the attachment.
      */
     content:
       | string
@@ -139,6 +148,9 @@ export namespace Turn {
       | Array<Shared.InterleavedContentItem>
       | OutputAttachment.URL;
 
+    /**
+     * The MIME type of the attachment.
+     */
     mime_type: string;
   }
 
@@ -225,6 +237,9 @@ export namespace TurnResponseEventPayload {
 
     step_id: string;
 
+    /**
+     * Type of the step in an agent turn.
+     */
     step_type: 'inference' | 'tool_execution' | 'shield_call' | 'memory_retrieval';
 
     metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
@@ -237,12 +252,18 @@ export namespace TurnResponseEventPayload {
 
     step_id: string;
 
+    /**
+     * Type of the step in an agent turn.
+     */
     step_type: 'inference' | 'tool_execution' | 'shield_call' | 'memory_retrieval';
   }
 
   export interface AgentTurnResponseStepCompletePayload {
     event_type: 'step_complete';
 
+    /**
+     * An inference step in an agent turn.
+     */
     step_details:
       | AgentsAPI.InferenceStep
       | AgentsAPI.ToolExecutionStep
@@ -251,6 +272,9 @@ export namespace TurnResponseEventPayload {
 
     step_id: string;
 
+    /**
+     * Type of the step in an agent turn.
+     */
     step_type: 'inference' | 'tool_execution' | 'shield_call' | 'memory_retrieval';
   }
 
@@ -282,26 +306,42 @@ export namespace TurnResponseEventPayload {
 export type TurnCreateParams = TurnCreateParamsNonStreaming | TurnCreateParamsStreaming;
 
 export interface TurnCreateParamsBase {
+  /**
+   * List of messages to start the turn with.
+   */
   messages: Array<Shared.UserMessage | Shared.ToolResponseMessage>;
 
-  allow_turn_resume?: boolean;
-
+  /**
+   * (Optional) List of documents to create the turn with.
+   */
   documents?: Array<TurnCreateParams.Document>;
 
+  /**
+   * (Optional) If True, generate an SSE event stream of the response. Defaults to
+   * False.
+   */
   stream?: boolean;
 
   /**
-   * Configuration for tool use.
+   * (Optional) The tool configuration to create the turn with, will be used to
+   * override the agent's tool_config.
    */
   tool_config?: TurnCreateParams.ToolConfig;
 
+  /**
+   * (Optional) List of toolgroups to create the turn with, will be used in addition
+   * to the agent's config toolgroups for the request.
+   */
   toolgroups?: Array<string | TurnCreateParams.AgentToolGroupWithArgs>;
 }
 
 export namespace TurnCreateParams {
+  /**
+   * A document to be used by an agent.
+   */
   export interface Document {
     /**
-     * A image content item
+     * The content of the document.
      */
     content:
       | string
@@ -310,6 +350,9 @@ export namespace TurnCreateParams {
       | Array<Shared.InterleavedContentItem>
       | Document.URL;
 
+    /**
+     * The MIME type of the document.
+     */
     mime_type: string;
   }
 
@@ -378,7 +421,8 @@ export namespace TurnCreateParams {
   }
 
   /**
-   * Configuration for tool use.
+   * (Optional) The tool configuration to create the turn with, will be used to
+   * override the agent's tool_config.
    */
   export interface ToolConfig {
     /**
@@ -419,10 +463,18 @@ export namespace TurnCreateParams {
 }
 
 export interface TurnCreateParamsNonStreaming extends TurnCreateParamsBase {
+  /**
+   * (Optional) If True, generate an SSE event stream of the response. Defaults to
+   * False.
+   */
   stream?: false;
 }
 
 export interface TurnCreateParamsStreaming extends TurnCreateParamsBase {
+  /**
+   * (Optional) If True, generate an SSE event stream of the response. Defaults to
+   * False.
+   */
   stream: true;
 }
 
@@ -430,9 +482,10 @@ export type TurnResumeParams = TurnResumeParamsNonStreaming | TurnResumeParamsSt
 
 export interface TurnResumeParamsBase {
   /**
-   * The tool call responses to resume the turn with.
+   * The tool call responses to resume the turn with. NOTE: ToolResponseMessage will
+   * be deprecated. Use ToolResponse.
    */
-  tool_responses: Array<Shared.ToolResponseMessage>;
+  tool_responses: Array<AgentsAPI.ToolResponse> | Array<Shared.ToolResponseMessage>;
 
   /**
    * Whether to stream the response.

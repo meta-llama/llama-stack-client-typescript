@@ -33,10 +33,16 @@ export class Agents extends APIResource {
   steps: StepsAPI.Steps = new StepsAPI.Steps(this._client);
   turn: TurnAPI.TurnResource = new TurnAPI.TurnResource(this._client);
 
+  /**
+   * Create an agent with the given configuration.
+   */
   create(body: AgentCreateParams, options?: Core.RequestOptions): Core.APIPromise<AgentCreateResponse> {
     return this._client.post('/v1/agents', { body, ...options });
   }
 
+  /**
+   * Delete an agent by its ID.
+   */
   delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/agents/${agentId}`, {
       ...options,
@@ -45,69 +51,141 @@ export class Agents extends APIResource {
   }
 }
 
+/**
+ * An inference step in an agent turn.
+ */
 export interface InferenceStep {
   /**
-   * A message containing the model's (assistant) response in a chat conversation.
+   * The response from the LLM.
    */
   model_response: Shared.CompletionMessage;
 
+  /**
+   * The ID of the step.
+   */
   step_id: string;
 
   step_type: 'inference';
 
+  /**
+   * The ID of the turn.
+   */
   turn_id: string;
 
+  /**
+   * The time the step completed.
+   */
   completed_at?: string;
 
+  /**
+   * The time the step started.
+   */
   started_at?: string;
 }
 
+/**
+ * A memory retrieval step in an agent turn.
+ */
 export interface MemoryRetrievalStep {
   /**
-   * A image content item
+   * The context retrieved from the vector databases.
    */
   inserted_context: Shared.InterleavedContent;
 
+  /**
+   * The ID of the step.
+   */
   step_id: string;
 
   step_type: 'memory_retrieval';
 
+  /**
+   * The ID of the turn.
+   */
   turn_id: string;
 
+  /**
+   * The IDs of the vector databases to retrieve context from.
+   */
   vector_db_ids: string;
 
+  /**
+   * The time the step completed.
+   */
   completed_at?: string;
 
+  /**
+   * The time the step started.
+   */
   started_at?: string;
 }
 
+/**
+ * A shield call step in an agent turn.
+ */
 export interface ShieldCallStep {
+  /**
+   * The ID of the step.
+   */
   step_id: string;
 
   step_type: 'shield_call';
 
+  /**
+   * The ID of the turn.
+   */
   turn_id: string;
 
+  /**
+   * The time the step completed.
+   */
   completed_at?: string;
 
+  /**
+   * The time the step started.
+   */
   started_at?: string;
 
+  /**
+   * The violation from the shield call.
+   */
   violation?: Shared.SafetyViolation;
 }
 
+/**
+ * A tool execution step in an agent turn.
+ */
 export interface ToolExecutionStep {
+  /**
+   * The ID of the step.
+   */
   step_id: string;
 
   step_type: 'tool_execution';
 
+  /**
+   * The tool calls to execute.
+   */
   tool_calls: Array<Shared.ToolCall>;
 
+  /**
+   * The tool responses from the tool calls.
+   */
   tool_responses: Array<ToolResponse>;
 
+  /**
+   * The ID of the turn.
+   */
   turn_id: string;
 
+  /**
+   * The time the step completed.
+   */
   completed_at?: string;
 
+  /**
+   * The time the step started.
+   */
   started_at?: string;
 }
 
@@ -129,6 +207,9 @@ export interface AgentCreateResponse {
 }
 
 export interface AgentCreateParams {
+  /**
+   * The configuration for the agent.
+   */
   agent_config: Shared.AgentConfig;
 }
 

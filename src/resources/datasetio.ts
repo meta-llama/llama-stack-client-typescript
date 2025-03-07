@@ -12,6 +12,9 @@ export class Datasetio extends APIResource {
     });
   }
 
+  /**
+   * Get a paginated list of rows from a dataset.
+   */
   getRowsPaginated(
     query: DatasetioGetRowsPaginatedParams,
     options?: Core.RequestOptions,
@@ -20,11 +23,23 @@ export class Datasetio extends APIResource {
   }
 }
 
+/**
+ * A paginated list of rows from a dataset.
+ */
 export interface PaginatedRowsResult {
+  /**
+   * The rows in the current page.
+   */
   rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 
+  /**
+   * The total number of rows in the dataset.
+   */
   total_count: number;
 
+  /**
+   * The token to get the next page of rows.
+   */
   next_page_token?: string;
 }
 
@@ -35,12 +50,24 @@ export interface DatasetioAppendRowsParams {
 }
 
 export interface DatasetioGetRowsPaginatedParams {
+  /**
+   * The ID of the dataset to get the rows from.
+   */
   dataset_id: string;
 
+  /**
+   * The number of rows to get per page.
+   */
   rows_in_page: number;
 
+  /**
+   * (Optional) A condition to filter the rows by.
+   */
   filter_condition?: string;
 
+  /**
+   * The token to get the next page of rows.
+   */
   page_token?: string;
 }
 

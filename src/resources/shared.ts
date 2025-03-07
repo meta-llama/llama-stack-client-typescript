@@ -585,9 +585,18 @@ export namespace SamplingParams {
   }
 }
 
+/**
+ * A scoring result for a single row.
+ */
 export interface ScoringResult {
+  /**
+   * Map of metric name to aggregated value
+   */
   aggregated_results: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The scoring result for each row. Each row is a map of column name to value.
+   */
   score_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 }
 

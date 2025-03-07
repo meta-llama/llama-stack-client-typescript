@@ -6,6 +6,9 @@ import * as Core from '../../core';
 import * as TurnAPI from './turn';
 
 export class SessionResource extends APIResource {
+  /**
+   * Create a new session for an agent.
+   */
   create(
     agentId: string,
     body: SessionCreateParams,
@@ -14,6 +17,9 @@ export class SessionResource extends APIResource {
     return this._client.post(`/v1/agents/${agentId}/session`, { body, ...options });
   }
 
+  /**
+   * Retrieve an agent session by its ID.
+   */
   retrieve(
     agentId: string,
     sessionId: string,
@@ -33,6 +39,9 @@ export class SessionResource extends APIResource {
     return this._client.get(`/v1/agents/${agentId}/session/${sessionId}`, { query, ...options });
   }
 
+  /**
+   * Delete an agent session by its ID.
+   */
   delete(agentId: string, sessionId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/agents/${agentId}/session/${sessionId}`, {
       ...options,
@@ -59,10 +68,16 @@ export interface SessionCreateResponse {
 }
 
 export interface SessionCreateParams {
+  /**
+   * The name of the session to create.
+   */
   session_name: string;
 }
 
 export interface SessionRetrieveParams {
+  /**
+   * (Optional) List of turn IDs to filter the session by.
+   */
   turn_ids?: Array<string>;
 }
 

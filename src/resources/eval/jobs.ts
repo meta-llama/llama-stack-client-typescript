@@ -5,6 +5,9 @@ import * as Core from '../../core';
 import * as EvalAPI from './eval';
 
 export class Jobs extends APIResource {
+  /**
+   * Get the result of a job.
+   */
   retrieve(
     benchmarkId: string,
     jobId: string,
@@ -13,6 +16,9 @@ export class Jobs extends APIResource {
     return this._client.get(`/v1/eval/benchmarks/${benchmarkId}/jobs/${jobId}/result`, options);
   }
 
+  /**
+   * Cancel a job.
+   */
   cancel(benchmarkId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/eval/benchmarks/${benchmarkId}/jobs/${jobId}`, {
       ...options,
@@ -20,6 +26,9 @@ export class Jobs extends APIResource {
     });
   }
 
+  /**
+   * Get the status of a job.
+   */
   status(
     benchmarkId: string,
     jobId: string,
