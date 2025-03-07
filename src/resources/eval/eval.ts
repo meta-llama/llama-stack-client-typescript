@@ -10,6 +10,9 @@ import { JobStatusResponse, Jobs } from './jobs';
 export class Eval extends APIResource {
   jobs: JobsAPI.Jobs = new JobsAPI.Jobs(this._client);
 
+  /**
+   * Evaluate a list of rows on a benchmark.
+   */
   evaluateRows(
     benchmarkId: string,
     body: EvalEvaluateRowsParams,
@@ -18,6 +21,9 @@ export class Eval extends APIResource {
     return this._client.post(`/v1/eval/benchmarks/${benchmarkId}/evaluations`, { body, ...options });
   }
 
+  /**
+   * Evaluate a list of rows on a benchmark.
+   */
   evaluateRowsAlpha(
     benchmarkId: string,
     body: EvalEvaluateRowsAlphaParams,
@@ -26,10 +32,16 @@ export class Eval extends APIResource {
     return this._client.post(`/v1/eval/benchmarks/${benchmarkId}/evaluations`, { body, ...options });
   }
 
+  /**
+   * Run an evaluation on a benchmark.
+   */
   runEval(benchmarkId: string, body: EvalRunEvalParams, options?: Core.RequestOptions): Core.APIPromise<Job> {
     return this._client.post(`/v1/eval/benchmarks/${benchmarkId}/jobs`, { body, ...options });
   }
 
+  /**
+   * Run an evaluation on a benchmark.
+   */
   runEvalAlpha(
     benchmarkId: string,
     body: EvalRunEvalAlphaParams,
@@ -39,40 +51,81 @@ export class Eval extends APIResource {
   }
 }
 
+/**
+ * A benchmark configuration for evaluation.
+ */
 export interface BenchmarkConfig {
+  /**
+   * The candidate to evaluate.
+   */
   eval_candidate: EvalCandidate;
 
+  /**
+   * Map between scoring function id and parameters for each scoring function you
+   * want to run
+   */
   scoring_params: Record<string, ScoringFunctionsAPI.ScoringFnParams>;
 
+  /**
+   * (Optional) The number of examples to evaluate. If not provided, all examples in
+   * the dataset will be evaluated
+   */
   num_examples?: number;
 }
 
+/**
+ * A model candidate for evaluation.
+ */
 export type EvalCandidate = EvalCandidate.ModelCandidate | EvalCandidate.AgentCandidate;
 
 export namespace EvalCandidate {
+  /**
+   * A model candidate for evaluation.
+   */
   export interface ModelCandidate {
+    /**
+     * The model ID to evaluate.
+     */
     model: string;
 
+    /**
+     * The sampling parameters for the model.
+     */
     sampling_params: Shared.SamplingParams;
 
     type: 'model';
 
     /**
-     * A system message providing instructions or context to the model.
+     * (Optional) The system message providing instructions or context to the model.
      */
     system_message?: Shared.SystemMessage;
   }
 
+  /**
+   * An agent candidate for evaluation.
+   */
   export interface AgentCandidate {
+    /**
+     * The configuration for the agent candidate.
+     */
     config: Shared.AgentConfig;
 
     type: 'agent';
   }
 }
 
+/**
+ * The response from an evaluation.
+ */
 export interface EvaluateResponse {
+  /**
+   * The generations from the evaluation.
+   */
   generations: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 
+  /**
+   * The scores from the evaluation.
+   */
   scores: Record<string, Shared.ScoringResult>;
 }
 
@@ -81,27 +134,51 @@ export interface Job {
 }
 
 export interface EvalEvaluateRowsParams {
+  /**
+   * The configuration for the benchmark.
+   */
+  benchmark_config: BenchmarkConfig;
+
+  /**
+   * The rows to evaluate.
+   */
   input_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 
+  /**
+   * The scoring functions to use for the evaluation.
+   */
   scoring_functions: Array<string>;
-
-  task_config: BenchmarkConfig;
 }
 
 export interface EvalEvaluateRowsAlphaParams {
+  /**
+   * The configuration for the benchmark.
+   */
+  benchmark_config: BenchmarkConfig;
+
+  /**
+   * The rows to evaluate.
+   */
   input_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 
+  /**
+   * The scoring functions to use for the evaluation.
+   */
   scoring_functions: Array<string>;
-
-  task_config: BenchmarkConfig;
 }
 
 export interface EvalRunEvalParams {
-  task_config: BenchmarkConfig;
+  /**
+   * The configuration for the benchmark.
+   */
+  benchmark_config: BenchmarkConfig;
 }
 
 export interface EvalRunEvalAlphaParams {
-  task_config: BenchmarkConfig;
+  /**
+   * The configuration for the benchmark.
+   */
+  benchmark_config: BenchmarkConfig;
 }
 
 Eval.Jobs = Jobs;

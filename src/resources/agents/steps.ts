@@ -5,6 +5,9 @@ import * as Core from '../../core';
 import * as AgentsAPI from './agents';
 
 export class Steps extends APIResource {
+  /**
+   * Retrieve an agent step by its ID.
+   */
   retrieve(
     agentId: string,
     sessionId: string,
@@ -20,6 +23,9 @@ export class Steps extends APIResource {
 }
 
 export interface StepRetrieveResponse {
+  /**
+   * An inference step in an agent turn.
+   */
   step:
     | AgentsAPI.InferenceStep
     | AgentsAPI.ToolExecutionStep

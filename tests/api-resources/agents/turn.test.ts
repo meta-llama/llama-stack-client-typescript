@@ -22,7 +22,6 @@ describe('resource turn', () => {
   test('create: required and optional params', async () => {
     const response = await client.agents.turn.create('agent_id', 'session_id', {
       messages: [{ content: 'string', role: 'user', context: 'string' }],
-      allow_turn_resume: true,
       documents: [{ content: 'string', mime_type: 'mime_type' }],
       stream: false,
       tool_config: { system_message_behavior: 'append', tool_choice: 'auto', tool_prompt_format: 'json' },
@@ -50,7 +49,7 @@ describe('resource turn', () => {
 
   test('resume: only required params', async () => {
     const responsePromise = client.agents.turn.resume('agent_id', 'session_id', 'turn_id', {
-      tool_responses: [{ call_id: 'call_id', content: 'string', role: 'tool', tool_name: 'brave_search' }],
+      tool_responses: [{ call_id: 'call_id', content: 'string', tool_name: 'brave_search' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -63,7 +62,9 @@ describe('resource turn', () => {
 
   test('resume: required and optional params', async () => {
     const response = await client.agents.turn.resume('agent_id', 'session_id', 'turn_id', {
-      tool_responses: [{ call_id: 'call_id', content: 'string', role: 'tool', tool_name: 'brave_search' }],
+      tool_responses: [
+        { call_id: 'call_id', content: 'string', tool_name: 'brave_search', metadata: { foo: true } },
+      ],
       stream: false,
     });
   });
