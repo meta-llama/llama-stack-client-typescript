@@ -5,20 +5,34 @@ const client = new LlamaStackClient({ baseURL: 'http://localhost:8321' });
 
 async function main() {
   // list models
-  const models = await client.models.list();
-  console.log(models);
+  const availableModels = (await client.models.list())
+    .filter((model: any) => 
+      model.model_type === 'llm' && 
+      !model.identifier.includes('guard') &&
+      !model.identifier.includes('405')
+    )
+    .map((model: any) => model.identifier);
+  
+  console.log(availableModels);
+
+  if (availableModels.length === 0) {
+    console.log('No available models. Exiting.');
+    return;
+  }
+  const selectedModel = availableModels[0];
+  console.log(`Using model: ${selectedModel}`);
 
   // non-streaming chat-completion
   const chatCompletion = await client.inference.chatCompletion({
     messages: [{ content: 'Hello, how are you?', role: 'user' }],
-    model_id: 'meta-llama/Llama-3.2-3B-Instruct',
+    model_id: selectedModel,
   });
   console.log(chatCompletion);
 
   // streaming chat-completion
   const stream = await client.inference.chatCompletion({
     messages: [{ content: 'Hello, how are you?', role: 'user' }],
-    model_id: 'meta-llama/Llama-3.2-3B-Instruct',
+    model_id: selectedModel,
     stream: true,
   });
   for await (const chunk of stream) {
