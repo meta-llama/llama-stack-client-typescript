@@ -20,6 +20,8 @@ export interface HealthInfo {
 export interface ProviderInfo {
   api: string;
 
+  config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
   provider_id: string;
 
   provider_type: string;

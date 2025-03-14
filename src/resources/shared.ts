@@ -110,19 +110,9 @@ export namespace ChatCompletionResponse {
   export interface Metric {
     metric: string;
 
-    span_id: string;
-
-    timestamp: string;
-
-    trace_id: string;
-
-    type: 'metric';
-
-    unit: string;
-
     value: number;
 
-    attributes?: Record<string, string | number | boolean | null>;
+    unit?: string;
   }
 }
 
@@ -663,11 +653,6 @@ export interface ToolResponseMessage {
    * Must be "tool" to identify this as a tool response
    */
   role: 'tool';
-
-  /**
-   * Name of the tool that was called
-   */
-  tool_name: 'brave_search' | 'wolfram_alpha' | 'photogen' | 'code_interpreter' | (string & {});
 }
 
 /**

@@ -60,7 +60,6 @@ describe('RAG Integration Tests', () => {
         for await (const chunk of turnResponse) {
             if (chunk.event.payload.event_type === 'turn_complete') {
                 expect(chunk.event.payload.turn.output_message).toBeTruthy();
-            break;
             }
         }
     }

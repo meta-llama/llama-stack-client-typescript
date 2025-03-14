@@ -113,19 +113,9 @@ export namespace ChatCompletionResponseStreamChunk {
   export interface Metric {
     metric: string;
 
-    span_id: string;
-
-    timestamp: string;
-
-    trace_id: string;
-
-    type: 'metric';
-
-    unit: string;
-
     value: number;
 
-    attributes?: Record<string, string | number | boolean | null>;
+    unit?: string;
   }
 }
 
@@ -147,6 +137,18 @@ export interface CompletionResponse {
    * Optional log probabilities for generated tokens
    */
   logprobs?: Array<TokenLogProbs>;
+
+  metrics?: Array<CompletionResponse.Metric>;
+}
+
+export namespace CompletionResponse {
+  export interface Metric {
+    metric: string;
+
+    value: number;
+
+    unit?: string;
+  }
 }
 
 /**

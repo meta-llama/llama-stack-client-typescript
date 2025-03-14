@@ -5,9 +5,13 @@ import * as Core from '../core';
 import * as InspectAPI from './inspect';
 
 export class Providers extends APIResource {
+  retrieve(providerId: string, options?: Core.RequestOptions): Core.APIPromise<InspectAPI.ProviderInfo> {
+    return this._client.get(`/v1/providers/${providerId}`, options);
+  }
+
   list(options?: Core.RequestOptions): Core.APIPromise<ProviderListResponse> {
     return (
-      this._client.get('/v1/inspect/providers', options) as Core.APIPromise<{ data: ProviderListResponse }>
+      this._client.get('/v1/providers', options) as Core.APIPromise<{ data: ProviderListResponse }>
     )._thenUnwrap((obj) => obj.data);
   }
 }
