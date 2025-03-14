@@ -482,10 +482,9 @@ export type TurnResumeParams = TurnResumeParamsNonStreaming | TurnResumeParamsSt
 
 export interface TurnResumeParamsBase {
   /**
-   * The tool call responses to resume the turn with. NOTE: ToolResponseMessage will
-   * be deprecated. Use ToolResponse.
+   * The tool call responses to resume the turn with.
    */
-  tool_responses: Array<AgentsAPI.ToolResponse> | Array<Shared.ToolResponseMessage>;
+  tool_responses: Array<AgentsAPI.ToolResponse>;
 
   /**
    * Whether to stream the response.
