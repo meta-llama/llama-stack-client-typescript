@@ -77,7 +77,6 @@ async function main() {
     );
 
     // Log the response events
-
     for await (const chunk of response) {
         if (chunk.event.payload.event_type === 'turn_complete') {
             console.log(chunk.event.payload.turn.output_message);
