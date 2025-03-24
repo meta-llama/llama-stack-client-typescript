@@ -25,16 +25,13 @@ export {
   type BenchmarkRegisterParams,
 } from './benchmarks';
 export {
-  Datasetio,
-  type PaginatedRowsResult,
-  type DatasetioAppendRowsParams,
-  type DatasetioGetRowsPaginatedParams,
-} from './datasetio';
-export {
   Datasets,
   type ListDatasetsResponse,
   type DatasetRetrieveResponse,
   type DatasetListResponse,
+  type DatasetIterrowsResponse,
+  type DatasetRegisterResponse,
+  type DatasetIterrowsParams,
   type DatasetRegisterParams,
 } from './datasets';
 export {

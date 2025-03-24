@@ -4,10 +4,7 @@ import { APIResource } from '../resource';
 import * as Core from '../core';
 
 export class VectorDBs extends APIResource {
-  retrieve(
-    vectorDBId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<VectorDBRetrieveResponse | null> {
+  retrieve(vectorDBId: string, options?: Core.RequestOptions): Core.APIPromise<VectorDBRetrieveResponse> {
     return this._client.get(`/v1/vector-dbs/${vectorDBId}`, options);
   }
 

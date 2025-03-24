@@ -4,7 +4,7 @@ import { APIResource } from '../resource';
 import * as Core from '../core';
 
 export class Shields extends APIResource {
-  retrieve(identifier: string, options?: Core.RequestOptions): Core.APIPromise<Shield | null> {
+  retrieve(identifier: string, options?: Core.RequestOptions): Core.APIPromise<Shield> {
     return this._client.get(`/v1/shields/${identifier}`, options);
   }
 

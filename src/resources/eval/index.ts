@@ -11,4 +11,4 @@ export {
   type EvalRunEvalParams,
   type EvalRunEvalAlphaParams,
 } from './eval';
-export { Jobs, type JobStatusResponse } from './jobs';
+export { Jobs } from './jobs';

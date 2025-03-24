@@ -170,9 +170,12 @@ export namespace ContentDelta {
   }
 }
 
+/**
+ * A document to be used for document ingestion in the RAG Tool.
+ */
 export interface Document {
   /**
-   * A image content item
+   * The content of the document.
    */
   content:
     | string
@@ -181,10 +184,19 @@ export interface Document {
     | Array<InterleavedContentItem>
     | Document.URL;
 
+  /**
+   * The unique identifier for the document.
+   */
   document_id: string;
 
+  /**
+   * Additional metadata for the document.
+   */
   metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The MIME type of the document.
+   */
   mime_type?: string;
 }
 
@@ -608,19 +620,23 @@ export interface SystemMessage {
 }
 
 export interface ToolCall {
-  arguments: Record<
-    string,
+  arguments:
     | string
-    | number
-    | boolean
-    | Array<string | number | boolean | null>
-    | Record<string, string | number | boolean | null>
-    | null
-  >;
+    | Record<
+        string,
+        | string
+        | number
+        | boolean
+        | Array<string | number | boolean | null>
+        | Record<string, string | number | boolean | null>
+        | null
+      >;
 
   call_id: string;
 
   tool_name: 'brave_search' | 'wolfram_alpha' | 'photogen' | 'code_interpreter' | (string & {});
+
+  arguments_json?: string;
 }
 
 export type ToolCallOrString = string | ToolCall;

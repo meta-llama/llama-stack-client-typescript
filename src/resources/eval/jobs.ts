@@ -29,17 +29,7 @@ export class Jobs extends APIResource {
   /**
    * Get the status of a job.
    */
-  status(
-    benchmarkId: string,
-    jobId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<JobStatusResponse | null> {
+  status(benchmarkId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<EvalAPI.Job> {
     return this._client.get(`/v1/eval/benchmarks/${benchmarkId}/jobs/${jobId}`, options);
   }
-}
-
-export type JobStatusResponse = 'completed' | 'in_progress' | 'failed' | 'scheduled' | null;
-
-export declare namespace Jobs {
-  export { type JobStatusResponse as JobStatusResponse };
 }
