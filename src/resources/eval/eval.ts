@@ -5,7 +5,7 @@ import * as Core from '../../core';
 import * as ScoringFunctionsAPI from '../scoring-functions';
 import * as Shared from '../shared';
 import * as JobsAPI from './jobs';
-import { JobStatusResponse, Jobs } from './jobs';
+import { Jobs } from './jobs';
 
 export class Eval extends APIResource {
   jobs: JobsAPI.Jobs = new JobsAPI.Jobs(this._client);
@@ -131,6 +131,8 @@ export interface EvaluateResponse {
 
 export interface Job {
   job_id: string;
+
+  status: 'completed' | 'in_progress' | 'failed' | 'scheduled';
 }
 
 export interface EvalEvaluateRowsParams {
@@ -195,5 +197,5 @@ export declare namespace Eval {
     type EvalRunEvalAlphaParams as EvalRunEvalAlphaParams,
   };
 
-  export { Jobs as Jobs, type JobStatusResponse as JobStatusResponse };
+  export { Jobs as Jobs };
 }

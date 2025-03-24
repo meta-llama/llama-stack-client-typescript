@@ -72,7 +72,7 @@ export interface ToolInvocationResult {
   /**
    * A image content item
    */
-  content: Shared.InterleavedContent;
+  content?: Shared.InterleavedContent;
 
   error_code?: number;
 

@@ -4,7 +4,7 @@ import { APIResource } from '../resource';
 import * as Core from '../core';
 
 export class Benchmarks extends APIResource {
-  retrieve(benchmarkId: string, options?: Core.RequestOptions): Core.APIPromise<Benchmark | null> {
+  retrieve(benchmarkId: string, options?: Core.RequestOptions): Core.APIPromise<Benchmark> {
     return this._client.get(`/v1/eval/benchmarks/${benchmarkId}`, options);
   }
 

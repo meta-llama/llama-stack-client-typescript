@@ -4,7 +4,7 @@ import { APIResource } from '../resource';
 import * as Core from '../core';
 
 export class Models extends APIResource {
-  retrieve(modelId: string, options?: Core.RequestOptions): Core.APIPromise<Model | null> {
+  retrieve(modelId: string, options?: Core.RequestOptions): Core.APIPromise<Model> {
     return this._client.get(`/v1/models/${modelId}`, options);
   }
 

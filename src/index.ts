@@ -4,6 +4,8 @@ import { type Agent } from './_shims/index';
 import * as qs from './internal/qs';
 import * as Core from './core';
 import * as Errors from './error';
+import * as Pagination from './pagination';
+import { type DatasetsIterrowsParams, DatasetsIterrowsResponse } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
@@ -20,14 +22,11 @@ import {
   ListBenchmarksResponse,
 } from './resources/benchmarks';
 import {
-  Datasetio,
-  DatasetioAppendRowsParams,
-  DatasetioGetRowsPaginatedParams,
-  PaginatedRowsResult,
-} from './resources/datasetio';
-import {
+  DatasetIterrowsParams,
+  DatasetIterrowsResponse,
   DatasetListResponse,
   DatasetRegisterParams,
+  DatasetRegisterResponse,
   DatasetRetrieveResponse,
   Datasets,
   ListDatasetsResponse,
@@ -286,7 +285,6 @@ export class LlamaStackClient extends Core.APIClient {
   shields: API.Shields = new API.Shields(this);
   syntheticDataGeneration: API.SyntheticDataGeneration = new API.SyntheticDataGeneration(this);
   telemetry: API.Telemetry = new API.Telemetry(this);
-  datasetio: API.Datasetio = new API.Datasetio(this);
   scoring: API.Scoring = new API.Scoring(this);
   scoringFunctions: API.ScoringFunctions = new API.ScoringFunctions(this);
   benchmarks: API.Benchmarks = new API.Benchmarks(this);
@@ -353,12 +351,17 @@ LlamaStackClient.Safety = Safety;
 LlamaStackClient.Shields = Shields;
 LlamaStackClient.SyntheticDataGeneration = SyntheticDataGeneration;
 LlamaStackClient.Telemetry = Telemetry;
-LlamaStackClient.Datasetio = Datasetio;
 LlamaStackClient.Scoring = Scoring;
 LlamaStackClient.ScoringFunctions = ScoringFunctions;
 LlamaStackClient.Benchmarks = Benchmarks;
 export declare namespace LlamaStackClient {
   export type RequestOptions = Core.RequestOptions;
+
+  export import DatasetsIterrows = Pagination.DatasetsIterrows;
+  export {
+    type DatasetsIterrowsParams as DatasetsIterrowsParams,
+    type DatasetsIterrowsResponse as DatasetsIterrowsResponse,
+  };
 
   export {
     Toolgroups as Toolgroups,
@@ -407,6 +410,9 @@ export declare namespace LlamaStackClient {
     type ListDatasetsResponse as ListDatasetsResponse,
     type DatasetRetrieveResponse as DatasetRetrieveResponse,
     type DatasetListResponse as DatasetListResponse,
+    type DatasetIterrowsResponse as DatasetIterrowsResponse,
+    type DatasetRegisterResponse as DatasetRegisterResponse,
+    type DatasetIterrowsParams as DatasetIterrowsParams,
     type DatasetRegisterParams as DatasetRegisterParams,
   };
 
@@ -526,13 +532,6 @@ export declare namespace LlamaStackClient {
     type TelemetryQuerySpansParams as TelemetryQuerySpansParams,
     type TelemetryQueryTracesParams as TelemetryQueryTracesParams,
     type TelemetrySaveSpansToDatasetParams as TelemetrySaveSpansToDatasetParams,
-  };
-
-  export {
-    Datasetio as Datasetio,
-    type PaginatedRowsResult as PaginatedRowsResult,
-    type DatasetioAppendRowsParams as DatasetioAppendRowsParams,
-    type DatasetioGetRowsPaginatedParams as DatasetioGetRowsPaginatedParams,
   };
 
   export {

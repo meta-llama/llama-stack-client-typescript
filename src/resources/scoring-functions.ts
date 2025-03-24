@@ -5,7 +5,7 @@ import * as Core from '../core';
 import * as Shared from './shared';
 
 export class ScoringFunctions extends APIResource {
-  retrieve(scoringFnId: string, options?: Core.RequestOptions): Core.APIPromise<ScoringFn | null> {
+  retrieve(scoringFnId: string, options?: Core.RequestOptions): Core.APIPromise<ScoringFn> {
     return this._client.get(`/v1/scoring-functions/${scoringFnId}`, options);
   }
 
@@ -59,7 +59,9 @@ export namespace ScoringFnParams {
 
     type: 'llm_as_judge';
 
-    aggregation_functions?: Array<'average' | 'median' | 'categorical_count' | 'accuracy'>;
+    aggregation_functions?: Array<
+      'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
+    >;
 
     judge_score_regexes?: Array<string>;
 
@@ -69,7 +71,9 @@ export namespace ScoringFnParams {
   export interface RegexParserScoringFnParams {
     type: 'regex_parser';
 
-    aggregation_functions?: Array<'average' | 'median' | 'categorical_count' | 'accuracy'>;
+    aggregation_functions?: Array<
+      'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
+    >;
 
     parsing_regexes?: Array<string>;
   }
@@ -77,7 +81,9 @@ export namespace ScoringFnParams {
   export interface BasicScoringFnParams {
     type: 'basic';
 
-    aggregation_functions?: Array<'average' | 'median' | 'categorical_count' | 'accuracy'>;
+    aggregation_functions?: Array<
+      'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
+    >;
   }
 }
 

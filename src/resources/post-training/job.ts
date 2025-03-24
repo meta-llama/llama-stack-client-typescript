@@ -16,10 +16,7 @@ export class Job extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
-  artifacts(
-    query: JobArtifactsParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<JobArtifactsResponse | null> {
+  artifacts(query: JobArtifactsParams, options?: Core.RequestOptions): Core.APIPromise<JobArtifactsResponse> {
     return this._client.get('/v1/post-training/job/artifacts', { query, ...options });
   }
 
@@ -31,7 +28,7 @@ export class Job extends APIResource {
     });
   }
 
-  status(query: JobStatusParams, options?: Core.RequestOptions): Core.APIPromise<JobStatusResponse | null> {
+  status(query: JobStatusParams, options?: Core.RequestOptions): Core.APIPromise<JobStatusResponse> {
     return this._client.get('/v1/post-training/job/status', { query, ...options });
   }
 }
