@@ -17,7 +17,12 @@ import {
   type RequestInit,
   type Response,
   type HeadersInit,
+  init,
 } from './_shims/index';
+
+// try running side effects outside of _shims/index to workaround https://github.com/vercel/next.js/issues/76881
+init();
+
 export { type Response };
 import { BlobLike, isBlobLike, isMultipartBody } from './uploads';
 export {
@@ -28,6 +33,20 @@ export {
 } from './uploads';
 
 export type Fetch = (url: RequestInfo, init?: RequestInit) => Promise<Response>;
+
+/**
+ * An alias to the builtin `Array` type so we can
+ * easily alias it in import statements if there are name clashes.
+ */
+type _Array<T> = Array<T>;
+
+/**
+ * An alias to the builtin `Record` type so we can
+ * easily alias it in import statements if there are name clashes.
+ */
+type _Record<K extends keyof any, T> = Record<K, T>;
+
+export type { _Array as Array, _Record as Record };
 
 type PromiseOrValue<T> = T | Promise<T>;
 
@@ -380,7 +399,7 @@ export abstract class APIClient {
       getHeader(headers, 'x-stainless-timeout') === undefined &&
       options.timeout
     ) {
-      reqHeaders['x-stainless-timeout'] = String(options.timeout);
+      reqHeaders['x-stainless-timeout'] = String(Math.trunc(options.timeout / 1000));
     }
 
     this.validateHeaders(reqHeaders, headers);

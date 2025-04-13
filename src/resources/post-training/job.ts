@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import { ListPostTrainingJobsResponse } from './post-training';
 import * as PostTrainingAPI from './post-training';
 
 export class Job extends APIResource {
@@ -58,7 +57,7 @@ export interface JobStatusResponse {
 
   job_uuid: string;
 
-  status: 'completed' | 'in_progress' | 'failed' | 'scheduled';
+  status: 'completed' | 'in_progress' | 'failed' | 'scheduled' | 'cancelled';
 
   completed_at?: string;
 

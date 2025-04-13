@@ -6,7 +6,6 @@ import * as Core from '../../core';
 import * as Shared from '../shared';
 import * as RagToolAPI from './rag-tool';
 import { RagTool, RagToolInsertParams, RagToolQueryParams } from './rag-tool';
-import { JSONLDecoder } from '../../internal/decoders/jsonl';
 
 export class ToolRuntime extends APIResource {
   ragTool: RagToolAPI.RagTool = new RagToolAPI.RagTool(this._client);
@@ -24,23 +23,20 @@ export class ToolRuntime extends APIResource {
   listTools(
     query?: ToolRuntimeListToolsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<JSONLDecoder<ToolDef>>;
-  listTools(options?: Core.RequestOptions): Core.APIPromise<JSONLDecoder<ToolDef>>;
+  ): Core.APIPromise<ToolRuntimeListToolsResponse>;
+  listTools(options?: Core.RequestOptions): Core.APIPromise<ToolRuntimeListToolsResponse>;
   listTools(
     query: ToolRuntimeListToolsParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<JSONLDecoder<ToolDef>> {
+  ): Core.APIPromise<ToolRuntimeListToolsResponse> {
     if (isRequestOptions(query)) {
       return this.listTools({}, query);
     }
-    return this._client
-      .get('/v1/tool-runtime/list-tools', {
-        query,
-        ...options,
-        headers: { Accept: 'application/jsonl', ...options?.headers },
-        __binaryResponse: true,
-      })
-      ._thenUnwrap((_, props) => JSONLDecoder.fromResponse(props.response, props.controller));
+    return (
+      this._client.get('/v1/tool-runtime/list-tools', { query, ...options }) as Core.APIPromise<{
+        data: ToolRuntimeListToolsResponse;
+      }>
+    )._thenUnwrap((obj) => obj.data);
   }
 }
 
@@ -81,6 +77,8 @@ export interface ToolInvocationResult {
   metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 }
 
+export type ToolRuntimeListToolsResponse = Array<ToolDef>;
+
 export interface ToolRuntimeInvokeToolParams {
   kwargs: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
@@ -105,6 +103,7 @@ export declare namespace ToolRuntime {
   export {
     type ToolDef as ToolDef,
     type ToolInvocationResult as ToolInvocationResult,
+    type ToolRuntimeListToolsResponse as ToolRuntimeListToolsResponse,
     type ToolRuntimeInvokeToolParams as ToolRuntimeInvokeToolParams,
     type ToolRuntimeListToolsParams as ToolRuntimeListToolsParams,
   };

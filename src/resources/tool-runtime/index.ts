@@ -5,6 +5,7 @@ export {
   ToolRuntime,
   type ToolDef,
   type ToolInvocationResult,
+  type ToolRuntimeListToolsResponse,
   type ToolRuntimeInvokeToolParams,
   type ToolRuntimeListToolsParams,
 } from './tool-runtime';

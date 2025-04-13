@@ -8,6 +8,20 @@ import * as Shared from './shared';
 import { Stream } from '../streaming';
 
 export class Inference extends APIResource {
+  batchChatCompletion(
+    body: InferenceBatchChatCompletionParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<InferenceBatchChatCompletionResponse> {
+    return this._client.post('/v1/inference/batch-chat-completion', { body, ...options });
+  }
+
+  batchCompletion(
+    body: InferenceBatchCompletionParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Shared.BatchCompletion> {
+    return this._client.post('/v1/inference/batch-completion', { body, ...options });
+  }
+
   /**
    * Generate a chat completion for the given messages using the specified model.
    */
@@ -171,6 +185,110 @@ export interface TokenLogProbs {
    * Dictionary mapping tokens to their log probabilities
    */
   logprobs_by_token: Record<string, number>;
+}
+
+export interface InferenceBatchChatCompletionResponse {
+  batch: Array<Shared.ChatCompletionResponse>;
+}
+
+export interface InferenceBatchChatCompletionParams {
+  messages_batch: Array<Array<Shared.Message>>;
+
+  model_id: string;
+
+  logprobs?: InferenceBatchChatCompletionParams.Logprobs;
+
+  /**
+   * Configuration for JSON schema-guided response generation.
+   */
+  response_format?: Shared.ResponseFormat;
+
+  /**
+   * Sampling parameters.
+   */
+  sampling_params?: Shared.SamplingParams;
+
+  /**
+   * Configuration for tool use.
+   */
+  tool_config?: InferenceBatchChatCompletionParams.ToolConfig;
+
+  tools?: Array<InferenceBatchChatCompletionParams.Tool>;
+}
+
+export namespace InferenceBatchChatCompletionParams {
+  export interface Logprobs {
+    /**
+     * How many tokens (for each position) to return log probabilities for.
+     */
+    top_k?: number;
+  }
+
+  /**
+   * Configuration for tool use.
+   */
+  export interface ToolConfig {
+    /**
+     * (Optional) Config for how to override the default system prompt. -
+     * `SystemMessageBehavior.append`: Appends the provided system message to the
+     * default system prompt. - `SystemMessageBehavior.replace`: Replaces the default
+     * system prompt with the provided system message. The system message can include
+     * the string '{{function_definitions}}' to indicate where the function definitions
+     * should be inserted.
+     */
+    system_message_behavior?: 'append' | 'replace';
+
+    /**
+     * (Optional) Whether tool use is automatic, required, or none. Can also specify a
+     * tool name to use a specific tool. Defaults to ToolChoice.auto.
+     */
+    tool_choice?: 'auto' | 'required' | 'none' | (string & {});
+
+    /**
+     * (Optional) Instructs the model how to format tool calls. By default, Llama Stack
+     * will attempt to use a format that is best adapted to the model. -
+     * `ToolPromptFormat.json`: The tool calls are formatted as a JSON object. -
+     * `ToolPromptFormat.function_tag`: The tool calls are enclosed in a
+     * <function=function_name> tag. - `ToolPromptFormat.python_list`: The tool calls
+     * are output as Python syntax -- a list of function calls.
+     */
+    tool_prompt_format?: 'json' | 'function_tag' | 'python_list';
+  }
+
+  export interface Tool {
+    tool_name: 'brave_search' | 'wolfram_alpha' | 'photogen' | 'code_interpreter' | (string & {});
+
+    description?: string;
+
+    parameters?: Record<string, Shared.ToolParamDefinition>;
+  }
+}
+
+export interface InferenceBatchCompletionParams {
+  content_batch: Array<Shared.InterleavedContent>;
+
+  model_id: string;
+
+  logprobs?: InferenceBatchCompletionParams.Logprobs;
+
+  /**
+   * Configuration for JSON schema-guided response generation.
+   */
+  response_format?: Shared.ResponseFormat;
+
+  /**
+   * Sampling parameters.
+   */
+  sampling_params?: Shared.SamplingParams;
+}
+
+export namespace InferenceBatchCompletionParams {
+  export interface Logprobs {
+    /**
+     * How many tokens (for each position) to return log probabilities for.
+     */
+    top_k?: number;
+  }
 }
 
 export type InferenceChatCompletionParams =
@@ -424,6 +542,9 @@ export declare namespace Inference {
     type CompletionResponse as CompletionResponse,
     type EmbeddingsResponse as EmbeddingsResponse,
     type TokenLogProbs as TokenLogProbs,
+    type InferenceBatchChatCompletionResponse as InferenceBatchChatCompletionResponse,
+    type InferenceBatchChatCompletionParams as InferenceBatchChatCompletionParams,
+    type InferenceBatchCompletionParams as InferenceBatchCompletionParams,
     type InferenceChatCompletionParams as InferenceChatCompletionParams,
     type InferenceChatCompletionParamsNonStreaming as InferenceChatCompletionParamsNonStreaming,
     type InferenceChatCompletionParamsStreaming as InferenceChatCompletionParamsStreaming,
