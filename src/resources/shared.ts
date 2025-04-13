@@ -24,6 +24,9 @@ export interface AgentConfig {
    */
   response_format?: ResponseFormat;
 
+  /**
+   * Sampling parameters.
+   */
   sampling_params?: SamplingParams;
 
   /**
@@ -556,15 +559,36 @@ export interface SafetyViolation {
   user_message?: string;
 }
 
+/**
+ * Sampling parameters.
+ */
 export interface SamplingParams {
+  /**
+   * The sampling strategy.
+   */
   strategy:
     | SamplingParams.GreedySamplingStrategy
     | SamplingParams.TopPSamplingStrategy
     | SamplingParams.TopKSamplingStrategy;
 
+  /**
+   * The maximum number of tokens that can be generated in the completion. The token
+   * count of your prompt plus max_tokens cannot exceed the model's context length.
+   */
   max_tokens?: number;
 
+  /**
+   * Number between -2.0 and 2.0. Positive values penalize new tokens based on
+   * whether they appear in the text so far, increasing the model's likelihood to
+   * talk about new topics.
+   */
   repetition_penalty?: number;
+
+  /**
+   * Up to 4 sequences where the API will stop generating further tokens. The
+   * returned text will not contain the stop sequence.
+   */
+  stop?: Array<string>;
 }
 
 export namespace SamplingParams {

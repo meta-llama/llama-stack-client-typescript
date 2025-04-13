@@ -9,12 +9,6 @@ import { type DatasetsIterrowsParams, DatasetsIterrowsResponse } from './paginat
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import {
-  BatchInference,
-  BatchInferenceChatCompletionParams,
-  BatchInferenceChatCompletionResponse,
-  BatchInferenceCompletionParams,
-} from './resources/batch-inference';
-import {
   Benchmark,
   BenchmarkListResponse,
   BenchmarkRegisterParams,
@@ -36,6 +30,9 @@ import {
   CompletionResponse,
   EmbeddingsResponse,
   Inference,
+  InferenceBatchChatCompletionParams,
+  InferenceBatchChatCompletionResponse,
+  InferenceBatchCompletionParams,
   InferenceChatCompletionParams,
   InferenceChatCompletionParamsNonStreaming,
   InferenceChatCompletionParamsStreaming,
@@ -157,6 +154,7 @@ import {
   ToolRuntime,
   ToolRuntimeInvokeToolParams,
   ToolRuntimeListToolsParams,
+  ToolRuntimeListToolsResponse,
 } from './resources/tool-runtime/tool-runtime';
 
 export interface ClientOptions {
@@ -270,7 +268,6 @@ export class LlamaStackClient extends Core.APIClient {
   tools: API.Tools = new API.Tools(this);
   toolRuntime: API.ToolRuntime = new API.ToolRuntime(this);
   agents: API.Agents = new API.Agents(this);
-  batchInference: API.BatchInference = new API.BatchInference(this);
   datasets: API.Datasets = new API.Datasets(this);
   eval: API.Eval = new API.Eval(this);
   inspect: API.Inspect = new API.Inspect(this);
@@ -336,7 +333,6 @@ LlamaStackClient.Toolgroups = Toolgroups;
 LlamaStackClient.Tools = Tools;
 LlamaStackClient.ToolRuntime = ToolRuntime;
 LlamaStackClient.Agents = Agents;
-LlamaStackClient.BatchInference = BatchInference;
 LlamaStackClient.Datasets = Datasets;
 LlamaStackClient.Eval = Eval;
 LlamaStackClient.Inspect = Inspect;
@@ -383,6 +379,7 @@ export declare namespace LlamaStackClient {
     ToolRuntime as ToolRuntime,
     type ToolDef as ToolDef,
     type ToolInvocationResult as ToolInvocationResult,
+    type ToolRuntimeListToolsResponse as ToolRuntimeListToolsResponse,
     type ToolRuntimeInvokeToolParams as ToolRuntimeInvokeToolParams,
     type ToolRuntimeListToolsParams as ToolRuntimeListToolsParams,
   };
@@ -396,13 +393,6 @@ export declare namespace LlamaStackClient {
     type ToolResponse as ToolResponse,
     type AgentCreateResponse as AgentCreateResponse,
     type AgentCreateParams as AgentCreateParams,
-  };
-
-  export {
-    BatchInference as BatchInference,
-    type BatchInferenceChatCompletionResponse as BatchInferenceChatCompletionResponse,
-    type BatchInferenceChatCompletionParams as BatchInferenceChatCompletionParams,
-    type BatchInferenceCompletionParams as BatchInferenceCompletionParams,
   };
 
   export {
@@ -442,6 +432,9 @@ export declare namespace LlamaStackClient {
     type CompletionResponse as CompletionResponse,
     type EmbeddingsResponse as EmbeddingsResponse,
     type TokenLogProbs as TokenLogProbs,
+    type InferenceBatchChatCompletionResponse as InferenceBatchChatCompletionResponse,
+    type InferenceBatchChatCompletionParams as InferenceBatchChatCompletionParams,
+    type InferenceBatchCompletionParams as InferenceBatchCompletionParams,
     type InferenceChatCompletionParams as InferenceChatCompletionParams,
     type InferenceChatCompletionParamsNonStreaming as InferenceChatCompletionParamsNonStreaming,
     type InferenceChatCompletionParamsStreaming as InferenceChatCompletionParamsStreaming,

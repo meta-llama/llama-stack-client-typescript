@@ -45,7 +45,12 @@ describe('resource agents', () => {
         max_infer_iters: 0,
         output_shields: ['string'],
         response_format: { json_schema: { foo: true }, type: 'json_schema' },
-        sampling_params: { strategy: { type: 'greedy' }, max_tokens: 0, repetition_penalty: 0 },
+        sampling_params: {
+          strategy: { type: 'greedy' },
+          max_tokens: 0,
+          repetition_penalty: 0,
+          stop: ['string'],
+        },
         tool_choice: 'auto',
         tool_config: { system_message_behavior: 'append', tool_choice: 'auto', tool_prompt_format: 'json' },
         tool_prompt_format: 'json',

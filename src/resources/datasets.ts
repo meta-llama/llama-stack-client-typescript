@@ -16,7 +16,15 @@ export class Datasets extends APIResource {
   }
 
   /**
-   * Get a paginated list of rows from a dataset. Uses cursor-based pagination.
+   * Get a paginated list of rows from a dataset. Uses offset-based pagination where:
+   *
+   * - start_index: The starting index (0-based). If None, starts from beginning.
+   * - limit: Number of items to return. If None or -1, returns all items.
+   *
+   * The response includes:
+   *
+   * - data: List of items for the current page
+   * - has_more: Whether there are more items available after this set
    */
   iterrows(
     datasetId: string,
@@ -166,19 +174,18 @@ export namespace DatasetListResponse {
 }
 
 /**
- * A paginated list of rows from a dataset.
+ * A generic paginated response that follows a simple format.
  */
 export interface DatasetIterrowsResponse {
   /**
-   * The rows in the current page.
+   * The list of items for the current page
    */
   data: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
 
   /**
-   * Index into dataset for the first row in the next page. None if there are no more
-   * rows.
+   * Whether there are more items available after this set
    */
-  next_start_index?: number;
+  has_more: boolean;
 }
 
 export interface DatasetRegisterResponse {

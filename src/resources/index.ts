@@ -12,12 +12,6 @@ export {
   type AgentCreateParams,
 } from './agents/agents';
 export {
-  BatchInference,
-  type BatchInferenceChatCompletionResponse,
-  type BatchInferenceChatCompletionParams,
-  type BatchInferenceCompletionParams,
-} from './batch-inference';
-export {
   Benchmarks,
   type Benchmark,
   type ListBenchmarksResponse,
@@ -51,6 +45,9 @@ export {
   type CompletionResponse,
   type EmbeddingsResponse,
   type TokenLogProbs,
+  type InferenceBatchChatCompletionResponse,
+  type InferenceBatchChatCompletionParams,
+  type InferenceBatchCompletionParams,
   type InferenceChatCompletionParams,
   type InferenceChatCompletionParamsNonStreaming,
   type InferenceChatCompletionParamsStreaming,
@@ -126,6 +123,7 @@ export {
   ToolRuntime,
   type ToolDef,
   type ToolInvocationResult,
+  type ToolRuntimeListToolsResponse,
   type ToolRuntimeInvokeToolParams,
   type ToolRuntimeListToolsParams,
 } from './tool-runtime/tool-runtime';

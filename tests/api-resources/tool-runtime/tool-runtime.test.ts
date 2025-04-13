@@ -21,8 +21,7 @@ describe('resource toolRuntime', () => {
     const response = await client.toolRuntime.invokeTool({ kwargs: { foo: true }, tool_name: 'tool_name' });
   });
 
-  // Prism doesn't support JSONL responses yet
-  test.skip('listTools', async () => {
+  test('listTools', async () => {
     const responsePromise = client.toolRuntime.listTools();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -33,16 +32,14 @@ describe('resource toolRuntime', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism doesn't support JSONL responses yet
-  test.skip('listTools: request options instead of params are passed correctly', async () => {
+  test('listTools: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(client.toolRuntime.listTools({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       LlamaStackClient.NotFoundError,
     );
   });
 
-  // Prism doesn't support JSONL responses yet
-  test.skip('listTools: request options and params are passed correctly', async () => {
+  test('listTools: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.toolRuntime.listTools(

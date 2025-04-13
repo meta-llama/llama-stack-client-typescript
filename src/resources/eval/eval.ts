@@ -132,7 +132,7 @@ export interface EvaluateResponse {
 export interface Job {
   job_id: string;
 
-  status: 'completed' | 'in_progress' | 'failed' | 'scheduled';
+  status: 'completed' | 'in_progress' | 'failed' | 'scheduled' | 'cancelled';
 }
 
 export interface EvalEvaluateRowsParams {

@@ -29,7 +29,12 @@ describe('resource eval', () => {
       benchmark_config: {
         eval_candidate: {
           model: 'model',
-          sampling_params: { strategy: { type: 'greedy' }, max_tokens: 0, repetition_penalty: 0 },
+          sampling_params: {
+            strategy: { type: 'greedy' },
+            max_tokens: 0,
+            repetition_penalty: 0,
+            stop: ['string'],
+          },
           type: 'model',
           system_message: { content: 'string', role: 'system' },
         },
@@ -72,7 +77,12 @@ describe('resource eval', () => {
       benchmark_config: {
         eval_candidate: {
           model: 'model',
-          sampling_params: { strategy: { type: 'greedy' }, max_tokens: 0, repetition_penalty: 0 },
+          sampling_params: {
+            strategy: { type: 'greedy' },
+            max_tokens: 0,
+            repetition_penalty: 0,
+            stop: ['string'],
+          },
           type: 'model',
           system_message: { content: 'string', role: 'system' },
         },
@@ -113,7 +123,12 @@ describe('resource eval', () => {
       benchmark_config: {
         eval_candidate: {
           model: 'model',
-          sampling_params: { strategy: { type: 'greedy' }, max_tokens: 0, repetition_penalty: 0 },
+          sampling_params: {
+            strategy: { type: 'greedy' },
+            max_tokens: 0,
+            repetition_penalty: 0,
+            stop: ['string'],
+          },
           type: 'model',
           system_message: { content: 'string', role: 'system' },
         },
@@ -152,7 +167,12 @@ describe('resource eval', () => {
       benchmark_config: {
         eval_candidate: {
           model: 'model',
-          sampling_params: { strategy: { type: 'greedy' }, max_tokens: 0, repetition_penalty: 0 },
+          sampling_params: {
+            strategy: { type: 'greedy' },
+            max_tokens: 0,
+            repetition_penalty: 0,
+            stop: ['string'],
+          },
           type: 'model',
           system_message: { content: 'string', role: 'system' },
         },
