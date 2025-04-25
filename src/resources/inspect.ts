@@ -14,13 +14,15 @@ export class Inspect extends APIResource {
 }
 
 export interface HealthInfo {
-  status: string;
+  status: 'OK' | 'Error' | 'Not Implemented';
 }
 
 export interface ProviderInfo {
   api: string;
 
   config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+  health: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
   provider_id: string;
 

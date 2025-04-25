@@ -43,6 +43,7 @@ describe('resource agents', () => {
         enable_session_persistence: true,
         input_shields: ['string'],
         max_infer_iters: 0,
+        name: 'name',
         output_shields: ['string'],
         response_format: { json_schema: { foo: true }, type: 'json_schema' },
         sampling_params: {

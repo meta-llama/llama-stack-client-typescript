@@ -13,14 +13,7 @@ describe('resource postTraining', () => {
       hyperparam_search_config: { foo: true },
       job_uuid: 'job_uuid',
       logger_config: { foo: true },
-      training_config: {
-        data_config: { batch_size: 0, data_format: 'instruct', dataset_id: 'dataset_id', shuffle: true },
-        gradient_accumulation_steps: 0,
-        max_steps_per_epoch: 0,
-        max_validation_steps: 0,
-        n_epochs: 0,
-        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
-      },
+      training_config: { gradient_accumulation_steps: 0, max_steps_per_epoch: 0, n_epochs: 0 },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -39,6 +32,9 @@ describe('resource postTraining', () => {
       job_uuid: 'job_uuid',
       logger_config: { foo: true },
       training_config: {
+        gradient_accumulation_steps: 0,
+        max_steps_per_epoch: 0,
+        n_epochs: 0,
         data_config: {
           batch_size: 0,
           data_format: 'instruct',
@@ -48,11 +44,6 @@ describe('resource postTraining', () => {
           train_on_input: true,
           validation_dataset_id: 'validation_dataset_id',
         },
-        gradient_accumulation_steps: 0,
-        max_steps_per_epoch: 0,
-        max_validation_steps: 0,
-        n_epochs: 0,
-        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
         dtype: 'dtype',
         efficiency_config: {
           enable_activation_checkpointing: true,
@@ -60,6 +51,8 @@ describe('resource postTraining', () => {
           fsdp_cpu_offload: true,
           memory_efficient_fsdp_wrap: true,
         },
+        max_validation_steps: 0,
+        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
       },
     });
   });
@@ -69,15 +62,7 @@ describe('resource postTraining', () => {
       hyperparam_search_config: { foo: true },
       job_uuid: 'job_uuid',
       logger_config: { foo: true },
-      model: 'model',
-      training_config: {
-        data_config: { batch_size: 0, data_format: 'instruct', dataset_id: 'dataset_id', shuffle: true },
-        gradient_accumulation_steps: 0,
-        max_steps_per_epoch: 0,
-        max_validation_steps: 0,
-        n_epochs: 0,
-        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
-      },
+      training_config: { gradient_accumulation_steps: 0, max_steps_per_epoch: 0, n_epochs: 0 },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -93,8 +78,10 @@ describe('resource postTraining', () => {
       hyperparam_search_config: { foo: true },
       job_uuid: 'job_uuid',
       logger_config: { foo: true },
-      model: 'model',
       training_config: {
+        gradient_accumulation_steps: 0,
+        max_steps_per_epoch: 0,
+        n_epochs: 0,
         data_config: {
           batch_size: 0,
           data_format: 'instruct',
@@ -104,11 +91,6 @@ describe('resource postTraining', () => {
           train_on_input: true,
           validation_dataset_id: 'validation_dataset_id',
         },
-        gradient_accumulation_steps: 0,
-        max_steps_per_epoch: 0,
-        max_validation_steps: 0,
-        n_epochs: 0,
-        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
         dtype: 'dtype',
         efficiency_config: {
           enable_activation_checkpointing: true,
@@ -116,6 +98,8 @@ describe('resource postTraining', () => {
           fsdp_cpu_offload: true,
           memory_efficient_fsdp_wrap: true,
         },
+        max_validation_steps: 0,
+        optimizer_config: { lr: 0, num_warmup_steps: 0, optimizer_type: 'adam', weight_decay: 0 },
       },
       algorithm_config: {
         alpha: 0,
@@ -128,6 +112,7 @@ describe('resource postTraining', () => {
         use_dora: true,
       },
       checkpoint_dir: 'checkpoint_dir',
+      model: 'model',
     });
   });
 });

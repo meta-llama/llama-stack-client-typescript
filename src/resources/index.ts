@@ -18,6 +18,14 @@ export {
   type BenchmarkListResponse,
   type BenchmarkRegisterParams,
 } from './benchmarks';
+export { Chat, type ChatCompletionChunk } from './chat/chat';
+export {
+  Completions,
+  type CompletionCreateResponse,
+  type CompletionCreateParams,
+  type CompletionCreateParamsNonStreaming,
+  type CompletionCreateParamsStreaming,
+} from './completions';
 export {
   Datasets,
   type ListDatasetsResponse,
