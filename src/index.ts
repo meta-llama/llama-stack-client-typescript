@@ -16,6 +16,13 @@ import {
   ListBenchmarksResponse,
 } from './resources/benchmarks';
 import {
+  CompletionCreateParams,
+  CompletionCreateParamsNonStreaming,
+  CompletionCreateParamsStreaming,
+  CompletionCreateResponse,
+  Completions,
+} from './resources/completions';
+import {
   DatasetIterrowsParams,
   DatasetIterrowsResponse,
   DatasetListResponse,
@@ -129,6 +136,7 @@ import {
   ToolExecutionStep,
   ToolResponse,
 } from './resources/agents/agents';
+import { Chat, ChatCompletionChunk } from './resources/chat/chat';
 import {
   BenchmarkConfig,
   Eval,
@@ -272,6 +280,8 @@ export class LlamaStackClient extends Core.APIClient {
   eval: API.Eval = new API.Eval(this);
   inspect: API.Inspect = new API.Inspect(this);
   inference: API.Inference = new API.Inference(this);
+  chat: API.Chat = new API.Chat(this);
+  completions: API.Completions = new API.Completions(this);
   vectorIo: API.VectorIo = new API.VectorIo(this);
   vectorDBs: API.VectorDBs = new API.VectorDBs(this);
   models: API.Models = new API.Models(this);
@@ -337,6 +347,8 @@ LlamaStackClient.Datasets = Datasets;
 LlamaStackClient.Eval = Eval;
 LlamaStackClient.Inspect = Inspect;
 LlamaStackClient.Inference = Inference;
+LlamaStackClient.Chat = Chat;
+LlamaStackClient.Completions = Completions;
 LlamaStackClient.VectorIo = VectorIo;
 LlamaStackClient.VectorDBs = VectorDBs;
 LlamaStackClient.Models = Models;
@@ -442,6 +454,16 @@ export declare namespace LlamaStackClient {
     type InferenceCompletionParamsNonStreaming as InferenceCompletionParamsNonStreaming,
     type InferenceCompletionParamsStreaming as InferenceCompletionParamsStreaming,
     type InferenceEmbeddingsParams as InferenceEmbeddingsParams,
+  };
+
+  export { Chat as Chat, type ChatCompletionChunk as ChatCompletionChunk };
+
+  export {
+    Completions as Completions,
+    type CompletionCreateResponse as CompletionCreateResponse,
+    type CompletionCreateParams as CompletionCreateParams,
+    type CompletionCreateParamsNonStreaming as CompletionCreateParamsNonStreaming,
+    type CompletionCreateParamsStreaming as CompletionCreateParamsStreaming,
   };
 
   export {

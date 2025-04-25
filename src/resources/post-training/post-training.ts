@@ -101,21 +101,21 @@ export namespace PostTrainingPreferenceOptimizeParams {
   }
 
   export interface TrainingConfig {
-    data_config: TrainingConfig.DataConfig;
-
     gradient_accumulation_steps: number;
 
     max_steps_per_epoch: number;
 
-    max_validation_steps: number;
-
     n_epochs: number;
 
-    optimizer_config: TrainingConfig.OptimizerConfig;
+    data_config?: TrainingConfig.DataConfig;
 
     dtype?: string;
 
     efficiency_config?: TrainingConfig.EfficiencyConfig;
+
+    max_validation_steps?: number;
+
+    optimizer_config?: TrainingConfig.OptimizerConfig;
   }
 
   export namespace TrainingConfig {
@@ -135,16 +135,6 @@ export namespace PostTrainingPreferenceOptimizeParams {
       validation_dataset_id?: string;
     }
 
-    export interface OptimizerConfig {
-      lr: number;
-
-      num_warmup_steps: number;
-
-      optimizer_type: 'adam' | 'adamw' | 'sgd';
-
-      weight_decay: number;
-    }
-
     export interface EfficiencyConfig {
       enable_activation_checkpointing?: boolean;
 
@@ -153,6 +143,16 @@ export namespace PostTrainingPreferenceOptimizeParams {
       fsdp_cpu_offload?: boolean;
 
       memory_efficient_fsdp_wrap?: boolean;
+    }
+
+    export interface OptimizerConfig {
+      lr: number;
+
+      num_warmup_steps: number;
+
+      optimizer_type: 'adam' | 'adamw' | 'sgd';
+
+      weight_decay: number;
     }
   }
 }
@@ -164,32 +164,32 @@ export interface PostTrainingSupervisedFineTuneParams {
 
   logger_config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
-  model: string;
-
   training_config: PostTrainingSupervisedFineTuneParams.TrainingConfig;
 
   algorithm_config?: AlgorithmConfig;
 
   checkpoint_dir?: string;
+
+  model?: string;
 }
 
 export namespace PostTrainingSupervisedFineTuneParams {
   export interface TrainingConfig {
-    data_config: TrainingConfig.DataConfig;
-
     gradient_accumulation_steps: number;
 
     max_steps_per_epoch: number;
 
-    max_validation_steps: number;
-
     n_epochs: number;
 
-    optimizer_config: TrainingConfig.OptimizerConfig;
+    data_config?: TrainingConfig.DataConfig;
 
     dtype?: string;
 
     efficiency_config?: TrainingConfig.EfficiencyConfig;
+
+    max_validation_steps?: number;
+
+    optimizer_config?: TrainingConfig.OptimizerConfig;
   }
 
   export namespace TrainingConfig {
@@ -209,16 +209,6 @@ export namespace PostTrainingSupervisedFineTuneParams {
       validation_dataset_id?: string;
     }
 
-    export interface OptimizerConfig {
-      lr: number;
-
-      num_warmup_steps: number;
-
-      optimizer_type: 'adam' | 'adamw' | 'sgd';
-
-      weight_decay: number;
-    }
-
     export interface EfficiencyConfig {
       enable_activation_checkpointing?: boolean;
 
@@ -227,6 +217,16 @@ export namespace PostTrainingSupervisedFineTuneParams {
       fsdp_cpu_offload?: boolean;
 
       memory_efficient_fsdp_wrap?: boolean;
+    }
+
+    export interface OptimizerConfig {
+      lr: number;
+
+      num_warmup_steps: number;
+
+      optimizer_type: 'adam' | 'adamw' | 'sgd';
+
+      weight_decay: number;
     }
   }
 }

@@ -4,23 +4,40 @@ import * as Shared from './shared';
 import * as InferenceAPI from './inference';
 import * as ToolRuntimeAPI from './tool-runtime/tool-runtime';
 
+/**
+ * Configuration for an agent.
+ */
 export interface AgentConfig {
+  /**
+   * The system instructions for the agent
+   */
   instructions: string;
 
+  /**
+   * The model identifier to use for the agent
+   */
   model: string;
 
   client_tools?: Array<ToolRuntimeAPI.ToolDef>;
 
+  /**
+   * Optional flag indicating whether session data has to be persisted
+   */
   enable_session_persistence?: boolean;
 
   input_shields?: Array<string>;
 
   max_infer_iters?: number;
 
+  /**
+   * Optional name for the agent, used in telemetry and identification
+   */
+  name?: string;
+
   output_shields?: Array<string>;
 
   /**
-   * Configuration for JSON schema-guided response generation.
+   * Optional response format configuration
    */
   response_format?: ResponseFormat;
 
