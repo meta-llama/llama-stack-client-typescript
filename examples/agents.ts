@@ -2,8 +2,14 @@
 
 import { AgentConfig } from "llama-stack-client/resources/shared";
 
-import LlamaStackClient from 'llama-stack-client';
-const client = new LlamaStackClient({ baseURL: 'http://localhost:8321' });
+import { LlamaStackClient, ClientOptions } from 'llama-stack-client';
+
+const options: ClientOptions = { baseURL: 'http://localhost:8321' };
+if (process.env["TAVILY_SEARCH_API_KEY"]) {
+  const tavilyHeader = JSON.stringify({tavily_search_api_key: process.env["TAVILY_SEARCH_API_KEY"]});
+  options.defaultHeaders = { 'X-LlamaStack-Provider-Data': tavilyHeader  }
+}
+const client = new LlamaStackClient(options);
 
 async function main() {
   const availableModels = (await client.models.list())
