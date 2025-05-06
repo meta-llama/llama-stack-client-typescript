@@ -58,6 +58,14 @@ import {
   Models,
 } from './resources/models';
 import { ListProvidersResponse, ProviderListResponse, Providers } from './resources/providers';
+import {
+  ResponseCreateParams,
+  ResponseCreateParamsNonStreaming,
+  ResponseCreateParamsStreaming,
+  ResponseObject,
+  ResponseObjectStream,
+  Responses,
+} from './resources/responses';
 import { ListRoutesResponse, RouteListResponse, Routes } from './resources/routes';
 import { RunShieldResponse, Safety, SafetyRunShieldParams } from './resources/safety';
 import {
@@ -275,6 +283,7 @@ export class LlamaStackClient extends Core.APIClient {
   toolgroups: API.Toolgroups = new API.Toolgroups(this);
   tools: API.Tools = new API.Tools(this);
   toolRuntime: API.ToolRuntime = new API.ToolRuntime(this);
+  responses: API.Responses = new API.Responses(this);
   agents: API.Agents = new API.Agents(this);
   datasets: API.Datasets = new API.Datasets(this);
   eval: API.Eval = new API.Eval(this);
@@ -342,6 +351,7 @@ export class LlamaStackClient extends Core.APIClient {
 LlamaStackClient.Toolgroups = Toolgroups;
 LlamaStackClient.Tools = Tools;
 LlamaStackClient.ToolRuntime = ToolRuntime;
+LlamaStackClient.Responses = Responses;
 LlamaStackClient.Agents = Agents;
 LlamaStackClient.Datasets = Datasets;
 LlamaStackClient.Eval = Eval;
@@ -394,6 +404,15 @@ export declare namespace LlamaStackClient {
     type ToolRuntimeListToolsResponse as ToolRuntimeListToolsResponse,
     type ToolRuntimeInvokeToolParams as ToolRuntimeInvokeToolParams,
     type ToolRuntimeListToolsParams as ToolRuntimeListToolsParams,
+  };
+
+  export {
+    Responses as Responses,
+    type ResponseObject as ResponseObject,
+    type ResponseObjectStream as ResponseObjectStream,
+    type ResponseCreateParams as ResponseCreateParams,
+    type ResponseCreateParamsNonStreaming as ResponseCreateParamsNonStreaming,
+    type ResponseCreateParamsStreaming as ResponseCreateParamsStreaming,
   };
 
   export {
