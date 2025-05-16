@@ -63,10 +63,10 @@ describe('resource scoringFunctions', () => {
       return_type: { type: 'string' },
       scoring_fn_id: 'scoring_fn_id',
       params: {
-        judge_model: 'judge_model',
-        type: 'llm_as_judge',
         aggregation_functions: ['average'],
+        judge_model: 'judge_model',
         judge_score_regexes: ['string'],
+        type: 'llm_as_judge',
         prompt_template: 'prompt_template',
       },
       provider_id: 'provider_id',

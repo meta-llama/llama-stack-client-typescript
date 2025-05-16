@@ -32,11 +32,11 @@ export interface Benchmark {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   scoring_functions: Array<string>;
 
   type: 'benchmark';
+
+  provider_resource_id?: string;
 }
 
 export interface ListBenchmarksResponse {

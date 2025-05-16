@@ -7,6 +7,9 @@ import {
   CompletionCreateParamsNonStreaming,
   CompletionCreateParamsStreaming,
   CompletionCreateResponse,
+  CompletionListParams,
+  CompletionListResponse,
+  CompletionRetrieveResponse,
   Completions,
 } from './completions';
 
@@ -199,8 +202,11 @@ export declare namespace Chat {
   export {
     Completions as Completions,
     type CompletionCreateResponse as CompletionCreateResponse,
+    type CompletionRetrieveResponse as CompletionRetrieveResponse,
+    type CompletionListResponse as CompletionListResponse,
     type CompletionCreateParams as CompletionCreateParams,
     type CompletionCreateParamsNonStreaming as CompletionCreateParamsNonStreaming,
     type CompletionCreateParamsStreaming as CompletionCreateParamsStreaming,
+    type CompletionListParams as CompletionListParams,
   };
 }

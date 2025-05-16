@@ -81,6 +81,14 @@ export {
   type PostTrainingSupervisedFineTuneParams,
 } from './post-training/post-training';
 export { Providers, type ListProvidersResponse, type ProviderListResponse } from './providers';
+export {
+  Responses,
+  type ResponseObject,
+  type ResponseObjectStream,
+  type ResponseCreateParams,
+  type ResponseCreateParamsNonStreaming,
+  type ResponseCreateParamsStreaming,
+} from './responses';
 export { Routes, type ListRoutesResponse, type RouteListResponse } from './routes';
 export { Safety, type RunShieldResponse, type SafetyRunShieldParams } from './safety';
 export {

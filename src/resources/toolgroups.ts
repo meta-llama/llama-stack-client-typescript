@@ -48,13 +48,13 @@ export interface ToolGroup {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   type: 'tool_group';
 
   args?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
   mcp_endpoint?: ToolGroup.McpEndpoint;
+
+  provider_resource_id?: string;
 }
 
 export namespace ToolGroup {

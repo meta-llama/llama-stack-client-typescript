@@ -40,7 +40,7 @@ export class SessionResource extends APIResource {
   }
 
   /**
-   * Delete an agent session by its ID.
+   * Delete an agent session by its ID and its associated turns.
    */
   delete(agentId: string, sessionId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/agents/${agentId}/session/${sessionId}`, {

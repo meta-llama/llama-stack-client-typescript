@@ -42,9 +42,9 @@ export interface VectorDBRetrieveResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   type: 'vector_db';
+
+  provider_resource_id?: string;
 }
 
 export type VectorDBListResponse = Array<VectorDBListResponse.VectorDBListResponseItem>;
@@ -59,9 +59,9 @@ export namespace VectorDBListResponse {
 
     provider_id: string;
 
-    provider_resource_id: string;
-
     type: 'vector_db';
+
+    provider_resource_id?: string;
   }
 }
 
@@ -74,9 +74,9 @@ export interface VectorDBRegisterResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   type: 'vector_db';
+
+  provider_resource_id?: string;
 }
 
 export interface VectorDBRegisterParams {

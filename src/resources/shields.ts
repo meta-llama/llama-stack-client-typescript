@@ -31,11 +31,11 @@ export interface Shield {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   type: 'shield';
 
   params?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+  provider_resource_id?: string;
 }
 
 export type ShieldListResponse = Array<Shield>;

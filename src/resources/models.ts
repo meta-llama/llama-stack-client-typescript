@@ -39,9 +39,9 @@ export interface Model {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   type: 'model';
+
+  provider_resource_id?: string;
 }
 
 export type ModelListResponse = Array<Model>;

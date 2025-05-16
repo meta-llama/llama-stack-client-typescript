@@ -10,7 +10,14 @@ describe('resource eval', () => {
     const responsePromise = client.eval.evaluateRows('benchmark_id', {
       benchmark_config: {
         eval_candidate: { model: 'model', sampling_params: { strategy: { type: 'greedy' } }, type: 'model' },
-        scoring_params: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+        scoring_params: {
+          foo: {
+            aggregation_functions: ['average'],
+            judge_model: 'judge_model',
+            judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
+          },
+        },
       },
       input_rows: [{ foo: true }],
       scoring_functions: ['string'],
@@ -40,10 +47,10 @@ describe('resource eval', () => {
         },
         scoring_params: {
           foo: {
-            judge_model: 'judge_model',
-            type: 'llm_as_judge',
             aggregation_functions: ['average'],
+            judge_model: 'judge_model',
             judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
             prompt_template: 'prompt_template',
           },
         },
@@ -58,7 +65,14 @@ describe('resource eval', () => {
     const responsePromise = client.eval.evaluateRowsAlpha('benchmark_id', {
       benchmark_config: {
         eval_candidate: { model: 'model', sampling_params: { strategy: { type: 'greedy' } }, type: 'model' },
-        scoring_params: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+        scoring_params: {
+          foo: {
+            aggregation_functions: ['average'],
+            judge_model: 'judge_model',
+            judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
+          },
+        },
       },
       input_rows: [{ foo: true }],
       scoring_functions: ['string'],
@@ -88,10 +102,10 @@ describe('resource eval', () => {
         },
         scoring_params: {
           foo: {
-            judge_model: 'judge_model',
-            type: 'llm_as_judge',
             aggregation_functions: ['average'],
+            judge_model: 'judge_model',
             judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
             prompt_template: 'prompt_template',
           },
         },
@@ -106,7 +120,14 @@ describe('resource eval', () => {
     const responsePromise = client.eval.runEval('benchmark_id', {
       benchmark_config: {
         eval_candidate: { model: 'model', sampling_params: { strategy: { type: 'greedy' } }, type: 'model' },
-        scoring_params: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+        scoring_params: {
+          foo: {
+            aggregation_functions: ['average'],
+            judge_model: 'judge_model',
+            judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
+          },
+        },
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -134,10 +155,10 @@ describe('resource eval', () => {
         },
         scoring_params: {
           foo: {
-            judge_model: 'judge_model',
-            type: 'llm_as_judge',
             aggregation_functions: ['average'],
+            judge_model: 'judge_model',
             judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
             prompt_template: 'prompt_template',
           },
         },
@@ -150,7 +171,14 @@ describe('resource eval', () => {
     const responsePromise = client.eval.runEvalAlpha('benchmark_id', {
       benchmark_config: {
         eval_candidate: { model: 'model', sampling_params: { strategy: { type: 'greedy' } }, type: 'model' },
-        scoring_params: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+        scoring_params: {
+          foo: {
+            aggregation_functions: ['average'],
+            judge_model: 'judge_model',
+            judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
+          },
+        },
       },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -178,10 +206,10 @@ describe('resource eval', () => {
         },
         scoring_params: {
           foo: {
-            judge_model: 'judge_model',
-            type: 'llm_as_judge',
             aggregation_functions: ['average'],
+            judge_model: 'judge_model',
             judge_score_regexes: ['string'],
+            type: 'llm_as_judge',
             prompt_template: 'prompt_template',
           },
         },

@@ -37,8 +37,6 @@ export interface ScoringFn {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   return_type: Shared.ReturnType;
 
   type: 'scoring_function';
@@ -46,6 +44,8 @@ export interface ScoringFn {
   description?: string;
 
   params?: ScoringFnParams;
+
+  provider_resource_id?: string;
 }
 
 export type ScoringFnParams =
@@ -55,35 +55,35 @@ export type ScoringFnParams =
 
 export namespace ScoringFnParams {
   export interface LlmAsJudgeScoringFnParams {
-    judge_model: string;
-
-    type: 'llm_as_judge';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
 
-    judge_score_regexes?: Array<string>;
+    judge_model: string;
+
+    judge_score_regexes: Array<string>;
+
+    type: 'llm_as_judge';
 
     prompt_template?: string;
   }
 
   export interface RegexParserScoringFnParams {
-    type: 'regex_parser';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
 
-    parsing_regexes?: Array<string>;
+    parsing_regexes: Array<string>;
+
+    type: 'regex_parser';
   }
 
   export interface BasicScoringFnParams {
-    type: 'basic';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
+
+    type: 'basic';
   }
 }
 

@@ -40,8 +40,6 @@ export interface Tool {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   tool_host: 'distribution' | 'client' | 'model_context_protocol';
 
   toolgroup_id: string;
@@ -49,6 +47,8 @@ export interface Tool {
   type: 'tool';
 
   metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+  provider_resource_id?: string;
 }
 
 export namespace Tool {

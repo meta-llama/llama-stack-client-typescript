@@ -72,8 +72,6 @@ export interface DatasetRetrieveResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   /**
    * Purpose of the dataset. Each purpose has a required input data schema.
    */
@@ -85,6 +83,8 @@ export interface DatasetRetrieveResponse {
   source: DatasetRetrieveResponse.UriDataSource | DatasetRetrieveResponse.RowsDataSource;
 
   type: 'dataset';
+
+  provider_resource_id?: string;
 }
 
 export namespace DatasetRetrieveResponse {
@@ -127,8 +127,6 @@ export namespace DatasetListResponse {
 
     provider_id: string;
 
-    provider_resource_id: string;
-
     /**
      * Purpose of the dataset. Each purpose has a required input data schema.
      */
@@ -140,6 +138,8 @@ export namespace DatasetListResponse {
     source: DatasetListResponseItem.UriDataSource | DatasetListResponseItem.RowsDataSource;
 
     type: 'dataset';
+
+    provider_resource_id?: string;
   }
 
   export namespace DatasetListResponseItem {
@@ -195,8 +195,6 @@ export interface DatasetRegisterResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   /**
    * Purpose of the dataset. Each purpose has a required input data schema.
    */
@@ -208,6 +206,8 @@ export interface DatasetRegisterResponse {
   source: DatasetRegisterResponse.UriDataSource | DatasetRegisterResponse.RowsDataSource;
 
   type: 'dataset';
+
+  provider_resource_id?: string;
 }
 
 export namespace DatasetRegisterResponse {
