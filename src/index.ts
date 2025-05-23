@@ -62,6 +62,8 @@ import {
   ResponseCreateParams,
   ResponseCreateParamsNonStreaming,
   ResponseCreateParamsStreaming,
+  ResponseListParams,
+  ResponseListResponse,
   ResponseObject,
   ResponseObjectStream,
   Responses,
@@ -410,9 +412,11 @@ export declare namespace LlamaStackClient {
     Responses as Responses,
     type ResponseObject as ResponseObject,
     type ResponseObjectStream as ResponseObjectStream,
+    type ResponseListResponse as ResponseListResponse,
     type ResponseCreateParams as ResponseCreateParams,
     type ResponseCreateParamsNonStreaming as ResponseCreateParamsNonStreaming,
     type ResponseCreateParamsStreaming as ResponseCreateParamsStreaming,
+    type ResponseListParams as ResponseListParams,
   };
 
   export {

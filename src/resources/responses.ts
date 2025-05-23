@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
 import { APIPromise } from '../core';
 import * as Core from '../core';
 import * as ResponsesAPI from './responses';
@@ -33,8 +34,23 @@ export class Responses extends APIResource {
   /**
    * Retrieve an OpenAI response by its ID.
    */
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<ResponseObject> {
-    return this._client.get(`/v1/openai/v1/responses/${id}`, options);
+  retrieve(responseId: string, options?: Core.RequestOptions): Core.APIPromise<ResponseObject> {
+    return this._client.get(`/v1/openai/v1/responses/${responseId}`, options);
+  }
+
+  /**
+   * List all OpenAI responses.
+   */
+  list(query?: ResponseListParams, options?: Core.RequestOptions): Core.APIPromise<ResponseListResponse>;
+  list(options?: Core.RequestOptions): Core.APIPromise<ResponseListResponse>;
+  list(
+    query: ResponseListParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<ResponseListResponse> {
+    if (isRequestOptions(query)) {
+      return this.list({}, query);
+    }
+    return this._client.get('/v1/openai/v1/responses', { query, ...options });
   }
 }
 
@@ -163,6 +179,217 @@ export namespace ResponseObjectStream {
   }
 }
 
+export interface ResponseListResponse {
+  data: Array<ResponseListResponse.Data>;
+
+  first_id: string;
+
+  has_more: boolean;
+
+  last_id: string;
+
+  object: 'list';
+}
+
+export namespace ResponseListResponse {
+  export interface Data {
+    id: string;
+
+    created_at: number;
+
+    input: Array<
+      | Data.OpenAIResponseOutputMessageWebSearchToolCall
+      | Data.OpenAIResponseOutputMessageFunctionToolCall
+      | Data.OpenAIResponseInputFunctionToolCallOutput
+      | Data.OpenAIResponseMessage
+    >;
+
+    model: string;
+
+    object: 'response';
+
+    output: Array<
+      | Data.OpenAIResponseMessage
+      | Data.OpenAIResponseOutputMessageWebSearchToolCall
+      | Data.OpenAIResponseOutputMessageFunctionToolCall
+    >;
+
+    parallel_tool_calls: boolean;
+
+    status: string;
+
+    error?: Data.Error;
+
+    previous_response_id?: string;
+
+    temperature?: number;
+
+    top_p?: number;
+
+    truncation?: string;
+
+    user?: string;
+  }
+
+  export namespace Data {
+    export interface OpenAIResponseOutputMessageWebSearchToolCall {
+      id: string;
+
+      status: string;
+
+      type: 'web_search_call';
+    }
+
+    export interface OpenAIResponseOutputMessageFunctionToolCall {
+      id: string;
+
+      arguments: string;
+
+      call_id: string;
+
+      name: string;
+
+      status: string;
+
+      type: 'function_call';
+    }
+
+    /**
+     * This represents the output of a function call that gets passed back to the
+     * model.
+     */
+    export interface OpenAIResponseInputFunctionToolCallOutput {
+      call_id: string;
+
+      output: string;
+
+      type: 'function_call_output';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    export interface OpenAIResponseMessage {
+      content:
+        | string
+        | Array<
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentText
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentImage
+          >
+        | Array<OpenAIResponseMessage.UnionMember2>;
+
+      role: 'system' | 'developer' | 'user' | 'assistant';
+
+      type: 'message';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export namespace OpenAIResponseMessage {
+      export interface OpenAIResponseInputMessageContentText {
+        text: string;
+
+        type: 'input_text';
+      }
+
+      export interface OpenAIResponseInputMessageContentImage {
+        detail: 'low' | 'high' | 'auto';
+
+        type: 'input_image';
+
+        image_url?: string;
+      }
+
+      export interface UnionMember2 {
+        text: string;
+
+        type: 'output_text';
+      }
+    }
+
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    export interface OpenAIResponseMessage {
+      content:
+        | string
+        | Array<
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentText
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentImage
+          >
+        | Array<OpenAIResponseMessage.UnionMember2>;
+
+      role: 'system' | 'developer' | 'user' | 'assistant';
+
+      type: 'message';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export namespace OpenAIResponseMessage {
+      export interface OpenAIResponseInputMessageContentText {
+        text: string;
+
+        type: 'input_text';
+      }
+
+      export interface OpenAIResponseInputMessageContentImage {
+        detail: 'low' | 'high' | 'auto';
+
+        type: 'input_image';
+
+        image_url?: string;
+      }
+
+      export interface UnionMember2 {
+        text: string;
+
+        type: 'output_text';
+      }
+    }
+
+    export interface OpenAIResponseOutputMessageWebSearchToolCall {
+      id: string;
+
+      status: string;
+
+      type: 'web_search_call';
+    }
+
+    export interface OpenAIResponseOutputMessageFunctionToolCall {
+      id: string;
+
+      arguments: string;
+
+      call_id: string;
+
+      name: string;
+
+      status: string;
+
+      type: 'function_call';
+    }
+
+    export interface Error {
+      code: string;
+
+      message: string;
+    }
+  }
+}
+
 export type ResponseCreateParams = ResponseCreateParamsNonStreaming | ResponseCreateParamsStreaming;
 
 export interface ResponseCreateParamsBase {
@@ -202,6 +429,7 @@ export interface ResponseCreateParamsBase {
     | ResponseCreateParams.OpenAIResponseInputToolWebSearch
     | ResponseCreateParams.OpenAIResponseInputToolFileSearch
     | ResponseCreateParams.OpenAIResponseInputToolFunction
+    | ResponseCreateParams.OpenAIResponseInputToolMcp
   >;
 }
 
@@ -323,6 +551,32 @@ export namespace ResponseCreateParams {
     strict?: boolean;
   }
 
+  export interface OpenAIResponseInputToolMcp {
+    require_approval: 'always' | 'never' | OpenAIResponseInputToolMcp.ApprovalFilter;
+
+    server_label: string;
+
+    server_url: string;
+
+    type: 'mcp';
+
+    allowed_tools?: Array<string> | OpenAIResponseInputToolMcp.AllowedToolsFilter;
+
+    headers?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  }
+
+  export namespace OpenAIResponseInputToolMcp {
+    export interface ApprovalFilter {
+      always?: Array<string>;
+
+      never?: Array<string>;
+    }
+
+    export interface AllowedToolsFilter {
+      tool_names?: Array<string>;
+    }
+  }
+
   export type ResponseCreateParamsNonStreaming = ResponsesAPI.ResponseCreateParamsNonStreaming;
   export type ResponseCreateParamsStreaming = ResponsesAPI.ResponseCreateParamsStreaming;
 }
@@ -335,12 +589,36 @@ export interface ResponseCreateParamsStreaming extends ResponseCreateParamsBase 
   stream: true;
 }
 
+export interface ResponseListParams {
+  /**
+   * The ID of the last response to return.
+   */
+  after?: string;
+
+  /**
+   * The number of responses to return.
+   */
+  limit?: number;
+
+  /**
+   * The model to filter responses by.
+   */
+  model?: string;
+
+  /**
+   * The order to sort responses by when sorted by created_at ('asc' or 'desc').
+   */
+  order?: 'asc' | 'desc';
+}
+
 export declare namespace Responses {
   export {
     type ResponseObject as ResponseObject,
     type ResponseObjectStream as ResponseObjectStream,
+    type ResponseListResponse as ResponseListResponse,
     type ResponseCreateParams as ResponseCreateParams,
     type ResponseCreateParamsNonStreaming as ResponseCreateParamsNonStreaming,
     type ResponseCreateParamsStreaming as ResponseCreateParamsStreaming,
+    type ResponseListParams as ResponseListParams,
   };
 }
