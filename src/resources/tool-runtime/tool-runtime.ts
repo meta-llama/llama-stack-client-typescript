@@ -11,7 +11,7 @@ export class ToolRuntime extends APIResource {
   ragTool: RagToolAPI.RagTool = new RagToolAPI.RagTool(this._client);
 
   /**
-   * Run a tool with the given arguments
+   * Run a tool with the given arguments.
    */
   invokeTool(
     body: ToolRuntimeInvokeToolParams,
@@ -20,6 +20,9 @@ export class ToolRuntime extends APIResource {
     return this._client.post('/v1/tool-runtime/invoke', { body, ...options });
   }
 
+  /**
+   * List all tools in the runtime.
+   */
   listTools(
     query?: ToolRuntimeListToolsParams,
     options?: Core.RequestOptions,
@@ -80,18 +83,33 @@ export interface ToolInvocationResult {
 export type ToolRuntimeListToolsResponse = Array<ToolDef>;
 
 export interface ToolRuntimeInvokeToolParams {
+  /**
+   * A dictionary of arguments to pass to the tool.
+   */
   kwargs: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The name of the tool to invoke.
+   */
   tool_name: string;
 }
 
 export interface ToolRuntimeListToolsParams {
+  /**
+   * The MCP endpoint to use for the tool group.
+   */
   mcp_endpoint?: ToolRuntimeListToolsParams.McpEndpoint;
 
+  /**
+   * The ID of the tool group to list tools for.
+   */
   tool_group_id?: string;
 }
 
 export namespace ToolRuntimeListToolsParams {
+  /**
+   * The MCP endpoint to use for the tool group.
+   */
   export interface McpEndpoint {
     uri: string;
   }

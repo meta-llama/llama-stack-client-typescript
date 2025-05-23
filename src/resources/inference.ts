@@ -8,6 +8,9 @@ import * as Shared from './shared';
 import { Stream } from '../streaming';
 
 export class Inference extends APIResource {
+  /**
+   * Generate chat completions for a batch of messages using the specified model.
+   */
   batchChatCompletion(
     body: InferenceBatchChatCompletionParams,
     options?: Core.RequestOptions,
@@ -15,6 +18,9 @@ export class Inference extends APIResource {
     return this._client.post('/v1/inference/batch-chat-completion', { body, ...options });
   }
 
+  /**
+   * Generate completions for a batch of content using the specified model.
+   */
   batchCompletion(
     body: InferenceBatchCompletionParams,
     options?: Core.RequestOptions,
@@ -192,31 +198,49 @@ export interface InferenceBatchChatCompletionResponse {
 }
 
 export interface InferenceBatchChatCompletionParams {
+  /**
+   * The messages to generate completions for.
+   */
   messages_batch: Array<Array<Shared.Message>>;
 
+  /**
+   * The identifier of the model to use. The model must be registered with Llama
+   * Stack and available via the /models endpoint.
+   */
   model_id: string;
 
+  /**
+   * (Optional) If specified, log probabilities for each token position will be
+   * returned.
+   */
   logprobs?: InferenceBatchChatCompletionParams.Logprobs;
 
   /**
-   * Configuration for JSON schema-guided response generation.
+   * (Optional) Grammar specification for guided (structured) decoding.
    */
   response_format?: Shared.ResponseFormat;
 
   /**
-   * Sampling parameters.
+   * (Optional) Parameters to control the sampling strategy.
    */
   sampling_params?: Shared.SamplingParams;
 
   /**
-   * Configuration for tool use.
+   * (Optional) Configuration for tool use.
    */
   tool_config?: InferenceBatchChatCompletionParams.ToolConfig;
 
+  /**
+   * (Optional) List of tool definitions available to the model.
+   */
   tools?: Array<InferenceBatchChatCompletionParams.Tool>;
 }
 
 export namespace InferenceBatchChatCompletionParams {
+  /**
+   * (Optional) If specified, log probabilities for each token position will be
+   * returned.
+   */
   export interface Logprobs {
     /**
      * How many tokens (for each position) to return log probabilities for.
@@ -225,7 +249,7 @@ export namespace InferenceBatchChatCompletionParams {
   }
 
   /**
-   * Configuration for tool use.
+   * (Optional) Configuration for tool use.
    */
   export interface ToolConfig {
     /**
@@ -265,24 +289,39 @@ export namespace InferenceBatchChatCompletionParams {
 }
 
 export interface InferenceBatchCompletionParams {
+  /**
+   * The content to generate completions for.
+   */
   content_batch: Array<Shared.InterleavedContent>;
 
+  /**
+   * The identifier of the model to use. The model must be registered with Llama
+   * Stack and available via the /models endpoint.
+   */
   model_id: string;
 
+  /**
+   * (Optional) If specified, log probabilities for each token position will be
+   * returned.
+   */
   logprobs?: InferenceBatchCompletionParams.Logprobs;
 
   /**
-   * Configuration for JSON schema-guided response generation.
+   * (Optional) Grammar specification for guided (structured) decoding.
    */
   response_format?: Shared.ResponseFormat;
 
   /**
-   * Sampling parameters.
+   * (Optional) Parameters to control the sampling strategy.
    */
   sampling_params?: Shared.SamplingParams;
 }
 
 export namespace InferenceBatchCompletionParams {
+  /**
+   * (Optional) If specified, log probabilities for each token position will be
+   * returned.
+   */
   export interface Logprobs {
     /**
      * How many tokens (for each position) to return log probabilities for.
@@ -297,7 +336,7 @@ export type InferenceChatCompletionParams =
 
 export interface InferenceChatCompletionParamsBase {
   /**
-   * List of messages in the conversation
+   * List of messages in the conversation.
    */
   messages: Array<Shared.Message>;
 
@@ -322,7 +361,7 @@ export interface InferenceChatCompletionParamsBase {
   response_format?: Shared.ResponseFormat;
 
   /**
-   * Parameters to control the sampling strategy
+   * Parameters to control the sampling strategy.
    */
   sampling_params?: Shared.SamplingParams;
 
@@ -355,7 +394,7 @@ export interface InferenceChatCompletionParamsBase {
   tool_prompt_format?: 'json' | 'function_tag' | 'python_list';
 
   /**
-   * (Optional) List of tool definitions available to the model
+   * (Optional) List of tool definitions available to the model.
    */
   tools?: Array<InferenceChatCompletionParams.Tool>;
 }
@@ -438,7 +477,7 @@ export type InferenceCompletionParams =
 
 export interface InferenceCompletionParamsBase {
   /**
-   * The content to generate a completion for
+   * The content to generate a completion for.
    */
   content: Shared.InterleavedContent;
 
@@ -455,12 +494,12 @@ export interface InferenceCompletionParamsBase {
   logprobs?: InferenceCompletionParams.Logprobs;
 
   /**
-   * (Optional) Grammar specification for guided (structured) decoding
+   * (Optional) Grammar specification for guided (structured) decoding.
    */
   response_format?: Shared.ResponseFormat;
 
   /**
-   * (Optional) Parameters to control the sampling strategy
+   * (Optional) Parameters to control the sampling strategy.
    */
   sampling_params?: Shared.SamplingParams;
 

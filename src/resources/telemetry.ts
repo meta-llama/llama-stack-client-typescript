@@ -4,6 +4,9 @@ import { APIResource } from '../resource';
 import * as Core from '../core';
 
 export class Telemetry extends APIResource {
+  /**
+   * Get a span by its ID.
+   */
   getSpan(
     traceId: string,
     spanId: string,
@@ -12,6 +15,9 @@ export class Telemetry extends APIResource {
     return this._client.get(`/v1/telemetry/traces/${traceId}/spans/${spanId}`, options);
   }
 
+  /**
+   * Get a span tree by its ID.
+   */
   getSpanTree(
     spanId: string,
     body: TelemetryGetSpanTreeParams,
@@ -24,10 +30,16 @@ export class Telemetry extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Get a trace by its ID.
+   */
   getTrace(traceId: string, options?: Core.RequestOptions): Core.APIPromise<Trace> {
     return this._client.get(`/v1/telemetry/traces/${traceId}`, options);
   }
 
+  /**
+   * Log an event.
+   */
   logEvent(body: TelemetryLogEventParams, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.post('/v1/telemetry/events', {
       body,
@@ -36,6 +48,9 @@ export class Telemetry extends APIResource {
     });
   }
 
+  /**
+   * Query spans.
+   */
   querySpans(
     body: TelemetryQuerySpansParams,
     options?: Core.RequestOptions,
@@ -47,6 +62,9 @@ export class Telemetry extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Query traces.
+   */
   queryTraces(
     body: TelemetryQueryTracesParams,
     options?: Core.RequestOptions,
@@ -58,6 +76,9 @@ export class Telemetry extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Save spans to a dataset.
+   */
   saveSpansToDataset(
     body: TelemetrySaveSpansToDatasetParams,
     options?: Core.RequestOptions,
@@ -219,42 +240,87 @@ export namespace TelemetryQuerySpansResponse {
 export type TelemetryQueryTracesResponse = Array<Trace>;
 
 export interface TelemetryGetSpanTreeParams {
+  /**
+   * The attributes to return in the tree.
+   */
   attributes_to_return?: Array<string>;
 
+  /**
+   * The maximum depth of the tree.
+   */
   max_depth?: number;
 }
 
 export interface TelemetryLogEventParams {
+  /**
+   * The event to log.
+   */
   event: Event;
 
+  /**
+   * The time to live of the event.
+   */
   ttl_seconds: number;
 }
 
 export interface TelemetryQuerySpansParams {
+  /**
+   * The attribute filters to apply to the spans.
+   */
   attribute_filters: Array<QueryCondition>;
 
+  /**
+   * The attributes to return in the spans.
+   */
   attributes_to_return: Array<string>;
 
+  /**
+   * The maximum depth of the tree.
+   */
   max_depth?: number;
 }
 
 export interface TelemetryQueryTracesParams {
+  /**
+   * The attribute filters to apply to the traces.
+   */
   attribute_filters?: Array<QueryCondition>;
 
+  /**
+   * The limit of traces to return.
+   */
   limit?: number;
 
+  /**
+   * The offset of the traces to return.
+   */
   offset?: number;
 
+  /**
+   * The order by of the traces to return.
+   */
   order_by?: Array<string>;
 }
 
 export interface TelemetrySaveSpansToDatasetParams {
+  /**
+   * The attribute filters to apply to the spans.
+   */
   attribute_filters: Array<QueryCondition>;
 
+  /**
+   * The attributes to save to the dataset.
+   */
   attributes_to_save: Array<string>;
 
+  /**
+   * The ID of the dataset to save the spans to.
+   */
   dataset_id: string;
 
+  /**
+   * The maximum depth of the tree.
+   */
   max_depth?: number;
 }
 

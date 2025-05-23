@@ -50,9 +50,11 @@ describe('resource ragTool', () => {
       content: 'string',
       vector_db_ids: ['string'],
       query_config: {
+        chunk_template: 'chunk_template',
         max_chunks: 0,
         max_tokens_in_context: 0,
         query_generator_config: { separator: 'separator', type: 'default' },
+        mode: 'mode',
       },
     });
   });

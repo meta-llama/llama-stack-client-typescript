@@ -9,7 +9,14 @@ describe('resource scoring', () => {
   test('score: only required params', async () => {
     const responsePromise = client.scoring.score({
       input_rows: [{ foo: true }],
-      scoring_functions: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+      scoring_functions: {
+        foo: {
+          aggregation_functions: ['average'],
+          judge_model: 'judge_model',
+          judge_score_regexes: ['string'],
+          type: 'llm_as_judge',
+        },
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -25,10 +32,10 @@ describe('resource scoring', () => {
       input_rows: [{ foo: true }],
       scoring_functions: {
         foo: {
-          judge_model: 'judge_model',
-          type: 'llm_as_judge',
           aggregation_functions: ['average'],
+          judge_model: 'judge_model',
           judge_score_regexes: ['string'],
+          type: 'llm_as_judge',
           prompt_template: 'prompt_template',
         },
       },
@@ -39,7 +46,14 @@ describe('resource scoring', () => {
     const responsePromise = client.scoring.scoreBatch({
       dataset_id: 'dataset_id',
       save_results_dataset: true,
-      scoring_functions: { foo: { judge_model: 'judge_model', type: 'llm_as_judge' } },
+      scoring_functions: {
+        foo: {
+          aggregation_functions: ['average'],
+          judge_model: 'judge_model',
+          judge_score_regexes: ['string'],
+          type: 'llm_as_judge',
+        },
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -56,10 +70,10 @@ describe('resource scoring', () => {
       save_results_dataset: true,
       scoring_functions: {
         foo: {
-          judge_model: 'judge_model',
-          type: 'llm_as_judge',
           aggregation_functions: ['average'],
+          judge_model: 'judge_model',
           judge_score_regexes: ['string'],
+          type: 'llm_as_judge',
           prompt_template: 'prompt_template',
         },
       },

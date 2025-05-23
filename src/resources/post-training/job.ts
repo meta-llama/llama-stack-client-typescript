@@ -6,6 +6,9 @@ import { ListPostTrainingJobsResponse } from './post-training';
 import * as PostTrainingAPI from './post-training';
 
 export class Job extends APIResource {
+  /**
+   * Get all training jobs.
+   */
   list(
     options?: Core.RequestOptions,
   ): Core.APIPromise<Array<PostTrainingAPI.ListPostTrainingJobsResponse.Data>> {
@@ -16,10 +19,16 @@ export class Job extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Get the artifacts of a training job.
+   */
   artifacts(query: JobArtifactsParams, options?: Core.RequestOptions): Core.APIPromise<JobArtifactsResponse> {
     return this._client.get('/v1/post-training/job/artifacts', { query, ...options });
   }
 
+  /**
+   * Cancel a training job.
+   */
   cancel(body: JobCancelParams, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.post('/v1/post-training/job/cancel', {
       body,
@@ -28,6 +37,9 @@ export class Job extends APIResource {
     });
   }
 
+  /**
+   * Get the status of a training job.
+   */
   status(query: JobStatusParams, options?: Core.RequestOptions): Core.APIPromise<JobStatusResponse> {
     return this._client.get('/v1/post-training/job/status', { query, ...options });
   }
@@ -70,14 +82,23 @@ export interface JobStatusResponse {
 }
 
 export interface JobArtifactsParams {
+  /**
+   * The UUID of the job to get the artifacts of.
+   */
   job_uuid: string;
 }
 
 export interface JobCancelParams {
+  /**
+   * The UUID of the job to cancel.
+   */
   job_uuid: string;
 }
 
 export interface JobStatusParams {
+  /**
+   * The UUID of the job to get the status of.
+   */
   job_uuid: string;
 }
 

@@ -41,7 +41,7 @@ export class Agents extends APIResource {
   }
 
   /**
-   * Delete an agent by its ID.
+   * Delete an agent by its ID and its associated sessions and turns.
    */
   delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/agents/${agentId}`, {
@@ -65,6 +65,9 @@ export interface InferenceStep {
    */
   step_id: string;
 
+  /**
+   * Type of the step in an agent turn.
+   */
   step_type: 'inference';
 
   /**
@@ -97,6 +100,9 @@ export interface MemoryRetrievalStep {
    */
   step_id: string;
 
+  /**
+   * Type of the step in an agent turn.
+   */
   step_type: 'memory_retrieval';
 
   /**
@@ -129,6 +135,9 @@ export interface ShieldCallStep {
    */
   step_id: string;
 
+  /**
+   * Type of the step in an agent turn.
+   */
   step_type: 'shield_call';
 
   /**
@@ -161,6 +170,9 @@ export interface ToolExecutionStep {
    */
   step_id: string;
 
+  /**
+   * Type of the step in an agent turn.
+   */
   step_type: 'tool_execution';
 
   /**

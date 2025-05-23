@@ -16,6 +16,9 @@ import {
 export class PostTraining extends APIResource {
   job: JobAPI.Job = new JobAPI.Job(this._client);
 
+  /**
+   * Run preference optimization of a model.
+   */
   preferenceOptimize(
     body: PostTrainingPreferenceOptimizeParams,
     options?: Core.RequestOptions,
@@ -23,6 +26,9 @@ export class PostTraining extends APIResource {
     return this._client.post('/v1/post-training/preference-optimize', { body, ...options });
   }
 
+  /**
+   * Run supervised fine-tuning of a model.
+   */
   supervisedFineTune(
     body: PostTrainingSupervisedFineTuneParams,
     options?: Core.RequestOptions,
@@ -76,20 +82,41 @@ export interface PostTrainingJob {
 }
 
 export interface PostTrainingPreferenceOptimizeParams {
+  /**
+   * The algorithm configuration.
+   */
   algorithm_config: PostTrainingPreferenceOptimizeParams.AlgorithmConfig;
 
+  /**
+   * The model to fine-tune.
+   */
   finetuned_model: string;
 
+  /**
+   * The hyperparam search configuration.
+   */
   hyperparam_search_config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The UUID of the job to create.
+   */
   job_uuid: string;
 
+  /**
+   * The logger configuration.
+   */
   logger_config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The training configuration.
+   */
   training_config: PostTrainingPreferenceOptimizeParams.TrainingConfig;
 }
 
 export namespace PostTrainingPreferenceOptimizeParams {
+  /**
+   * The algorithm configuration.
+   */
   export interface AlgorithmConfig {
     epsilon: number;
 
@@ -100,6 +127,9 @@ export namespace PostTrainingPreferenceOptimizeParams {
     reward_scale: number;
   }
 
+  /**
+   * The training configuration.
+   */
   export interface TrainingConfig {
     gradient_accumulation_steps: number;
 
@@ -158,22 +188,46 @@ export namespace PostTrainingPreferenceOptimizeParams {
 }
 
 export interface PostTrainingSupervisedFineTuneParams {
+  /**
+   * The hyperparam search configuration.
+   */
   hyperparam_search_config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The UUID of the job to create.
+   */
   job_uuid: string;
 
+  /**
+   * The logger configuration.
+   */
   logger_config: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
+  /**
+   * The training configuration.
+   */
   training_config: PostTrainingSupervisedFineTuneParams.TrainingConfig;
 
+  /**
+   * The algorithm configuration.
+   */
   algorithm_config?: AlgorithmConfig;
 
+  /**
+   * The directory to save checkpoint(s) to.
+   */
   checkpoint_dir?: string;
 
+  /**
+   * The model to fine-tune.
+   */
   model?: string;
 }
 
 export namespace PostTrainingSupervisedFineTuneParams {
+  /**
+   * The training configuration.
+   */
   export interface TrainingConfig {
     gradient_accumulation_steps: number;
 
