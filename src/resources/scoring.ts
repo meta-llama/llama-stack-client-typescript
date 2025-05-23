@@ -13,6 +13,9 @@ export class Scoring extends APIResource {
     return this._client.post('/v1/scoring/score', { body, ...options });
   }
 
+  /**
+   * Score a batch of rows.
+   */
   scoreBatch(
     body: ScoringScoreBatchParams,
     options?: Core.RequestOptions,
@@ -50,10 +53,19 @@ export interface ScoringScoreParams {
 }
 
 export interface ScoringScoreBatchParams {
+  /**
+   * The ID of the dataset to score.
+   */
   dataset_id: string;
 
+  /**
+   * Whether to save the results to a dataset.
+   */
   save_results_dataset: boolean;
 
+  /**
+   * The scoring functions to use for the scoring.
+   */
   scoring_functions: Record<string, ScoringFunctionsAPI.ScoringFnParams | null>;
 }
 

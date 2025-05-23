@@ -155,86 +155,86 @@ export interface CompletionCreateParamsBase {
   model: string;
 
   /**
-   * The prompt to generate a completion for
+   * The prompt to generate a completion for.
    */
   prompt: string | Array<string> | Array<number> | Array<Array<number>>;
 
   /**
-   * (Optional) The number of completions to generate
+   * (Optional) The number of completions to generate.
    */
   best_of?: number;
 
   /**
-   * (Optional) Whether to echo the prompt
+   * (Optional) Whether to echo the prompt.
    */
   echo?: boolean;
 
   /**
-   * (Optional) The penalty for repeated tokens
+   * (Optional) The penalty for repeated tokens.
    */
   frequency_penalty?: number;
 
   guided_choice?: Array<string>;
 
   /**
-   * (Optional) The logit bias to use
+   * (Optional) The logit bias to use.
    */
   logit_bias?: Record<string, number>;
 
   /**
-   * (Optional) The log probabilities to use
+   * (Optional) The log probabilities to use.
    */
   logprobs?: boolean;
 
   /**
-   * (Optional) The maximum number of tokens to generate
+   * (Optional) The maximum number of tokens to generate.
    */
   max_tokens?: number;
 
   /**
-   * (Optional) The number of completions to generate
+   * (Optional) The number of completions to generate.
    */
   n?: number;
 
   /**
-   * (Optional) The penalty for repeated tokens
+   * (Optional) The penalty for repeated tokens.
    */
   presence_penalty?: number;
 
   prompt_logprobs?: number;
 
   /**
-   * (Optional) The seed to use
+   * (Optional) The seed to use.
    */
   seed?: number;
 
   /**
-   * (Optional) The stop tokens to use
+   * (Optional) The stop tokens to use.
    */
   stop?: string | Array<string>;
 
   /**
-   * (Optional) Whether to stream the response
+   * (Optional) Whether to stream the response.
    */
   stream?: boolean;
 
   /**
-   * (Optional) The stream options to use
+   * (Optional) The stream options to use.
    */
   stream_options?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
   /**
-   * (Optional) The temperature to use
+   * (Optional) The temperature to use.
    */
   temperature?: number;
 
   /**
-   * (Optional) The top p to use
+   * (Optional) The top p to use.
    */
   top_p?: number;
 
   /**
-   * (Optional) The user to use
+   * (Optional) The user to use.
    */
   user?: string;
 }
@@ -246,14 +246,14 @@ export namespace CompletionCreateParams {
 
 export interface CompletionCreateParamsNonStreaming extends CompletionCreateParamsBase {
   /**
-   * (Optional) Whether to stream the response
+   * (Optional) Whether to stream the response.
    */
   stream?: false;
 }
 
 export interface CompletionCreateParamsStreaming extends CompletionCreateParamsBase {
   /**
-   * (Optional) Whether to stream the response
+   * (Optional) Whether to stream the response.
    */
   stream: true;
 }

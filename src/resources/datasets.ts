@@ -5,10 +5,16 @@ import { isRequestOptions } from '../core';
 import * as Core from '../core';
 
 export class Datasets extends APIResource {
+  /**
+   * Get a dataset by its ID.
+   */
   retrieve(datasetId: string, options?: Core.RequestOptions): Core.APIPromise<DatasetRetrieveResponse> {
     return this._client.get(`/v1/datasets/${datasetId}`, options);
   }
 
+  /**
+   * List all datasets.
+   */
   list(options?: Core.RequestOptions): Core.APIPromise<DatasetListResponse> {
     return (
       this._client.get('/v1/datasets', options) as Core.APIPromise<{ data: DatasetListResponse }>
@@ -23,8 +29,8 @@ export class Datasets extends APIResource {
    *
    * The response includes:
    *
-   * - data: List of items for the current page
-   * - has_more: Whether there are more items available after this set
+   * - data: List of items for the current page.
+   * - has_more: Whether there are more items available after this set.
    */
   iterrows(
     datasetId: string,
@@ -53,6 +59,9 @@ export class Datasets extends APIResource {
     return this._client.post('/v1/datasets', { body, ...options });
   }
 
+  /**
+   * Unregister a dataset by its ID.
+   */
   unregister(datasetId: string, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.delete(`/v1/datasets/${datasetId}`, {
       ...options,
@@ -72,8 +81,6 @@ export interface DatasetRetrieveResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   /**
    * Purpose of the dataset. Each purpose has a required input data schema.
    */
@@ -85,6 +92,8 @@ export interface DatasetRetrieveResponse {
   source: DatasetRetrieveResponse.UriDataSource | DatasetRetrieveResponse.RowsDataSource;
 
   type: 'dataset';
+
+  provider_resource_id?: string;
 }
 
 export namespace DatasetRetrieveResponse {
@@ -127,8 +136,6 @@ export namespace DatasetListResponse {
 
     provider_id: string;
 
-    provider_resource_id: string;
-
     /**
      * Purpose of the dataset. Each purpose has a required input data schema.
      */
@@ -140,6 +147,8 @@ export namespace DatasetListResponse {
     source: DatasetListResponseItem.UriDataSource | DatasetListResponseItem.RowsDataSource;
 
     type: 'dataset';
+
+    provider_resource_id?: string;
   }
 
   export namespace DatasetListResponseItem {
@@ -195,8 +204,6 @@ export interface DatasetRegisterResponse {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   /**
    * Purpose of the dataset. Each purpose has a required input data schema.
    */
@@ -208,6 +215,8 @@ export interface DatasetRegisterResponse {
   source: DatasetRegisterResponse.UriDataSource | DatasetRegisterResponse.RowsDataSource;
 
   type: 'dataset';
+
+  provider_resource_id?: string;
 }
 
 export namespace DatasetRegisterResponse {
@@ -254,7 +263,7 @@ export interface DatasetIterrowsParams {
 
 export interface DatasetRegisterParams {
   /**
-   * The purpose of the dataset. One of - "post-training/messages": The dataset
+   * The purpose of the dataset. One of: - "post-training/messages": The dataset
    * contains a messages column with list of messages for post-training. {
    * "messages": [ {"role": "user", "content": "Hello, world!"}, {"role":
    * "assistant", "content": "Hello, world!"}, ] } - "eval/question-answer": The
@@ -286,7 +295,7 @@ export interface DatasetRegisterParams {
   dataset_id?: string;
 
   /**
-   * The metadata for the dataset. - E.g. {"description": "My dataset"}
+   * The metadata for the dataset. - E.g. {"description": "My dataset"}.
    */
   metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 }

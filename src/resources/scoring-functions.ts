@@ -5,10 +5,16 @@ import * as Core from '../core';
 import * as Shared from './shared';
 
 export class ScoringFunctions extends APIResource {
+  /**
+   * Get a scoring function by its ID.
+   */
   retrieve(scoringFnId: string, options?: Core.RequestOptions): Core.APIPromise<ScoringFn> {
     return this._client.get(`/v1/scoring-functions/${scoringFnId}`, options);
   }
 
+  /**
+   * List all scoring functions.
+   */
   list(options?: Core.RequestOptions): Core.APIPromise<ScoringFunctionListResponse> {
     return (
       this._client.get('/v1/scoring-functions', options) as Core.APIPromise<{
@@ -17,6 +23,9 @@ export class ScoringFunctions extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Register a scoring function.
+   */
   register(body: ScoringFunctionRegisterParams, options?: Core.RequestOptions): Core.APIPromise<void> {
     return this._client.post('/v1/scoring-functions', {
       body,
@@ -37,8 +46,6 @@ export interface ScoringFn {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   return_type: Shared.ReturnType;
 
   type: 'scoring_function';
@@ -46,6 +53,8 @@ export interface ScoringFn {
   description?: string;
 
   params?: ScoringFnParams;
+
+  provider_resource_id?: string;
 }
 
 export type ScoringFnParams =
@@ -55,51 +64,67 @@ export type ScoringFnParams =
 
 export namespace ScoringFnParams {
   export interface LlmAsJudgeScoringFnParams {
-    judge_model: string;
-
-    type: 'llm_as_judge';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
 
-    judge_score_regexes?: Array<string>;
+    judge_model: string;
+
+    judge_score_regexes: Array<string>;
+
+    type: 'llm_as_judge';
 
     prompt_template?: string;
   }
 
   export interface RegexParserScoringFnParams {
-    type: 'regex_parser';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
 
-    parsing_regexes?: Array<string>;
+    parsing_regexes: Array<string>;
+
+    type: 'regex_parser';
   }
 
   export interface BasicScoringFnParams {
-    type: 'basic';
-
-    aggregation_functions?: Array<
+    aggregation_functions: Array<
       'average' | 'weighted_average' | 'median' | 'categorical_count' | 'accuracy'
     >;
+
+    type: 'basic';
   }
 }
 
 export type ScoringFunctionListResponse = Array<ScoringFn>;
 
 export interface ScoringFunctionRegisterParams {
+  /**
+   * The description of the scoring function.
+   */
   description: string;
 
   return_type: Shared.ReturnType;
 
+  /**
+   * The ID of the scoring function to register.
+   */
   scoring_fn_id: string;
 
+  /**
+   * The parameters for the scoring function for benchmark eval, these can be
+   * overridden for app eval.
+   */
   params?: ScoringFnParams;
 
+  /**
+   * The ID of the provider to use for the scoring function.
+   */
   provider_id?: string;
 
+  /**
+   * The ID of the provider scoring function to use for the scoring function.
+   */
   provider_scoring_fn_id?: string;
 }
 

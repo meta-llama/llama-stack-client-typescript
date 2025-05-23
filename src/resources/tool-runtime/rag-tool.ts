@@ -40,6 +40,9 @@ export interface RagToolQueryParams {
 
   vector_db_ids: Array<string>;
 
+  /**
+   * Configuration for the RAG query generation.
+   */
   query_config?: Shared.QueryConfig;
 }
 

@@ -479,12 +479,37 @@ export namespace ParamType {
   }
 }
 
+/**
+ * Configuration for the RAG query generation.
+ */
 export interface QueryConfig {
+  /**
+   * Template for formatting each retrieved chunk in the context. Available
+   * placeholders: {index} (1-based chunk ordinal), {chunk.content} (chunk content
+   * string), {metadata} (chunk metadata dict). Default: "Result {index}\nContent:
+   * {chunk.content}\nMetadata: {metadata}\n"
+   */
+  chunk_template: string;
+
+  /**
+   * Maximum number of chunks to retrieve.
+   */
   max_chunks: number;
 
+  /**
+   * Maximum number of tokens in the context.
+   */
   max_tokens_in_context: number;
 
+  /**
+   * Configuration for the query generator.
+   */
   query_generator_config: QueryGeneratorConfig;
+
+  /**
+   * Search mode for retrieval—either "vector" or "keyword". Default "vector".
+   */
+  mode?: string;
 }
 
 export type QueryGeneratorConfig =

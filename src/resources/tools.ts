@@ -6,7 +6,7 @@ import * as Core from '../core';
 
 export class Tools extends APIResource {
   /**
-   * List tools with optional tool group
+   * List tools with optional tool group.
    */
   list(query?: ToolListParams, options?: Core.RequestOptions): Core.APIPromise<ToolListResponse>;
   list(options?: Core.RequestOptions): Core.APIPromise<ToolListResponse>;
@@ -22,6 +22,9 @@ export class Tools extends APIResource {
     )._thenUnwrap((obj) => obj.data);
   }
 
+  /**
+   * Get a tool by its name.
+   */
   get(toolName: string, options?: Core.RequestOptions): Core.APIPromise<Tool> {
     return this._client.get(`/v1/tools/${toolName}`, options);
   }
@@ -40,8 +43,6 @@ export interface Tool {
 
   provider_id: string;
 
-  provider_resource_id: string;
-
   tool_host: 'distribution' | 'client' | 'model_context_protocol';
 
   toolgroup_id: string;
@@ -49,6 +50,8 @@ export interface Tool {
   type: 'tool';
 
   metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+  provider_resource_id?: string;
 }
 
 export namespace Tool {
@@ -68,6 +71,9 @@ export namespace Tool {
 export type ToolListResponse = Array<Tool>;
 
 export interface ToolListParams {
+  /**
+   * The ID of the tool group to list tools for.
+   */
   toolgroup_id?: string;
 }
 
