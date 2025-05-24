@@ -90,7 +90,7 @@ export {
   type ResponseCreateParamsNonStreaming,
   type ResponseCreateParamsStreaming,
   type ResponseListParams,
-} from './responses';
+} from './responses/responses';
 export { Routes, type ListRoutesResponse, type RouteListResponse } from './routes';
 export { Safety, type RunShieldResponse, type SafetyRunShieldParams } from './safety';
 export {

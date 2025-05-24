@@ -58,16 +58,6 @@ import {
   Models,
 } from './resources/models';
 import { ListProvidersResponse, ProviderListResponse, Providers } from './resources/providers';
-import {
-  ResponseCreateParams,
-  ResponseCreateParamsNonStreaming,
-  ResponseCreateParamsStreaming,
-  ResponseListParams,
-  ResponseListResponse,
-  ResponseObject,
-  ResponseObjectStream,
-  Responses,
-} from './resources/responses';
 import { ListRoutesResponse, RouteListResponse, Routes } from './resources/routes';
 import { RunShieldResponse, Safety, SafetyRunShieldParams } from './resources/safety';
 import {
@@ -166,6 +156,16 @@ import {
   PostTrainingPreferenceOptimizeParams,
   PostTrainingSupervisedFineTuneParams,
 } from './resources/post-training/post-training';
+import {
+  ResponseCreateParams,
+  ResponseCreateParamsNonStreaming,
+  ResponseCreateParamsStreaming,
+  ResponseListParams,
+  ResponseListResponse,
+  ResponseObject,
+  ResponseObjectStream,
+  Responses,
+} from './resources/responses/responses';
 import {
   ToolDef,
   ToolInvocationResult,
