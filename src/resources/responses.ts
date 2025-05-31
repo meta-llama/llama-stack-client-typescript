@@ -67,6 +67,8 @@ export interface ResponseObject {
     | ResponseObject.OpenAIResponseMessage
     | ResponseObject.OpenAIResponseOutputMessageWebSearchToolCall
     | ResponseObject.OpenAIResponseOutputMessageFunctionToolCall
+    | ResponseObject.OpenAIResponseOutputMessageMcpCall
+    | ResponseObject.OpenAIResponseOutputMessageMcpListTools
   >;
 
   parallel_tool_calls: boolean;
@@ -141,17 +143,53 @@ export namespace ResponseObject {
   }
 
   export interface OpenAIResponseOutputMessageFunctionToolCall {
-    id: string;
-
     arguments: string;
 
     call_id: string;
 
     name: string;
 
-    status: string;
-
     type: 'function_call';
+
+    id?: string;
+
+    status?: string;
+  }
+
+  export interface OpenAIResponseOutputMessageMcpCall {
+    id: string;
+
+    arguments: string;
+
+    name: string;
+
+    server_label: string;
+
+    type: 'mcp_call';
+
+    error?: string;
+
+    output?: string;
+  }
+
+  export interface OpenAIResponseOutputMessageMcpListTools {
+    id: string;
+
+    server_label: string;
+
+    tools: Array<OpenAIResponseOutputMessageMcpListTools.Tool>;
+
+    type: 'mcp_list_tools';
+  }
+
+  export namespace OpenAIResponseOutputMessageMcpListTools {
+    export interface Tool {
+      input_schema: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+      name: string;
+
+      description?: string;
+    }
   }
 
   export interface Error {
@@ -163,6 +201,7 @@ export namespace ResponseObject {
 
 export type ResponseObjectStream =
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseCreated
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseOutputTextDelta
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseCompleted;
 
 export namespace ResponseObjectStream {
@@ -170,6 +209,20 @@ export namespace ResponseObjectStream {
     response: ResponsesAPI.ResponseObject;
 
     type: 'response.created';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseOutputTextDelta {
+    content_index: number;
+
+    delta: string;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.output_text.delta';
   }
 
   export interface OpenAIResponseObjectStreamResponseCompleted {
@@ -212,6 +265,8 @@ export namespace ResponseListResponse {
       | Data.OpenAIResponseMessage
       | Data.OpenAIResponseOutputMessageWebSearchToolCall
       | Data.OpenAIResponseOutputMessageFunctionToolCall
+      | Data.OpenAIResponseOutputMessageMcpCall
+      | Data.OpenAIResponseOutputMessageMcpListTools
     >;
 
     parallel_tool_calls: boolean;
@@ -241,17 +296,17 @@ export namespace ResponseListResponse {
     }
 
     export interface OpenAIResponseOutputMessageFunctionToolCall {
-      id: string;
-
       arguments: string;
 
       call_id: string;
 
       name: string;
 
-      status: string;
-
       type: 'function_call';
+
+      id?: string;
+
+      status?: string;
     }
 
     /**
@@ -369,17 +424,53 @@ export namespace ResponseListResponse {
     }
 
     export interface OpenAIResponseOutputMessageFunctionToolCall {
-      id: string;
-
       arguments: string;
 
       call_id: string;
 
       name: string;
 
-      status: string;
-
       type: 'function_call';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpCall {
+      id: string;
+
+      arguments: string;
+
+      name: string;
+
+      server_label: string;
+
+      type: 'mcp_call';
+
+      error?: string;
+
+      output?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpListTools {
+      id: string;
+
+      server_label: string;
+
+      tools: Array<OpenAIResponseOutputMessageMcpListTools.Tool>;
+
+      type: 'mcp_list_tools';
+    }
+
+    export namespace OpenAIResponseOutputMessageMcpListTools {
+      export interface Tool {
+        input_schema: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+        name: string;
+
+        description?: string;
+      }
     }
 
     export interface Error {
@@ -443,17 +534,17 @@ export namespace ResponseCreateParams {
   }
 
   export interface OpenAIResponseOutputMessageFunctionToolCall {
-    id: string;
-
     arguments: string;
 
     call_id: string;
 
     name: string;
 
-    status: string;
-
     type: 'function_call';
+
+    id?: string;
+
+    status?: string;
   }
 
   /**

@@ -43,8 +43,6 @@ export interface Tool {
 
   provider_id: string;
 
-  tool_host: 'distribution' | 'client' | 'model_context_protocol';
-
   toolgroup_id: string;
 
   type: 'tool';

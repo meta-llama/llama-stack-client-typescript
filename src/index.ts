@@ -33,6 +33,16 @@ import {
   ListDatasetsResponse,
 } from './resources/datasets';
 import {
+  FileContentResponse,
+  FileCreateParams,
+  FileCreateResponse,
+  FileDeleteResponse,
+  FileListParams,
+  FileListResponse,
+  FileRetrieveResponse,
+  Files,
+} from './resources/files';
+import {
   ChatCompletionResponseStreamChunk,
   CompletionResponse,
   EmbeddingsResponse,
@@ -293,6 +303,7 @@ export class LlamaStackClient extends Core.APIClient {
   inference: API.Inference = new API.Inference(this);
   chat: API.Chat = new API.Chat(this);
   completions: API.Completions = new API.Completions(this);
+  files: API.Files = new API.Files(this);
   vectorIo: API.VectorIo = new API.VectorIo(this);
   vectorDBs: API.VectorDBs = new API.VectorDBs(this);
   models: API.Models = new API.Models(this);
@@ -361,6 +372,7 @@ LlamaStackClient.Inspect = Inspect;
 LlamaStackClient.Inference = Inference;
 LlamaStackClient.Chat = Chat;
 LlamaStackClient.Completions = Completions;
+LlamaStackClient.Files = Files;
 LlamaStackClient.VectorIo = VectorIo;
 LlamaStackClient.VectorDBs = VectorDBs;
 LlamaStackClient.Models = Models;
@@ -487,6 +499,17 @@ export declare namespace LlamaStackClient {
     type CompletionCreateParams as CompletionCreateParams,
     type CompletionCreateParamsNonStreaming as CompletionCreateParamsNonStreaming,
     type CompletionCreateParamsStreaming as CompletionCreateParamsStreaming,
+  };
+
+  export {
+    Files as Files,
+    type FileCreateResponse as FileCreateResponse,
+    type FileRetrieveResponse as FileRetrieveResponse,
+    type FileListResponse as FileListResponse,
+    type FileDeleteResponse as FileDeleteResponse,
+    type FileContentResponse as FileContentResponse,
+    type FileCreateParams as FileCreateParams,
+    type FileListParams as FileListParams,
   };
 
   export {

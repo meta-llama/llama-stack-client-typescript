@@ -48,6 +48,16 @@ export {
   type EvalRunEvalAlphaParams,
 } from './eval/eval';
 export {
+  Files,
+  type FileCreateResponse,
+  type FileRetrieveResponse,
+  type FileListResponse,
+  type FileDeleteResponse,
+  type FileContentResponse,
+  type FileCreateParams,
+  type FileListParams,
+} from './files';
+export {
   Inference,
   type ChatCompletionResponseStreamChunk,
   type CompletionResponse,
