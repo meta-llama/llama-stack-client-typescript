@@ -29,6 +29,7 @@ export class InputItems extends APIResource {
 export interface InputItemListResponse {
   data: Array<
     | InputItemListResponse.OpenAIResponseOutputMessageWebSearchToolCall
+    | InputItemListResponse.OpenAIResponseOutputMessageFileSearchToolCall
     | InputItemListResponse.OpenAIResponseOutputMessageFunctionToolCall
     | InputItemListResponse.OpenAIResponseInputFunctionToolCallOutput
     | InputItemListResponse.OpenAIResponseMessage
@@ -44,6 +45,18 @@ export namespace InputItemListResponse {
     status: string;
 
     type: 'web_search_call';
+  }
+
+  export interface OpenAIResponseOutputMessageFileSearchToolCall {
+    id: string;
+
+    queries: Array<string>;
+
+    status: string;
+
+    type: 'file_search_call';
+
+    results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
   }
 
   export interface OpenAIResponseOutputMessageFunctionToolCall {
