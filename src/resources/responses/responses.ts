@@ -70,6 +70,7 @@ export interface ResponseObject {
   output: Array<
     | ResponseObject.OpenAIResponseMessage
     | ResponseObject.OpenAIResponseOutputMessageWebSearchToolCall
+    | ResponseObject.OpenAIResponseOutputMessageFileSearchToolCall
     | ResponseObject.OpenAIResponseOutputMessageFunctionToolCall
     | ResponseObject.OpenAIResponseOutputMessageMcpCall
     | ResponseObject.OpenAIResponseOutputMessageMcpListTools
@@ -78,6 +79,8 @@ export interface ResponseObject {
   parallel_tool_calls: boolean;
 
   status: string;
+
+  text: ResponseObject.Text;
 
   error?: ResponseObject.Error;
 
@@ -146,6 +149,18 @@ export namespace ResponseObject {
     type: 'web_search_call';
   }
 
+  export interface OpenAIResponseOutputMessageFileSearchToolCall {
+    id: string;
+
+    queries: Array<string>;
+
+    status: string;
+
+    type: 'file_search_call';
+
+    results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  }
+
   export interface OpenAIResponseOutputMessageFunctionToolCall {
     arguments: string;
 
@@ -196,6 +211,47 @@ export namespace ResponseObject {
     }
   }
 
+  export interface Text {
+    /**
+     * Configuration for Responses API text format.
+     */
+    format?: Text.Format;
+  }
+
+  export namespace Text {
+    /**
+     * Configuration for Responses API text format.
+     */
+    export interface Format {
+      /**
+       * Must be "text", "json_schema", or "json_object" to identify the format type
+       */
+      type: 'text' | 'json_schema' | 'json_object';
+
+      /**
+       * (Optional) A description of the response format. Only used for json_schema.
+       */
+      description?: string;
+
+      /**
+       * The name of the response format. Only used for json_schema.
+       */
+      name?: string;
+
+      /**
+       * The JSON schema the response should conform to. In a Python SDK, this is often a
+       * `pydantic` model. Only used for json_schema.
+       */
+      schema?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+      /**
+       * (Optional) Whether to strictly enforce the JSON schema. If true, the response
+       * must match the schema exactly. Only used for json_schema.
+       */
+      strict?: boolean;
+    }
+  }
+
   export interface Error {
     code: string;
 
@@ -205,7 +261,23 @@ export namespace ResponseObject {
 
 export type ResponseObjectStream =
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseCreated
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseOutputItemAdded
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseOutputItemDone
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseOutputTextDelta
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseOutputTextDone
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseFunctionCallArgumentsDelta
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseFunctionCallArgumentsDone
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseWebSearchCallInProgress
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseWebSearchCallSearching
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseWebSearchCallCompleted
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpListToolsInProgress
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpListToolsFailed
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpListToolsCompleted
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallArgumentsDelta
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallArgumentsDone
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallInProgress
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallFailed
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallCompleted
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseCompleted;
 
 export namespace ResponseObjectStream {
@@ -213,6 +285,286 @@ export namespace ResponseObjectStream {
     response: ResponsesAPI.ResponseObject;
 
     type: 'response.created';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseOutputItemAdded {
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    item:
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseMessage
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseOutputMessageWebSearchToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseOutputMessageFileSearchToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseOutputMessageFunctionToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseOutputMessageMcpCall
+      | OpenAIResponseObjectStreamResponseOutputItemAdded.OpenAIResponseOutputMessageMcpListTools;
+
+    output_index: number;
+
+    response_id: string;
+
+    sequence_number: number;
+
+    type: 'response.output_item.added';
+  }
+
+  export namespace OpenAIResponseObjectStreamResponseOutputItemAdded {
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    export interface OpenAIResponseMessage {
+      content:
+        | string
+        | Array<
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentText
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentImage
+          >
+        | Array<OpenAIResponseMessage.UnionMember2>;
+
+      role: 'system' | 'developer' | 'user' | 'assistant';
+
+      type: 'message';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export namespace OpenAIResponseMessage {
+      export interface OpenAIResponseInputMessageContentText {
+        text: string;
+
+        type: 'input_text';
+      }
+
+      export interface OpenAIResponseInputMessageContentImage {
+        detail: 'low' | 'high' | 'auto';
+
+        type: 'input_image';
+
+        image_url?: string;
+      }
+
+      export interface UnionMember2 {
+        text: string;
+
+        type: 'output_text';
+      }
+    }
+
+    export interface OpenAIResponseOutputMessageWebSearchToolCall {
+      id: string;
+
+      status: string;
+
+      type: 'web_search_call';
+    }
+
+    export interface OpenAIResponseOutputMessageFileSearchToolCall {
+      id: string;
+
+      queries: Array<string>;
+
+      status: string;
+
+      type: 'file_search_call';
+
+      results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    }
+
+    export interface OpenAIResponseOutputMessageFunctionToolCall {
+      arguments: string;
+
+      call_id: string;
+
+      name: string;
+
+      type: 'function_call';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpCall {
+      id: string;
+
+      arguments: string;
+
+      name: string;
+
+      server_label: string;
+
+      type: 'mcp_call';
+
+      error?: string;
+
+      output?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpListTools {
+      id: string;
+
+      server_label: string;
+
+      tools: Array<OpenAIResponseOutputMessageMcpListTools.Tool>;
+
+      type: 'mcp_list_tools';
+    }
+
+    export namespace OpenAIResponseOutputMessageMcpListTools {
+      export interface Tool {
+        input_schema: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+        name: string;
+
+        description?: string;
+      }
+    }
+  }
+
+  export interface OpenAIResponseObjectStreamResponseOutputItemDone {
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    item:
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseMessage
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseOutputMessageWebSearchToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseOutputMessageFileSearchToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseOutputMessageFunctionToolCall
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseOutputMessageMcpCall
+      | OpenAIResponseObjectStreamResponseOutputItemDone.OpenAIResponseOutputMessageMcpListTools;
+
+    output_index: number;
+
+    response_id: string;
+
+    sequence_number: number;
+
+    type: 'response.output_item.done';
+  }
+
+  export namespace OpenAIResponseObjectStreamResponseOutputItemDone {
+    /**
+     * Corresponds to the various Message types in the Responses API. They are all
+     * under one type because the Responses API gives them all the same "type" value,
+     * and there is no way to tell them apart in certain scenarios.
+     */
+    export interface OpenAIResponseMessage {
+      content:
+        | string
+        | Array<
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentText
+            | OpenAIResponseMessage.OpenAIResponseInputMessageContentImage
+          >
+        | Array<OpenAIResponseMessage.UnionMember2>;
+
+      role: 'system' | 'developer' | 'user' | 'assistant';
+
+      type: 'message';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export namespace OpenAIResponseMessage {
+      export interface OpenAIResponseInputMessageContentText {
+        text: string;
+
+        type: 'input_text';
+      }
+
+      export interface OpenAIResponseInputMessageContentImage {
+        detail: 'low' | 'high' | 'auto';
+
+        type: 'input_image';
+
+        image_url?: string;
+      }
+
+      export interface UnionMember2 {
+        text: string;
+
+        type: 'output_text';
+      }
+    }
+
+    export interface OpenAIResponseOutputMessageWebSearchToolCall {
+      id: string;
+
+      status: string;
+
+      type: 'web_search_call';
+    }
+
+    export interface OpenAIResponseOutputMessageFileSearchToolCall {
+      id: string;
+
+      queries: Array<string>;
+
+      status: string;
+
+      type: 'file_search_call';
+
+      results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    }
+
+    export interface OpenAIResponseOutputMessageFunctionToolCall {
+      arguments: string;
+
+      call_id: string;
+
+      name: string;
+
+      type: 'function_call';
+
+      id?: string;
+
+      status?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpCall {
+      id: string;
+
+      arguments: string;
+
+      name: string;
+
+      server_label: string;
+
+      type: 'mcp_call';
+
+      error?: string;
+
+      output?: string;
+    }
+
+    export interface OpenAIResponseOutputMessageMcpListTools {
+      id: string;
+
+      server_label: string;
+
+      tools: Array<OpenAIResponseOutputMessageMcpListTools.Tool>;
+
+      type: 'mcp_list_tools';
+    }
+
+    export namespace OpenAIResponseOutputMessageMcpListTools {
+      export interface Tool {
+        input_schema: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+        name: string;
+
+        description?: string;
+      }
+    }
   }
 
   export interface OpenAIResponseObjectStreamResponseOutputTextDelta {
@@ -227,6 +579,138 @@ export namespace ResponseObjectStream {
     sequence_number: number;
 
     type: 'response.output_text.delta';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseOutputTextDone {
+    content_index: number;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    text: string;
+
+    type: 'response.output_text.done';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseFunctionCallArgumentsDelta {
+    delta: string;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.function_call_arguments.delta';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseFunctionCallArgumentsDone {
+    arguments: string;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.function_call_arguments.done';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseWebSearchCallInProgress {
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.web_search_call.in_progress';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseWebSearchCallSearching {
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.web_search_call.searching';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseWebSearchCallCompleted {
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.web_search_call.completed';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpListToolsInProgress {
+    sequence_number: number;
+
+    type: 'response.mcp_list_tools.in_progress';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpListToolsFailed {
+    sequence_number: number;
+
+    type: 'response.mcp_list_tools.failed';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpListToolsCompleted {
+    sequence_number: number;
+
+    type: 'response.mcp_list_tools.completed';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpCallArgumentsDelta {
+    delta: string;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.mcp_call.arguments.delta';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpCallArgumentsDone {
+    arguments: string;
+
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.mcp_call.arguments.done';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpCallInProgress {
+    item_id: string;
+
+    output_index: number;
+
+    sequence_number: number;
+
+    type: 'response.mcp_call.in_progress';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpCallFailed {
+    sequence_number: number;
+
+    type: 'response.mcp_call.failed';
+  }
+
+  export interface OpenAIResponseObjectStreamResponseMcpCallCompleted {
+    sequence_number: number;
+
+    type: 'response.mcp_call.completed';
   }
 
   export interface OpenAIResponseObjectStreamResponseCompleted {
@@ -256,6 +740,7 @@ export namespace ResponseListResponse {
 
     input: Array<
       | Data.OpenAIResponseOutputMessageWebSearchToolCall
+      | Data.OpenAIResponseOutputMessageFileSearchToolCall
       | Data.OpenAIResponseOutputMessageFunctionToolCall
       | Data.OpenAIResponseInputFunctionToolCallOutput
       | Data.OpenAIResponseMessage
@@ -268,6 +753,7 @@ export namespace ResponseListResponse {
     output: Array<
       | Data.OpenAIResponseMessage
       | Data.OpenAIResponseOutputMessageWebSearchToolCall
+      | Data.OpenAIResponseOutputMessageFileSearchToolCall
       | Data.OpenAIResponseOutputMessageFunctionToolCall
       | Data.OpenAIResponseOutputMessageMcpCall
       | Data.OpenAIResponseOutputMessageMcpListTools
@@ -276,6 +762,8 @@ export namespace ResponseListResponse {
     parallel_tool_calls: boolean;
 
     status: string;
+
+    text: Data.Text;
 
     error?: Data.Error;
 
@@ -297,6 +785,18 @@ export namespace ResponseListResponse {
       status: string;
 
       type: 'web_search_call';
+    }
+
+    export interface OpenAIResponseOutputMessageFileSearchToolCall {
+      id: string;
+
+      queries: Array<string>;
+
+      status: string;
+
+      type: 'file_search_call';
+
+      results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
     }
 
     export interface OpenAIResponseOutputMessageFunctionToolCall {
@@ -427,6 +927,18 @@ export namespace ResponseListResponse {
       type: 'web_search_call';
     }
 
+    export interface OpenAIResponseOutputMessageFileSearchToolCall {
+      id: string;
+
+      queries: Array<string>;
+
+      status: string;
+
+      type: 'file_search_call';
+
+      results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    }
+
     export interface OpenAIResponseOutputMessageFunctionToolCall {
       arguments: string;
 
@@ -477,6 +989,47 @@ export namespace ResponseListResponse {
       }
     }
 
+    export interface Text {
+      /**
+       * Configuration for Responses API text format.
+       */
+      format?: Text.Format;
+    }
+
+    export namespace Text {
+      /**
+       * Configuration for Responses API text format.
+       */
+      export interface Format {
+        /**
+         * Must be "text", "json_schema", or "json_object" to identify the format type
+         */
+        type: 'text' | 'json_schema' | 'json_object';
+
+        /**
+         * (Optional) A description of the response format. Only used for json_schema.
+         */
+        description?: string;
+
+        /**
+         * The name of the response format. Only used for json_schema.
+         */
+        name?: string;
+
+        /**
+         * The JSON schema the response should conform to. In a Python SDK, this is often a
+         * `pydantic` model. Only used for json_schema.
+         */
+        schema?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+        /**
+         * (Optional) Whether to strictly enforce the JSON schema. If true, the response
+         * must match the schema exactly. Only used for json_schema.
+         */
+        strict?: boolean;
+      }
+    }
+
     export interface Error {
       code: string;
 
@@ -495,6 +1048,7 @@ export interface ResponseCreateParamsBase {
     | string
     | Array<
         | ResponseCreateParams.OpenAIResponseOutputMessageWebSearchToolCall
+        | ResponseCreateParams.OpenAIResponseOutputMessageFileSearchToolCall
         | ResponseCreateParams.OpenAIResponseOutputMessageFunctionToolCall
         | ResponseCreateParams.OpenAIResponseInputFunctionToolCallOutput
         | ResponseCreateParams.OpenAIResponseMessage
@@ -506,6 +1060,8 @@ export interface ResponseCreateParamsBase {
   model: string;
 
   instructions?: string;
+
+  max_infer_iters?: number;
 
   /**
    * (Optional) if specified, the new response will be a continuation of the previous
@@ -519,6 +1075,8 @@ export interface ResponseCreateParamsBase {
   stream?: boolean;
 
   temperature?: number;
+
+  text?: ResponseCreateParams.Text;
 
   tools?: Array<
     | ResponseCreateParams.OpenAIResponseInputToolWebSearch
@@ -535,6 +1093,18 @@ export namespace ResponseCreateParams {
     status: string;
 
     type: 'web_search_call';
+  }
+
+  export interface OpenAIResponseOutputMessageFileSearchToolCall {
+    id: string;
+
+    queries: Array<string>;
+
+    status: string;
+
+    type: 'file_search_call';
+
+    results?: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
   }
 
   export interface OpenAIResponseOutputMessageFunctionToolCall {
@@ -612,6 +1182,47 @@ export namespace ResponseCreateParams {
     }
   }
 
+  export interface Text {
+    /**
+     * Configuration for Responses API text format.
+     */
+    format?: Text.Format;
+  }
+
+  export namespace Text {
+    /**
+     * Configuration for Responses API text format.
+     */
+    export interface Format {
+      /**
+       * Must be "text", "json_schema", or "json_object" to identify the format type
+       */
+      type: 'text' | 'json_schema' | 'json_object';
+
+      /**
+       * (Optional) A description of the response format. Only used for json_schema.
+       */
+      description?: string;
+
+      /**
+       * The name of the response format. Only used for json_schema.
+       */
+      name?: string;
+
+      /**
+       * The JSON schema the response should conform to. In a Python SDK, this is often a
+       * `pydantic` model. Only used for json_schema.
+       */
+      schema?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+      /**
+       * (Optional) Whether to strictly enforce the JSON schema. If true, the response
+       * must match the schema exactly. Only used for json_schema.
+       */
+      strict?: boolean;
+    }
+  }
+
   export interface OpenAIResponseInputToolWebSearch {
     type: 'web_search' | 'web_search_preview_2025_03_11';
 
@@ -621,7 +1232,11 @@ export namespace ResponseCreateParams {
   export interface OpenAIResponseInputToolFileSearch {
     type: 'file_search';
 
-    vector_store_id: Array<string>;
+    vector_store_ids: Array<string>;
+
+    filters?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+    max_num_results?: number;
 
     ranking_options?: OpenAIResponseInputToolFileSearch.RankingOptions;
   }

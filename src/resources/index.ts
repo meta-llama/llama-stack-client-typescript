@@ -36,6 +36,7 @@ export {
   type DatasetIterrowsParams,
   type DatasetRegisterParams,
 } from './datasets';
+export { Embeddings, type EmbeddingsResponse, type EmbeddingCreateParams } from './embeddings';
 export {
   Eval,
   type BenchmarkConfig,
@@ -47,6 +48,15 @@ export {
   type EvalRunEvalParams,
   type EvalRunEvalAlphaParams,
 } from './eval/eval';
+export {
+  Files,
+  type DeleteFileResponse,
+  type File,
+  type ListFilesResponse,
+  type FileContentResponse,
+  type FileCreateParams,
+  type FileListParams,
+} from './files';
 export {
   Inference,
   type ChatCompletionResponseStreamChunk,
@@ -173,3 +183,14 @@ export {
   type VectorIoInsertParams,
   type VectorIoQueryParams,
 } from './vector-io';
+export {
+  VectorStores,
+  type ListVectorStoresResponse,
+  type VectorStore,
+  type VectorStoreDeleteResponse,
+  type VectorStoreSearchResponse,
+  type VectorStoreCreateParams,
+  type VectorStoreUpdateParams,
+  type VectorStoreListParams,
+  type VectorStoreSearchParams,
+} from './vector-stores/vector-stores';

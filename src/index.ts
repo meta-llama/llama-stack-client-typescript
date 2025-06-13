@@ -32,10 +32,20 @@ import {
   Datasets,
   ListDatasetsResponse,
 } from './resources/datasets';
+import { EmbeddingCreateParams, Embeddings, EmbeddingsResponse } from './resources/embeddings';
+import {
+  DeleteFileResponse,
+  File,
+  FileContentResponse,
+  FileCreateParams,
+  FileListParams,
+  Files,
+  ListFilesResponse,
+} from './resources/files';
 import {
   ChatCompletionResponseStreamChunk,
   CompletionResponse,
-  EmbeddingsResponse,
+  EmbeddingsResponse as InferenceAPIEmbeddingsResponse,
   Inference,
   InferenceBatchChatCompletionParams,
   InferenceBatchChatCompletionResponse,
@@ -174,6 +184,17 @@ import {
   ToolRuntimeListToolsParams,
   ToolRuntimeListToolsResponse,
 } from './resources/tool-runtime/tool-runtime';
+import {
+  ListVectorStoresResponse,
+  VectorStore,
+  VectorStoreCreateParams,
+  VectorStoreDeleteResponse,
+  VectorStoreListParams,
+  VectorStoreSearchParams,
+  VectorStoreSearchResponse,
+  VectorStoreUpdateParams,
+  VectorStores,
+} from './resources/vector-stores/vector-stores';
 
 export interface ClientOptions {
   /**
@@ -291,10 +312,12 @@ export class LlamaStackClient extends Core.APIClient {
   eval: API.Eval = new API.Eval(this);
   inspect: API.Inspect = new API.Inspect(this);
   inference: API.Inference = new API.Inference(this);
+  embeddings: API.Embeddings = new API.Embeddings(this);
   chat: API.Chat = new API.Chat(this);
   completions: API.Completions = new API.Completions(this);
   vectorIo: API.VectorIo = new API.VectorIo(this);
   vectorDBs: API.VectorDBs = new API.VectorDBs(this);
+  vectorStores: API.VectorStores = new API.VectorStores(this);
   models: API.Models = new API.Models(this);
   postTraining: API.PostTraining = new API.PostTraining(this);
   providers: API.Providers = new API.Providers(this);
@@ -306,6 +329,7 @@ export class LlamaStackClient extends Core.APIClient {
   scoring: API.Scoring = new API.Scoring(this);
   scoringFunctions: API.ScoringFunctions = new API.ScoringFunctions(this);
   benchmarks: API.Benchmarks = new API.Benchmarks(this);
+  files: API.Files = new API.Files(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -359,10 +383,12 @@ LlamaStackClient.Datasets = Datasets;
 LlamaStackClient.Eval = Eval;
 LlamaStackClient.Inspect = Inspect;
 LlamaStackClient.Inference = Inference;
+LlamaStackClient.Embeddings = Embeddings;
 LlamaStackClient.Chat = Chat;
 LlamaStackClient.Completions = Completions;
 LlamaStackClient.VectorIo = VectorIo;
 LlamaStackClient.VectorDBs = VectorDBs;
+LlamaStackClient.VectorStores = VectorStores;
 LlamaStackClient.Models = Models;
 LlamaStackClient.PostTraining = PostTraining;
 LlamaStackClient.Providers = Providers;
@@ -374,6 +400,7 @@ LlamaStackClient.Telemetry = Telemetry;
 LlamaStackClient.Scoring = Scoring;
 LlamaStackClient.ScoringFunctions = ScoringFunctions;
 LlamaStackClient.Benchmarks = Benchmarks;
+LlamaStackClient.Files = Files;
 export declare namespace LlamaStackClient {
   export type RequestOptions = Core.RequestOptions;
 
@@ -465,7 +492,7 @@ export declare namespace LlamaStackClient {
     Inference as Inference,
     type ChatCompletionResponseStreamChunk as ChatCompletionResponseStreamChunk,
     type CompletionResponse as CompletionResponse,
-    type EmbeddingsResponse as EmbeddingsResponse,
+    type InferenceAPIEmbeddingsResponse as EmbeddingsResponse,
     type TokenLogProbs as TokenLogProbs,
     type InferenceBatchChatCompletionResponse as InferenceBatchChatCompletionResponse,
     type InferenceBatchChatCompletionParams as InferenceBatchChatCompletionParams,
@@ -477,6 +504,12 @@ export declare namespace LlamaStackClient {
     type InferenceCompletionParamsNonStreaming as InferenceCompletionParamsNonStreaming,
     type InferenceCompletionParamsStreaming as InferenceCompletionParamsStreaming,
     type InferenceEmbeddingsParams as InferenceEmbeddingsParams,
+  };
+
+  export {
+    Embeddings as Embeddings,
+    type EmbeddingsResponse as EmbeddingsResponse,
+    type EmbeddingCreateParams as EmbeddingCreateParams,
   };
 
   export { Chat as Chat, type ChatCompletionChunk as ChatCompletionChunk };
@@ -503,6 +536,18 @@ export declare namespace LlamaStackClient {
     type VectorDBListResponse as VectorDBListResponse,
     type VectorDBRegisterResponse as VectorDBRegisterResponse,
     type VectorDBRegisterParams as VectorDBRegisterParams,
+  };
+
+  export {
+    VectorStores as VectorStores,
+    type ListVectorStoresResponse as ListVectorStoresResponse,
+    type VectorStore as VectorStore,
+    type VectorStoreDeleteResponse as VectorStoreDeleteResponse,
+    type VectorStoreSearchResponse as VectorStoreSearchResponse,
+    type VectorStoreCreateParams as VectorStoreCreateParams,
+    type VectorStoreUpdateParams as VectorStoreUpdateParams,
+    type VectorStoreListParams as VectorStoreListParams,
+    type VectorStoreSearchParams as VectorStoreSearchParams,
   };
 
   export {
@@ -595,6 +640,16 @@ export declare namespace LlamaStackClient {
     type ListBenchmarksResponse as ListBenchmarksResponse,
     type BenchmarkListResponse as BenchmarkListResponse,
     type BenchmarkRegisterParams as BenchmarkRegisterParams,
+  };
+
+  export {
+    Files as Files,
+    type DeleteFileResponse as DeleteFileResponse,
+    type File as File,
+    type ListFilesResponse as ListFilesResponse,
+    type FileContentResponse as FileContentResponse,
+    type FileCreateParams as FileCreateParams,
+    type FileListParams as FileListParams,
   };
 
   export type AgentConfig = API.AgentConfig;

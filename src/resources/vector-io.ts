@@ -31,19 +31,35 @@ export interface QueryChunksResponse {
 }
 
 export namespace QueryChunksResponse {
+  /**
+   * A chunk of content that can be inserted into a vector database.
+   */
   export interface Chunk {
     /**
-     * A image content item
+     * The content of the chunk, which can be interleaved text, images, or other types.
      */
     content: Shared.InterleavedContent;
 
+    /**
+     * Metadata associated with the chunk, such as document ID, source, or other
+     * relevant information.
+     */
     metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+    /**
+     * Optional embedding for the chunk. If not provided, it will be computed later.
+     */
+    embedding?: Array<number>;
   }
 }
 
 export interface VectorIoInsertParams {
   /**
-   * The chunks to insert.
+   * The chunks to insert. Each `Chunk` should contain content which can be
+   * interleaved text, images, or other types. `metadata`: `dict[str, Any]` and
+   * `embedding`: `List[float]` are optional. If `metadata` is provided, you
+   * configure how Llama Stack formats the chunk during generation. If `embedding` is
+   * not provided, it will be computed later.
    */
   chunks: Array<VectorIoInsertParams.Chunk>;
 
@@ -59,13 +75,25 @@ export interface VectorIoInsertParams {
 }
 
 export namespace VectorIoInsertParams {
+  /**
+   * A chunk of content that can be inserted into a vector database.
+   */
   export interface Chunk {
     /**
-     * A image content item
+     * The content of the chunk, which can be interleaved text, images, or other types.
      */
     content: Shared.InterleavedContent;
 
+    /**
+     * Metadata associated with the chunk, such as document ID, source, or other
+     * relevant information.
+     */
     metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+
+    /**
+     * Optional embedding for the chunk. If not provided, it will be computed later.
+     */
+    embedding?: Array<number>;
   }
 }
 

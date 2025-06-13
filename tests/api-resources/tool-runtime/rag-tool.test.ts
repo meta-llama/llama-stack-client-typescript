@@ -55,6 +55,7 @@ describe('resource ragTool', () => {
         max_tokens_in_context: 0,
         query_generator_config: { separator: 'separator', type: 'default' },
         mode: 'mode',
+        ranker: { impact_factor: 0, type: 'rrf' },
       },
     });
   });

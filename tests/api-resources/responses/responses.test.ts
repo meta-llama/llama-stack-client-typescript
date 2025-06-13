@@ -22,10 +22,20 @@ describe('resource responses', () => {
       input: 'string',
       model: 'model',
       instructions: 'instructions',
+      max_infer_iters: 0,
       previous_response_id: 'previous_response_id',
       store: true,
       stream: false,
       temperature: 0,
+      text: {
+        format: {
+          type: 'text',
+          description: 'description',
+          name: 'name',
+          schema: { foo: true },
+          strict: true,
+        },
+      },
       tools: [{ type: 'web_search', search_context_size: 'search_context_size' }],
     });
   });

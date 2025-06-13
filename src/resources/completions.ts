@@ -224,6 +224,11 @@ export interface CompletionCreateParamsBase {
   stream_options?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
   /**
+   * (Optional) The suffix that should be appended to the completion.
+   */
+  suffix?: string;
+
+  /**
    * (Optional) The temperature to use.
    */
   temperature?: number;

@@ -507,9 +507,50 @@ export interface QueryConfig {
   query_generator_config: QueryGeneratorConfig;
 
   /**
-   * Search mode for retrieval—either "vector" or "keyword". Default "vector".
+   * Search mode for retrieval—either "vector", "keyword", or "hybrid". Default
+   * "vector".
    */
   mode?: string;
+
+  /**
+   * Configuration for the ranker to use in hybrid search. Defaults to RRF ranker.
+   */
+  ranker?: QueryConfig.RrfRanker | QueryConfig.WeightedRanker;
+}
+
+export namespace QueryConfig {
+  /**
+   * Reciprocal Rank Fusion (RRF) ranker configuration.
+   */
+  export interface RrfRanker {
+    /**
+     * The impact factor for RRF scoring. Higher values give more weight to
+     * higher-ranked results. Must be greater than 0. Default of 60 is from the
+     * original RRF paper (Cormack et al., 2009).
+     */
+    impact_factor: number;
+
+    /**
+     * The type of ranker, always "rrf"
+     */
+    type: 'rrf';
+  }
+
+  /**
+   * Weighted ranker configuration that combines vector and keyword scores.
+   */
+  export interface WeightedRanker {
+    /**
+     * Weight factor between 0 and 1. 0 means only use keyword scores, 1 means only use
+     * vector scores, values in between blend both scores.
+     */
+    alpha: number;
+
+    /**
+     * The type of ranker, always "weighted"
+     */
+    type: 'weighted';
+  }
 }
 
 export type QueryGeneratorConfig =

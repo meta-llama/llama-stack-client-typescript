@@ -22,7 +22,7 @@ describe('resource vectorIo', () => {
 
   test('insert: required and optional params', async () => {
     const response = await client.vectorIo.insert({
-      chunks: [{ content: 'string', metadata: { foo: true } }],
+      chunks: [{ content: 'string', metadata: { foo: true }, embedding: [0] }],
       vector_db_id: 'vector_db_id',
       ttl_seconds: 0,
     });
