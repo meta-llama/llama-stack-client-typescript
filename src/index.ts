@@ -32,7 +32,7 @@ import {
   Datasets,
   ListDatasetsResponse,
 } from './resources/datasets';
-import { EmbeddingCreateParams, Embeddings, EmbeddingsResponse } from './resources/embeddings';
+import { CreateEmbeddingsResponse, EmbeddingCreateParams, Embeddings } from './resources/embeddings';
 import {
   DeleteFileResponse,
   File,
@@ -45,7 +45,7 @@ import {
 import {
   ChatCompletionResponseStreamChunk,
   CompletionResponse,
-  EmbeddingsResponse as InferenceAPIEmbeddingsResponse,
+  EmbeddingsResponse,
   Inference,
   InferenceBatchChatCompletionParams,
   InferenceBatchChatCompletionResponse,
@@ -492,7 +492,7 @@ export declare namespace LlamaStackClient {
     Inference as Inference,
     type ChatCompletionResponseStreamChunk as ChatCompletionResponseStreamChunk,
     type CompletionResponse as CompletionResponse,
-    type InferenceAPIEmbeddingsResponse as EmbeddingsResponse,
+    type EmbeddingsResponse as EmbeddingsResponse,
     type TokenLogProbs as TokenLogProbs,
     type InferenceBatchChatCompletionResponse as InferenceBatchChatCompletionResponse,
     type InferenceBatchChatCompletionParams as InferenceBatchChatCompletionParams,
@@ -508,7 +508,7 @@ export declare namespace LlamaStackClient {
 
   export {
     Embeddings as Embeddings,
-    type EmbeddingsResponse as EmbeddingsResponse,
+    type CreateEmbeddingsResponse as CreateEmbeddingsResponse,
     type EmbeddingCreateParams as EmbeddingCreateParams,
   };
 
