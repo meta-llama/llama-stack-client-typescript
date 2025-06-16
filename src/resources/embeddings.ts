@@ -8,7 +8,10 @@ export class Embeddings extends APIResource {
    * Generate OpenAI-compatible embeddings for the given input using the specified
    * model.
    */
-  create(body: EmbeddingCreateParams, options?: Core.RequestOptions): Core.APIPromise<EmbeddingsResponse> {
+  create(
+    body: EmbeddingCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CreateEmbeddingsResponse> {
     return this._client.post('/v1/openai/v1/embeddings', { body, ...options });
   }
 }
@@ -16,11 +19,11 @@ export class Embeddings extends APIResource {
 /**
  * Response from an OpenAI-compatible embeddings request.
  */
-export interface EmbeddingsResponse {
+export interface CreateEmbeddingsResponse {
   /**
    * List of embedding data objects
    */
-  data: Array<EmbeddingsResponse.Data>;
+  data: Array<CreateEmbeddingsResponse.Data>;
 
   /**
    * The model that was used to generate the embeddings
@@ -35,10 +38,10 @@ export interface EmbeddingsResponse {
   /**
    * Usage information
    */
-  usage: EmbeddingsResponse.Usage;
+  usage: CreateEmbeddingsResponse.Usage;
 }
 
-export namespace EmbeddingsResponse {
+export namespace CreateEmbeddingsResponse {
   /**
    * A single embedding data object from an OpenAI-compatible embeddings response.
    */
@@ -110,7 +113,7 @@ export interface EmbeddingCreateParams {
 
 export declare namespace Embeddings {
   export {
-    type EmbeddingsResponse as EmbeddingsResponse,
+    type CreateEmbeddingsResponse as CreateEmbeddingsResponse,
     type EmbeddingCreateParams as EmbeddingCreateParams,
   };
 }
