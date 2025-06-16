@@ -195,6 +195,11 @@ export interface DatasetIterrowsResponse {
    * Whether there are more items available after this set
    */
   has_more: boolean;
+
+  /**
+   * The URL for accessing this list
+   */
+  url?: string;
 }
 
 export interface DatasetRegisterResponse {

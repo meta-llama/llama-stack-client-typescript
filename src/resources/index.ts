@@ -36,7 +36,7 @@ export {
   type DatasetIterrowsParams,
   type DatasetRegisterParams,
 } from './datasets';
-export { Embeddings, type EmbeddingsResponse, type EmbeddingCreateParams } from './embeddings';
+export { Embeddings, type CreateEmbeddingsResponse, type EmbeddingCreateParams } from './embeddings';
 export {
   Eval,
   type BenchmarkConfig,
@@ -193,4 +193,4 @@ export {
   type VectorStoreUpdateParams,
   type VectorStoreListParams,
   type VectorStoreSearchParams,
-} from './vector-stores/vector-stores';
+} from './vector-stores';
