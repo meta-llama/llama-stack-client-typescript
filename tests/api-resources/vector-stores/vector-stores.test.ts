@@ -122,7 +122,7 @@ describe('resource vectorStores', () => {
       query: 'string',
       filters: { foo: true },
       max_num_results: 0,
-      ranking_options: { foo: true },
+      ranking_options: { ranker: 'ranker', score_threshold: 0 },
       rewrite_query: true,
     });
   });

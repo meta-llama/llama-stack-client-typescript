@@ -95,7 +95,7 @@ export interface VectorStore {
 
   created_at: number;
 
-  file_counts: Record<string, number>;
+  file_counts: VectorStore.FileCounts;
 
   metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
 
@@ -112,6 +112,20 @@ export interface VectorStore {
   last_active_at?: number;
 
   name?: string;
+}
+
+export namespace VectorStore {
+  export interface FileCounts {
+    cancelled: number;
+
+    completed: number;
+
+    failed: number;
+
+    in_progress: number;
+
+    total: number;
+  }
 }
 
 /**
@@ -276,12 +290,23 @@ export interface VectorStoreSearchParams {
   /**
    * Ranking options for fine-tuning the search results.
    */
-  ranking_options?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  ranking_options?: VectorStoreSearchParams.RankingOptions;
 
   /**
    * Whether to rewrite the natural language query for vector search (default false)
    */
   rewrite_query?: boolean;
+}
+
+export namespace VectorStoreSearchParams {
+  /**
+   * Ranking options for fine-tuning the search results.
+   */
+  export interface RankingOptions {
+    ranker?: string;
+
+    score_threshold?: number;
+  }
 }
 
 VectorStores.Files = Files;
