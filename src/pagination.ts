@@ -60,3 +60,76 @@ export class DatasetsIterrows<Item> extends AbstractPage<Item> implements Datase
     };
   }
 }
+
+export interface OpenAICursorPaginationResponse<Item> {
+  data: Array<Item>;
+
+  has_more: boolean;
+
+  last_id: string;
+}
+
+export interface OpenAICursorPaginationParams {
+  limit?: number;
+
+  after?: string;
+}
+
+export class OpenAICursorPagination<Item>
+  extends AbstractPage<Item>
+  implements OpenAICursorPaginationResponse<Item>
+{
+  data: Array<Item>;
+
+  has_more: boolean;
+
+  last_id: string;
+
+  constructor(
+    client: APIClient,
+    response: Response,
+    body: OpenAICursorPaginationResponse<Item>,
+    options: FinalRequestOptions,
+  ) {
+    super(client, response, body, options);
+
+    this.data = body.data || [];
+    this.has_more = body.has_more || false;
+    this.last_id = body.last_id || '';
+  }
+
+  getPaginatedItems(): Item[] {
+    return this.data ?? [];
+  }
+
+  override hasNextPage(): boolean {
+    if (this.has_more === false) {
+      return false;
+    }
+
+    return super.hasNextPage();
+  }
+
+  // @deprecated Please use `nextPageInfo()` instead
+  nextPageParams(): Partial<OpenAICursorPaginationParams> | null {
+    const info = this.nextPageInfo();
+    if (!info) return null;
+    if ('params' in info) return info.params;
+    const params = Object.fromEntries(info.url.searchParams);
+    if (!Object.keys(params).length) return null;
+    return params;
+  }
+
+  nextPageInfo(): PageInfo | null {
+    const cursor = this.last_id;
+    if (!cursor) {
+      return null;
+    }
+
+    return {
+      params: {
+        after: cursor,
+      },
+    };
+  }
+}
