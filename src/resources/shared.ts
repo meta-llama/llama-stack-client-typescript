@@ -235,7 +235,7 @@ export namespace ContentDelta {
     /**
      * Either an in-progress tool call string or the final parsed tool call
      */
-    tool_call: Shared.ToolCallOrString;
+    tool_call: string | Shared.ToolCall;
 
     /**
      * Discriminator type of the delta. Always "tool_call"
@@ -948,11 +948,6 @@ export interface ToolCall {
 
   arguments_json?: string;
 }
-
-/**
- * Either an in-progress tool call string or the final parsed tool call
- */
-export type ToolCallOrString = string | ToolCall;
 
 export interface ToolParamDefinition {
   param_type: string;

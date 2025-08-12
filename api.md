@@ -22,7 +22,6 @@ Types:
 - <code><a href="./src/resources/shared.ts">ScoringResult</a></code>
 - <code><a href="./src/resources/shared.ts">SystemMessage</a></code>
 - <code><a href="./src/resources/shared.ts">ToolCall</a></code>
-- <code><a href="./src/resources/shared.ts">ToolCallOrString</a></code>
 - <code><a href="./src/resources/shared.ts">ToolParamDefinition</a></code>
 - <code><a href="./src/resources/shared.ts">ToolResponseMessage</a></code>
 - <code><a href="./src/resources/shared.ts">UserMessage</a></code>
