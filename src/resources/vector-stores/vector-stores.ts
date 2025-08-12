@@ -12,9 +12,9 @@ import {
   FileUpdateParams,
   Files,
   VectorStoreFile,
-  VectorStoreFilesOpenAICursorPagination,
+  VectorStoreFilesOpenAICursorPage,
 } from './files';
-import { OpenAICursorPagination, type OpenAICursorPaginationParams } from '../../pagination';
+import { OpenAICursorPage, type OpenAICursorPageParams } from '../../pagination';
 
 export class VectorStores extends APIResource {
   files: FilesAPI.Files = new FilesAPI.Files(this._client);
@@ -50,16 +50,16 @@ export class VectorStores extends APIResource {
   list(
     query?: VectorStoreListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<VectorStoresOpenAICursorPagination, VectorStore>;
-  list(options?: Core.RequestOptions): Core.PagePromise<VectorStoresOpenAICursorPagination, VectorStore>;
+  ): Core.PagePromise<VectorStoresOpenAICursorPage, VectorStore>;
+  list(options?: Core.RequestOptions): Core.PagePromise<VectorStoresOpenAICursorPage, VectorStore>;
   list(
     query: VectorStoreListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<VectorStoresOpenAICursorPagination, VectorStore> {
+  ): Core.PagePromise<VectorStoresOpenAICursorPage, VectorStore> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/v1/openai/v1/vector_stores', VectorStoresOpenAICursorPagination, {
+    return this._client.getAPIList('/v1/openai/v1/vector_stores', VectorStoresOpenAICursorPage, {
       query,
       ...options,
     });
@@ -85,7 +85,7 @@ export class VectorStores extends APIResource {
   }
 }
 
-export class VectorStoresOpenAICursorPagination extends OpenAICursorPagination<VectorStore> {}
+export class VectorStoresOpenAICursorPage extends OpenAICursorPage<VectorStore> {}
 
 /**
  * Response from listing vector stores.
@@ -369,7 +369,7 @@ export interface VectorStoreUpdateParams {
   name?: string;
 }
 
-export interface VectorStoreListParams extends OpenAICursorPaginationParams {
+export interface VectorStoreListParams extends OpenAICursorPageParams {
   /**
    * A cursor for use in pagination. `before` is an object ID that defines your place
    * in the list.
@@ -432,9 +432,9 @@ export namespace VectorStoreSearchParams {
   }
 }
 
-VectorStores.VectorStoresOpenAICursorPagination = VectorStoresOpenAICursorPagination;
+VectorStores.VectorStoresOpenAICursorPage = VectorStoresOpenAICursorPage;
 VectorStores.Files = Files;
-VectorStores.VectorStoreFilesOpenAICursorPagination = VectorStoreFilesOpenAICursorPagination;
+VectorStores.VectorStoreFilesOpenAICursorPage = VectorStoreFilesOpenAICursorPage;
 
 export declare namespace VectorStores {
   export {
@@ -442,7 +442,7 @@ export declare namespace VectorStores {
     type VectorStore as VectorStore,
     type VectorStoreDeleteResponse as VectorStoreDeleteResponse,
     type VectorStoreSearchResponse as VectorStoreSearchResponse,
-    VectorStoresOpenAICursorPagination as VectorStoresOpenAICursorPagination,
+    VectorStoresOpenAICursorPage as VectorStoresOpenAICursorPage,
     type VectorStoreCreateParams as VectorStoreCreateParams,
     type VectorStoreUpdateParams as VectorStoreUpdateParams,
     type VectorStoreListParams as VectorStoreListParams,
@@ -454,7 +454,7 @@ export declare namespace VectorStores {
     type VectorStoreFile as VectorStoreFile,
     type FileDeleteResponse as FileDeleteResponse,
     type FileContentResponse as FileContentResponse,
-    VectorStoreFilesOpenAICursorPagination as VectorStoreFilesOpenAICursorPagination,
+    VectorStoreFilesOpenAICursorPage as VectorStoreFilesOpenAICursorPage,
     type FileCreateParams as FileCreateParams,
     type FileUpdateParams as FileUpdateParams,
     type FileListParams as FileListParams,

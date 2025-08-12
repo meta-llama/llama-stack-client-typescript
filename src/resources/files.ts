@@ -3,7 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
-import { OpenAICursorPagination, type OpenAICursorPaginationParams } from '../pagination';
+import { OpenAICursorPage, type OpenAICursorPageParams } from '../pagination';
 
 export class Files extends APIResource {
   /**
@@ -27,19 +27,16 @@ export class Files extends APIResource {
   /**
    * Returns a list of files that belong to the user's organization.
    */
-  list(
-    query?: FileListParams,
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<FilesOpenAICursorPagination, File>;
-  list(options?: Core.RequestOptions): Core.PagePromise<FilesOpenAICursorPagination, File>;
+  list(query?: FileListParams, options?: Core.RequestOptions): Core.PagePromise<FilesOpenAICursorPage, File>;
+  list(options?: Core.RequestOptions): Core.PagePromise<FilesOpenAICursorPage, File>;
   list(
     query: FileListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<FilesOpenAICursorPagination, File> {
+  ): Core.PagePromise<FilesOpenAICursorPage, File> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/v1/openai/v1/files', FilesOpenAICursorPagination, { query, ...options });
+    return this._client.getAPIList('/v1/openai/v1/files', FilesOpenAICursorPage, { query, ...options });
   }
 
   /**
@@ -57,7 +54,7 @@ export class Files extends APIResource {
   }
 }
 
-export class FilesOpenAICursorPagination extends OpenAICursorPagination<File> {}
+export class FilesOpenAICursorPage extends OpenAICursorPage<File> {}
 
 /**
  * Response for deleting a file in OpenAI Files API.
@@ -160,7 +157,7 @@ export interface FileCreateParams {
   purpose: 'assistants';
 }
 
-export interface FileListParams extends OpenAICursorPaginationParams {
+export interface FileListParams extends OpenAICursorPageParams {
   /**
    * Sort order by the `created_at` timestamp of the objects. `asc` for ascending
    * order and `desc` for descending order.
@@ -173,7 +170,7 @@ export interface FileListParams extends OpenAICursorPaginationParams {
   purpose?: 'assistants';
 }
 
-Files.FilesOpenAICursorPagination = FilesOpenAICursorPagination;
+Files.FilesOpenAICursorPage = FilesOpenAICursorPage;
 
 export declare namespace Files {
   export {
@@ -181,7 +178,7 @@ export declare namespace Files {
     type File as File,
     type ListFilesResponse as ListFilesResponse,
     type FileContentResponse as FileContentResponse,
-    FilesOpenAICursorPagination as FilesOpenAICursorPagination,
+    FilesOpenAICursorPage as FilesOpenAICursorPage,
     type FileCreateParams as FileCreateParams,
     type FileListParams as FileListParams,
   };

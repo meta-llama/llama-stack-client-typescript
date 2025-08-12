@@ -61,7 +61,7 @@ export class DatasetsIterrows<Item> extends AbstractPage<Item> implements Datase
   }
 }
 
-export interface OpenAICursorPaginationResponse<Item> {
+export interface OpenAICursorPageResponse<Item> {
   data: Array<Item>;
 
   has_more: boolean;
@@ -69,16 +69,13 @@ export interface OpenAICursorPaginationResponse<Item> {
   last_id: string;
 }
 
-export interface OpenAICursorPaginationParams {
+export interface OpenAICursorPageParams {
   limit?: number;
 
   after?: string;
 }
 
-export class OpenAICursorPagination<Item>
-  extends AbstractPage<Item>
-  implements OpenAICursorPaginationResponse<Item>
-{
+export class OpenAICursorPage<Item> extends AbstractPage<Item> implements OpenAICursorPageResponse<Item> {
   data: Array<Item>;
 
   has_more: boolean;
@@ -88,7 +85,7 @@ export class OpenAICursorPagination<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: OpenAICursorPaginationResponse<Item>,
+    body: OpenAICursorPageResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -111,7 +108,7 @@ export class OpenAICursorPagination<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<OpenAICursorPaginationParams> | null {
+  nextPageParams(): Partial<OpenAICursorPageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;

@@ -53,7 +53,7 @@ export {
   type EvalRunEvalAlphaParams,
 } from './eval/eval';
 export {
-  FilesOpenAICursorPagination,
+  FilesOpenAICursorPage,
   Files,
   type DeleteFileResponse,
   type File,
@@ -98,7 +98,7 @@ export {
 } from './post-training/post-training';
 export { Providers, type ListProvidersResponse, type ProviderListResponse } from './providers';
 export {
-  ResponseListResponsesOpenAICursorPagination,
+  ResponseListResponsesOpenAICursorPage,
   Responses,
   type ResponseObject,
   type ResponseObjectStream,
@@ -191,7 +191,7 @@ export {
   type VectorIoQueryParams,
 } from './vector-io';
 export {
-  VectorStoresOpenAICursorPagination,
+  VectorStoresOpenAICursorPage,
   VectorStores,
   type ListVectorStoresResponse,
   type VectorStore,

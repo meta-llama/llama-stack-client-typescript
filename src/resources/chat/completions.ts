@@ -6,7 +6,7 @@ import { APIPromise } from '../../core';
 import * as Core from '../../core';
 import * as CompletionsAPI from './completions';
 import * as ChatAPI from './chat';
-import { OpenAICursorPagination, type OpenAICursorPaginationParams } from '../../pagination';
+import { OpenAICursorPage, type OpenAICursorPageParams } from '../../pagination';
 import { Stream } from '../../streaming';
 
 export class Completions extends APIResource {
@@ -50,26 +50,26 @@ export class Completions extends APIResource {
   list(
     query?: CompletionListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CompletionListResponsesOpenAICursorPagination, CompletionListResponse>;
+  ): Core.PagePromise<CompletionListResponsesOpenAICursorPage, CompletionListResponse>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CompletionListResponsesOpenAICursorPagination, CompletionListResponse>;
+  ): Core.PagePromise<CompletionListResponsesOpenAICursorPage, CompletionListResponse>;
   list(
     query: CompletionListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<CompletionListResponsesOpenAICursorPagination, CompletionListResponse> {
+  ): Core.PagePromise<CompletionListResponsesOpenAICursorPage, CompletionListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
     return this._client.getAPIList(
       '/v1/openai/v1/chat/completions',
-      CompletionListResponsesOpenAICursorPagination,
+      CompletionListResponsesOpenAICursorPage,
       { query, ...options },
     );
   }
 }
 
-export class CompletionListResponsesOpenAICursorPagination extends OpenAICursorPagination<CompletionListResponse> {}
+export class CompletionListResponsesOpenAICursorPage extends OpenAICursorPage<CompletionListResponse> {}
 
 /**
  * Response from an OpenAI-compatible chat completion request.
@@ -2451,7 +2451,7 @@ export interface CompletionCreateParamsStreaming extends CompletionCreateParamsB
   stream: true;
 }
 
-export interface CompletionListParams extends OpenAICursorPaginationParams {
+export interface CompletionListParams extends OpenAICursorPageParams {
   /**
    * The model to filter by.
    */
@@ -2463,14 +2463,14 @@ export interface CompletionListParams extends OpenAICursorPaginationParams {
   order?: 'asc' | 'desc';
 }
 
-Completions.CompletionListResponsesOpenAICursorPagination = CompletionListResponsesOpenAICursorPagination;
+Completions.CompletionListResponsesOpenAICursorPage = CompletionListResponsesOpenAICursorPage;
 
 export declare namespace Completions {
   export {
     type CompletionCreateResponse as CompletionCreateResponse,
     type CompletionRetrieveResponse as CompletionRetrieveResponse,
     type CompletionListResponse as CompletionListResponse,
-    CompletionListResponsesOpenAICursorPagination as CompletionListResponsesOpenAICursorPagination,
+    CompletionListResponsesOpenAICursorPage as CompletionListResponsesOpenAICursorPage,
     type CompletionCreateParams as CompletionCreateParams,
     type CompletionCreateParamsNonStreaming as CompletionCreateParamsNonStreaming,
     type CompletionCreateParamsStreaming as CompletionCreateParamsStreaming,

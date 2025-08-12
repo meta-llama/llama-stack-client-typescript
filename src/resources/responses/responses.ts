@@ -7,7 +7,7 @@ import * as Core from '../../core';
 import * as ResponsesAPI from './responses';
 import * as InputItemsAPI from './input-items';
 import { InputItemListParams, InputItemListResponse, InputItems } from './input-items';
-import { OpenAICursorPagination, type OpenAICursorPaginationParams } from '../../pagination';
+import { OpenAICursorPage, type OpenAICursorPageParams } from '../../pagination';
 import { Stream } from '../../streaming';
 
 export class Responses extends APIResource {
@@ -49,25 +49,25 @@ export class Responses extends APIResource {
   list(
     query?: ResponseListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ResponseListResponsesOpenAICursorPagination, ResponseListResponse>;
+  ): Core.PagePromise<ResponseListResponsesOpenAICursorPage, ResponseListResponse>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ResponseListResponsesOpenAICursorPagination, ResponseListResponse>;
+  ): Core.PagePromise<ResponseListResponsesOpenAICursorPage, ResponseListResponse>;
   list(
     query: ResponseListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ResponseListResponsesOpenAICursorPagination, ResponseListResponse> {
+  ): Core.PagePromise<ResponseListResponsesOpenAICursorPage, ResponseListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/v1/openai/v1/responses', ResponseListResponsesOpenAICursorPagination, {
+    return this._client.getAPIList('/v1/openai/v1/responses', ResponseListResponsesOpenAICursorPage, {
       query,
       ...options,
     });
   }
 }
 
-export class ResponseListResponsesOpenAICursorPagination extends OpenAICursorPagination<ResponseListResponse> {}
+export class ResponseListResponsesOpenAICursorPage extends OpenAICursorPage<ResponseListResponse> {}
 
 /**
  * Complete OpenAI response object containing generation results and metadata.
@@ -2849,7 +2849,7 @@ export interface ResponseCreateParamsStreaming extends ResponseCreateParamsBase 
   stream: true;
 }
 
-export interface ResponseListParams extends OpenAICursorPaginationParams {
+export interface ResponseListParams extends OpenAICursorPageParams {
   /**
    * The model to filter responses by.
    */
@@ -2861,7 +2861,7 @@ export interface ResponseListParams extends OpenAICursorPaginationParams {
   order?: 'asc' | 'desc';
 }
 
-Responses.ResponseListResponsesOpenAICursorPagination = ResponseListResponsesOpenAICursorPagination;
+Responses.ResponseListResponsesOpenAICursorPage = ResponseListResponsesOpenAICursorPage;
 Responses.InputItems = InputItems;
 
 export declare namespace Responses {
@@ -2869,7 +2869,7 @@ export declare namespace Responses {
     type ResponseObject as ResponseObject,
     type ResponseObjectStream as ResponseObjectStream,
     type ResponseListResponse as ResponseListResponse,
-    ResponseListResponsesOpenAICursorPagination as ResponseListResponsesOpenAICursorPagination,
+    ResponseListResponsesOpenAICursorPage as ResponseListResponsesOpenAICursorPage,
     type ResponseCreateParams as ResponseCreateParams,
     type ResponseCreateParamsNonStreaming as ResponseCreateParamsNonStreaming,
     type ResponseCreateParamsStreaming as ResponseCreateParamsStreaming,

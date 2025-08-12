@@ -2,7 +2,7 @@
 
 export { Chat, type ChatCompletionChunk } from './chat';
 export {
-  CompletionListResponsesOpenAICursorPagination,
+  CompletionListResponsesOpenAICursorPage,
   Completions,
   type CompletionCreateResponse,
   type CompletionRetrieveResponse,
