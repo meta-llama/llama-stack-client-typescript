@@ -2355,6 +2355,11 @@ export interface ResponseCreateParamsBase {
    */
   model: string;
 
+  /**
+   * (Optional) Additional fields to include in the response.
+   */
+  include?: Array<string>;
+
   instructions?: string;
 
   max_infer_iters?: number;
