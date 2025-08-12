@@ -699,6 +699,7 @@ export declare namespace LlamaStackClient {
   export type ScoringResult = API.ScoringResult;
   export type SystemMessage = API.SystemMessage;
   export type ToolCall = API.ToolCall;
+  export type ToolCallOrString = API.ToolCallOrString;
   export type ToolParamDefinition = API.ToolParamDefinition;
   export type ToolResponseMessage = API.ToolResponseMessage;
   export type UserMessage = API.UserMessage;
