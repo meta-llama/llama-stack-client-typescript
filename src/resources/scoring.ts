@@ -31,12 +31,21 @@ export interface ScoringScoreResponse {
   /**
    * A map of scoring function name to ScoringResult.
    */
-  results: Record<string, Shared.ScoringResult>;
+  results: { [key: string]: Shared.ScoringResult };
 }
 
+/**
+ * Response from batch scoring operations on datasets.
+ */
 export interface ScoringScoreBatchResponse {
-  results: Record<string, Shared.ScoringResult>;
+  /**
+   * A map of scoring function name to ScoringResult
+   */
+  results: { [key: string]: Shared.ScoringResult };
 
+  /**
+   * (Optional) The identifier of the dataset that was scored
+   */
   dataset_id?: string;
 }
 
@@ -44,12 +53,12 @@ export interface ScoringScoreParams {
   /**
    * The rows to score.
    */
-  input_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  input_rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
   /**
    * The scoring functions to use for the scoring.
    */
-  scoring_functions: Record<string, ScoringFunctionsAPI.ScoringFnParams | null>;
+  scoring_functions: { [key: string]: ScoringFunctionsAPI.ScoringFnParams | null };
 }
 
 export interface ScoringScoreBatchParams {
@@ -66,7 +75,7 @@ export interface ScoringScoreBatchParams {
   /**
    * The scoring functions to use for the scoring.
    */
-  scoring_functions: Record<string, ScoringFunctionsAPI.ScoringFnParams | null>;
+  scoring_functions: { [key: string]: ScoringFunctionsAPI.ScoringFnParams | null };
 }
 
 export declare namespace Scoring {

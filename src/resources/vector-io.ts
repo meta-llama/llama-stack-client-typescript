@@ -24,9 +24,18 @@ export class VectorIo extends APIResource {
   }
 }
 
+/**
+ * Response from querying chunks in a vector database.
+ */
 export interface QueryChunksResponse {
+  /**
+   * List of content chunks returned from the query
+   */
   chunks: Array<QueryChunksResponse.Chunk>;
 
+  /**
+   * Relevance scores corresponding to each returned chunk
+   */
   scores: Array<number>;
 }
 
@@ -41,15 +50,91 @@ export namespace QueryChunksResponse {
     content: Shared.InterleavedContent;
 
     /**
-     * Metadata associated with the chunk, such as document ID, source, or other
-     * relevant information.
+     * Metadata associated with the chunk that will be used in the model context during
+     * inference.
      */
-    metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
+
+    /**
+     * Metadata for the chunk that will NOT be used in the context during inference.
+     * The `chunk_metadata` is required backend functionality.
+     */
+    chunk_metadata?: Chunk.ChunkMetadata;
 
     /**
      * Optional embedding for the chunk. If not provided, it will be computed later.
      */
     embedding?: Array<number>;
+
+    /**
+     * The chunk ID that is stored in the vector database. Used for backend
+     * functionality.
+     */
+    stored_chunk_id?: string;
+  }
+
+  export namespace Chunk {
+    /**
+     * Metadata for the chunk that will NOT be used in the context during inference.
+     * The `chunk_metadata` is required backend functionality.
+     */
+    export interface ChunkMetadata {
+      /**
+       * The dimension of the embedding vector for the chunk.
+       */
+      chunk_embedding_dimension?: number;
+
+      /**
+       * The embedding model used to create the chunk's embedding.
+       */
+      chunk_embedding_model?: string;
+
+      /**
+       * The ID of the chunk. If not set, it will be generated based on the document ID
+       * and content.
+       */
+      chunk_id?: string;
+
+      /**
+       * The tokenizer used to create the chunk. Default is Tiktoken.
+       */
+      chunk_tokenizer?: string;
+
+      /**
+       * The window of the chunk, which can be used to group related chunks together.
+       */
+      chunk_window?: string;
+
+      /**
+       * The number of tokens in the content of the chunk.
+       */
+      content_token_count?: number;
+
+      /**
+       * An optional timestamp indicating when the chunk was created.
+       */
+      created_timestamp?: number;
+
+      /**
+       * The ID of the document this chunk belongs to.
+       */
+      document_id?: string;
+
+      /**
+       * The number of tokens in the metadata of the chunk.
+       */
+      metadata_token_count?: number;
+
+      /**
+       * The source of the content, such as a URL, file path, or other identifier.
+       */
+      source?: string;
+
+      /**
+       * An optional timestamp indicating when the chunk was last updated.
+       */
+      updated_timestamp?: number;
+    }
   }
 }
 
@@ -85,15 +170,91 @@ export namespace VectorIoInsertParams {
     content: Shared.InterleavedContent;
 
     /**
-     * Metadata associated with the chunk, such as document ID, source, or other
-     * relevant information.
+     * Metadata associated with the chunk that will be used in the model context during
+     * inference.
      */
-    metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
+
+    /**
+     * Metadata for the chunk that will NOT be used in the context during inference.
+     * The `chunk_metadata` is required backend functionality.
+     */
+    chunk_metadata?: Chunk.ChunkMetadata;
 
     /**
      * Optional embedding for the chunk. If not provided, it will be computed later.
      */
     embedding?: Array<number>;
+
+    /**
+     * The chunk ID that is stored in the vector database. Used for backend
+     * functionality.
+     */
+    stored_chunk_id?: string;
+  }
+
+  export namespace Chunk {
+    /**
+     * Metadata for the chunk that will NOT be used in the context during inference.
+     * The `chunk_metadata` is required backend functionality.
+     */
+    export interface ChunkMetadata {
+      /**
+       * The dimension of the embedding vector for the chunk.
+       */
+      chunk_embedding_dimension?: number;
+
+      /**
+       * The embedding model used to create the chunk's embedding.
+       */
+      chunk_embedding_model?: string;
+
+      /**
+       * The ID of the chunk. If not set, it will be generated based on the document ID
+       * and content.
+       */
+      chunk_id?: string;
+
+      /**
+       * The tokenizer used to create the chunk. Default is Tiktoken.
+       */
+      chunk_tokenizer?: string;
+
+      /**
+       * The window of the chunk, which can be used to group related chunks together.
+       */
+      chunk_window?: string;
+
+      /**
+       * The number of tokens in the content of the chunk.
+       */
+      content_token_count?: number;
+
+      /**
+       * An optional timestamp indicating when the chunk was created.
+       */
+      created_timestamp?: number;
+
+      /**
+       * The ID of the document this chunk belongs to.
+       */
+      document_id?: string;
+
+      /**
+       * The number of tokens in the metadata of the chunk.
+       */
+      metadata_token_count?: number;
+
+      /**
+       * The source of the content, such as a URL, file path, or other identifier.
+       */
+      source?: string;
+
+      /**
+       * An optional timestamp indicating when the chunk was last updated.
+       */
+      updated_timestamp?: number;
+    }
   }
 }
 
@@ -111,7 +272,7 @@ export interface VectorIoQueryParams {
   /**
    * The parameters of the query.
    */
-  params?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  params?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 }
 
 export declare namespace VectorIo {

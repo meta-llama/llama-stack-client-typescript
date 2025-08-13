@@ -13,7 +13,13 @@ export class Safety extends APIResource {
   }
 }
 
+/**
+ * Response from running a safety shield.
+ */
 export interface RunShieldResponse {
+  /**
+   * (Optional) Safety violation detected by the shield, if any
+   */
   violation?: Shared.SafetyViolation;
 }
 
@@ -26,7 +32,7 @@ export interface SafetyRunShieldParams {
   /**
    * The parameters of the shield.
    */
-  params: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  params: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * The identifier of the shield to run.

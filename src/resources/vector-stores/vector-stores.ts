@@ -4,7 +4,16 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as FilesAPI from './files';
-import { FileCreateParams, Files, VectorStoreFile } from './files';
+import {
+  FileContentResponse,
+  FileCreateParams,
+  FileDeleteResponse,
+  FileListParams,
+  FileListResponse,
+  FileUpdateParams,
+  Files,
+  VectorStoreFile,
+} from './files';
 
 export class VectorStores extends APIResource {
   files: FilesAPI.Files = new FilesAPI.Files(this._client);
@@ -76,14 +85,29 @@ export class VectorStores extends APIResource {
  * Response from listing vector stores.
  */
 export interface ListVectorStoresResponse {
+  /**
+   * List of vector store objects
+   */
   data: Array<VectorStore>;
 
+  /**
+   * Whether there are more vector stores available beyond this page
+   */
   has_more: boolean;
 
+  /**
+   * Object type identifier, always "list"
+   */
   object: string;
 
+  /**
+   * (Optional) ID of the first vector store in the list for pagination
+   */
   first_id?: string;
 
+  /**
+   * (Optional) ID of the last vector store in the list for pagination
+   */
   last_id?: string;
 }
 
@@ -91,39 +115,90 @@ export interface ListVectorStoresResponse {
  * OpenAI Vector Store object.
  */
 export interface VectorStore {
+  /**
+   * Unique identifier for the vector store
+   */
   id: string;
 
+  /**
+   * Timestamp when the vector store was created
+   */
   created_at: number;
 
+  /**
+   * File processing status counts for the vector store
+   */
   file_counts: VectorStore.FileCounts;
 
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * Set of key-value pairs that can be attached to the vector store
+   */
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
+  /**
+   * Object type identifier, always "vector_store"
+   */
   object: string;
 
+  /**
+   * Current status of the vector store
+   */
   status: string;
 
+  /**
+   * Storage space used by the vector store in bytes
+   */
   usage_bytes: number;
 
-  expires_after?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * (Optional) Expiration policy for the vector store
+   */
+  expires_after?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
+  /**
+   * (Optional) Timestamp when the vector store will expire
+   */
   expires_at?: number;
 
+  /**
+   * (Optional) Timestamp of last activity on the vector store
+   */
   last_active_at?: number;
 
+  /**
+   * (Optional) Name of the vector store
+   */
   name?: string;
 }
 
 export namespace VectorStore {
+  /**
+   * File processing status counts for the vector store
+   */
   export interface FileCounts {
+    /**
+     * Number of files that had their processing cancelled
+     */
     cancelled: number;
 
+    /**
+     * Number of files that have been successfully processed
+     */
     completed: number;
 
+    /**
+     * Number of files that failed to process
+     */
     failed: number;
 
+    /**
+     * Number of files currently being processed
+     */
     in_progress: number;
 
+    /**
+     * Total number of files in the vector store
+     */
     total: number;
   }
 }
@@ -132,25 +207,49 @@ export namespace VectorStore {
  * Response from deleting a vector store.
  */
 export interface VectorStoreDeleteResponse {
+  /**
+   * Unique identifier of the deleted vector store
+   */
   id: string;
 
+  /**
+   * Whether the deletion operation was successful
+   */
   deleted: boolean;
 
+  /**
+   * Object type identifier for the deletion response
+   */
   object: string;
 }
 
 /**
- * Response from searching a vector store.
+ * Paginated response from searching a vector store.
  */
 export interface VectorStoreSearchResponse {
+  /**
+   * List of search result objects
+   */
   data: Array<VectorStoreSearchResponse.Data>;
 
+  /**
+   * Whether there are more results available beyond this page
+   */
   has_more: boolean;
 
+  /**
+   * Object type identifier for the search results page
+   */
   object: string;
 
+  /**
+   * The original search query that was executed
+   */
   search_query: string;
 
+  /**
+   * (Optional) Token for retrieving the next page of results
+   */
   next_page?: string;
 }
 
@@ -159,21 +258,45 @@ export namespace VectorStoreSearchResponse {
    * Response from searching a vector store.
    */
   export interface Data {
+    /**
+     * List of content items matching the search query
+     */
     content: Array<Data.Content>;
 
+    /**
+     * Unique identifier of the file containing the result
+     */
     file_id: string;
 
+    /**
+     * Name of the file containing the result
+     */
     filename: string;
 
+    /**
+     * Relevance score for this search result
+     */
     score: number;
 
-    attributes?: Record<string, string | number | boolean>;
+    /**
+     * (Optional) Key-value attributes associated with the file
+     */
+    attributes?: { [key: string]: string | number | boolean };
   }
 
   export namespace Data {
+    /**
+     * Content item from a vector store file or search result.
+     */
     export interface Content {
+      /**
+       * The actual text content
+       */
       text: string;
 
+      /**
+       * Content type, currently only "text" is supported
+       */
       type: 'text';
     }
   }
@@ -181,15 +304,10 @@ export namespace VectorStoreSearchResponse {
 
 export interface VectorStoreCreateParams {
   /**
-   * A name for the vector store.
-   */
-  name: string;
-
-  /**
    * The chunking strategy used to chunk the file(s). If not set, will use the `auto`
    * strategy.
    */
-  chunking_strategy?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  chunking_strategy?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * The dimension of the embedding vectors (default: 384).
@@ -204,7 +322,7 @@ export interface VectorStoreCreateParams {
   /**
    * The expiration policy for a vector store.
    */
-  expires_after?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  expires_after?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * A list of File IDs that the vector store should use. Useful for tools like
@@ -215,29 +333,29 @@ export interface VectorStoreCreateParams {
   /**
    * Set of 16 key-value pairs that can be attached to an object.
    */
-  metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  metadata?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
+
+  /**
+   * A name for the vector store.
+   */
+  name?: string;
 
   /**
    * The ID of the provider to use for this vector store.
    */
   provider_id?: string;
-
-  /**
-   * The provider-specific vector database ID.
-   */
-  provider_vector_db_id?: string;
 }
 
 export interface VectorStoreUpdateParams {
   /**
    * The expiration policy for a vector store.
    */
-  expires_after?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  expires_after?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * Set of 16 key-value pairs that can be attached to an object.
    */
-  metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  metadata?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * The name of the vector store.
@@ -280,7 +398,7 @@ export interface VectorStoreSearchParams {
   /**
    * Filters based on file attributes to narrow the search results.
    */
-  filters?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  filters?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * Maximum number of results to return (1 to 50 inclusive, default 10).
@@ -296,6 +414,11 @@ export interface VectorStoreSearchParams {
    * Whether to rewrite the natural language query for vector search (default false)
    */
   rewrite_query?: boolean;
+
+  /**
+   * The search mode to use - "keyword", "vector", or "hybrid" (default "vector")
+   */
+  search_mode?: string;
 }
 
 export namespace VectorStoreSearchParams {
@@ -303,8 +426,14 @@ export namespace VectorStoreSearchParams {
    * Ranking options for fine-tuning the search results.
    */
   export interface RankingOptions {
+    /**
+     * (Optional) Name of the ranking algorithm to use
+     */
     ranker?: string;
 
+    /**
+     * (Optional) Minimum relevance score threshold for results
+     */
     score_threshold?: number;
   }
 }
@@ -326,6 +455,11 @@ export declare namespace VectorStores {
   export {
     Files as Files,
     type VectorStoreFile as VectorStoreFile,
+    type FileListResponse as FileListResponse,
+    type FileDeleteResponse as FileDeleteResponse,
+    type FileContentResponse as FileContentResponse,
     type FileCreateParams as FileCreateParams,
+    type FileUpdateParams as FileUpdateParams,
+    type FileListParams as FileListParams,
   };
 }

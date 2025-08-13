@@ -64,7 +64,7 @@ export interface BenchmarkConfig {
    * Map between scoring function id and parameters for each scoring function you
    * want to run
    */
-  scoring_params: Record<string, ScoringFunctionsAPI.ScoringFnParams>;
+  scoring_params: { [key: string]: ScoringFunctionsAPI.ScoringFnParams };
 
   /**
    * (Optional) The number of examples to evaluate. If not provided, all examples in
@@ -121,17 +121,26 @@ export interface EvaluateResponse {
   /**
    * The generations from the evaluation.
    */
-  generations: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  generations: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
   /**
    * The scores from the evaluation.
    */
-  scores: Record<string, Shared.ScoringResult>;
+  scores: { [key: string]: Shared.ScoringResult };
 }
 
+/**
+ * A job execution instance with status tracking.
+ */
 export interface Job {
+  /**
+   * Unique identifier for the job
+   */
   job_id: string;
 
+  /**
+   * Current execution status of the job
+   */
   status: 'completed' | 'in_progress' | 'failed' | 'scheduled' | 'cancelled';
 }
 
@@ -144,7 +153,7 @@ export interface EvalEvaluateRowsParams {
   /**
    * The rows to evaluate.
    */
-  input_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  input_rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
   /**
    * The scoring functions to use for the evaluation.
@@ -161,7 +170,7 @@ export interface EvalEvaluateRowsAlphaParams {
   /**
    * The rows to evaluate.
    */
-  input_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  input_rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
   /**
    * The scoring functions to use for the evaluation.
