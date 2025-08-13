@@ -23,6 +23,7 @@ import {
   Completions,
 } from './resources/completions';
 import {
+  DatasetAppendrowsParams,
   DatasetIterrowsParams,
   DatasetIterrowsResponse,
   DatasetListResponse,
@@ -67,6 +68,7 @@ import {
   ModelRegisterParams,
   Models,
 } from './resources/models';
+import { CreateResponse, ModerationCreateParams, Moderations } from './resources/moderations';
 import { ListProvidersResponse, ProviderListResponse, Providers } from './resources/providers';
 import { ListRoutesResponse, RouteListResponse, Routes } from './resources/routes';
 import { RunShieldResponse, Safety, SafetyRunShieldParams } from './resources/safety';
@@ -139,6 +141,9 @@ import {
 import {
   AgentCreateParams,
   AgentCreateResponse,
+  AgentListParams,
+  AgentListResponse,
+  AgentRetrieveResponse,
   Agents,
   InferenceStep,
   MemoryRetrievalStep,
@@ -198,14 +203,14 @@ import {
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['LLAMA_STACK_API_KEY'].
+   * Defaults to process.env['LLAMA_STACK_CLIENT_API_KEY'].
    */
   apiKey?: string | null | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['LLAMA_STACK_BASE_URL'].
+   * Defaults to process.env['LLAMA_STACK_CLIENT_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -215,6 +220,8 @@ export interface ClientOptions {
    *
    * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
    * much longer than this timeout before the promise succeeds or fails.
+   *
+   * @unit milliseconds
    */
   timeout?: number | undefined;
 
@@ -270,8 +277,8 @@ export class LlamaStackClient extends Core.APIClient {
   /**
    * API Client for interfacing with the Llama Stack Client API.
    *
-   * @param {string | null | undefined} [opts.apiKey=process.env['LLAMA_STACK_API_KEY'] ?? null]
-   * @param {string} [opts.baseURL=process.env['LLAMA_STACK_BASE_URL'] ?? http://any-hosted-llama-stack.com] - Override the default base URL for the API.
+   * @param {string | null | undefined} [opts.apiKey=process.env['LLAMA_STACK_CLIENT_API_KEY'] ?? null]
+   * @param {string} [opts.baseURL=process.env['LLAMA_STACK_CLIENT_BASE_URL'] ?? http://any-hosted-llama-stack.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -280,8 +287,8 @@ export class LlamaStackClient extends Core.APIClient {
    * @param {Core.DefaultQuery} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = Core.readEnv('LLAMA_STACK_BASE_URL'),
-    apiKey = Core.readEnv('LLAMA_STACK_API_KEY') ?? null,
+    baseURL = Core.readEnv('LLAMA_STACK_CLIENT_BASE_URL'),
+    apiKey = Core.readEnv('LLAMA_STACK_CLIENT_API_KEY') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
@@ -323,6 +330,7 @@ export class LlamaStackClient extends Core.APIClient {
   postTraining: API.PostTraining = new API.PostTraining(this);
   providers: API.Providers = new API.Providers(this);
   routes: API.Routes = new API.Routes(this);
+  moderations: API.Moderations = new API.Moderations(this);
   safety: API.Safety = new API.Safety(this);
   shields: API.Shields = new API.Shields(this);
   syntheticDataGeneration: API.SyntheticDataGeneration = new API.SyntheticDataGeneration(this);
@@ -401,6 +409,7 @@ LlamaStackClient.Models = Models;
 LlamaStackClient.PostTraining = PostTraining;
 LlamaStackClient.Providers = Providers;
 LlamaStackClient.Routes = Routes;
+LlamaStackClient.Moderations = Moderations;
 LlamaStackClient.Safety = Safety;
 LlamaStackClient.Shields = Shields;
 LlamaStackClient.SyntheticDataGeneration = SyntheticDataGeneration;
@@ -462,7 +471,10 @@ export declare namespace LlamaStackClient {
     type ToolExecutionStep as ToolExecutionStep,
     type ToolResponse as ToolResponse,
     type AgentCreateResponse as AgentCreateResponse,
+    type AgentRetrieveResponse as AgentRetrieveResponse,
+    type AgentListResponse as AgentListResponse,
     type AgentCreateParams as AgentCreateParams,
+    type AgentListParams as AgentListParams,
   };
 
   export {
@@ -472,6 +484,7 @@ export declare namespace LlamaStackClient {
     type DatasetListResponse as DatasetListResponse,
     type DatasetIterrowsResponse as DatasetIterrowsResponse,
     type DatasetRegisterResponse as DatasetRegisterResponse,
+    type DatasetAppendrowsParams as DatasetAppendrowsParams,
     type DatasetIterrowsParams as DatasetIterrowsParams,
     type DatasetRegisterParams as DatasetRegisterParams,
   };
@@ -585,6 +598,12 @@ export declare namespace LlamaStackClient {
     Routes as Routes,
     type ListRoutesResponse as ListRoutesResponse,
     type RouteListResponse as RouteListResponse,
+  };
+
+  export {
+    Moderations as Moderations,
+    type CreateResponse as CreateResponse,
+    type ModerationCreateParams as ModerationCreateParams,
   };
 
   export {

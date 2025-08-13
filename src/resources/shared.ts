@@ -99,13 +99,19 @@ export namespace AgentConfig {
   }
 
   export interface AgentToolGroupWithArgs {
-    args: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    args: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
     name: string;
   }
 }
 
+/**
+ * Response from a batch completion request.
+ */
 export interface BatchCompletion {
+  /**
+   * List of completion responses, one for each input in the batch
+   */
   batch: Array<InferenceAPI.CompletionResponse>;
 }
 
@@ -123,15 +129,30 @@ export interface ChatCompletionResponse {
    */
   logprobs?: Array<InferenceAPI.TokenLogProbs>;
 
+  /**
+   * (Optional) List of metrics associated with the API response
+   */
   metrics?: Array<ChatCompletionResponse.Metric>;
 }
 
 export namespace ChatCompletionResponse {
+  /**
+   * A metric value included in API responses.
+   */
   export interface Metric {
+    /**
+     * The name of the metric
+     */
     metric: string;
 
+    /**
+     * The numeric value of the metric
+     */
     value: number;
 
+    /**
+     * (Optional) The unit of measurement for the metric value
+     */
     unit?: string;
   }
 }
@@ -166,26 +187,59 @@ export interface CompletionMessage {
   tool_calls?: Array<ToolCall>;
 }
 
+/**
+ * A text content delta for streaming responses.
+ */
 export type ContentDelta = ContentDelta.TextDelta | ContentDelta.ImageDelta | ContentDelta.ToolCallDelta;
 
 export namespace ContentDelta {
+  /**
+   * A text content delta for streaming responses.
+   */
   export interface TextDelta {
+    /**
+     * The incremental text content
+     */
     text: string;
 
+    /**
+     * Discriminator type of the delta. Always "text"
+     */
     type: 'text';
   }
 
+  /**
+   * An image content delta for streaming responses.
+   */
   export interface ImageDelta {
+    /**
+     * The incremental image data as bytes
+     */
     image: string;
 
+    /**
+     * Discriminator type of the delta. Always "image"
+     */
     type: 'image';
   }
 
+  /**
+   * A tool call content delta for streaming responses.
+   */
   export interface ToolCallDelta {
+    /**
+     * Current parsing status of the tool call
+     */
     parse_status: 'started' | 'in_progress' | 'failed' | 'succeeded';
 
+    /**
+     * Either an in-progress tool call string or the final parsed tool call
+     */
     tool_call: Shared.ToolCallOrString;
 
+    /**
+     * Discriminator type of the delta. Always "tool_call"
+     */
     type: 'tool_call';
   }
 }
@@ -212,7 +266,7 @@ export interface Document {
   /**
    * Additional metadata for the document.
    */
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * The MIME type of the document.
@@ -259,6 +313,9 @@ export namespace Document {
        * Note that URL could have length limits.
        */
       export interface URL {
+        /**
+         * The URL string pointing to the resource
+         */
         uri: string;
       }
     }
@@ -279,7 +336,13 @@ export namespace Document {
     type: 'text';
   }
 
+  /**
+   * A URL reference to external content.
+   */
   export interface URL {
+    /**
+     * The URL string pointing to the resource
+     */
     uri: string;
   }
 }
@@ -332,6 +395,9 @@ export namespace InterleavedContent {
        * Note that URL could have length limits.
        */
       export interface URL {
+        /**
+         * The URL string pointing to the resource
+         */
         uri: string;
       }
     }
@@ -399,6 +465,9 @@ export namespace InterleavedContentItem {
        * Note that URL could have length limits.
        */
       export interface URL {
+        /**
+         * The URL string pointing to the resource
+         */
         uri: string;
       }
     }
@@ -425,6 +494,9 @@ export namespace InterleavedContentItem {
  */
 export type Message = UserMessage | SystemMessage | ToolResponseMessage | CompletionMessage;
 
+/**
+ * Parameter type for string values.
+ */
 export type ParamType =
   | ParamType.StringType
   | ParamType.NumberType
@@ -438,43 +510,103 @@ export type ParamType =
   | ParamType.AgentTurnInputType;
 
 export namespace ParamType {
+  /**
+   * Parameter type for string values.
+   */
   export interface StringType {
+    /**
+     * Discriminator type. Always "string"
+     */
     type: 'string';
   }
 
+  /**
+   * Parameter type for numeric values.
+   */
   export interface NumberType {
+    /**
+     * Discriminator type. Always "number"
+     */
     type: 'number';
   }
 
+  /**
+   * Parameter type for boolean values.
+   */
   export interface BooleanType {
+    /**
+     * Discriminator type. Always "boolean"
+     */
     type: 'boolean';
   }
 
+  /**
+   * Parameter type for array values.
+   */
   export interface ArrayType {
+    /**
+     * Discriminator type. Always "array"
+     */
     type: 'array';
   }
 
+  /**
+   * Parameter type for object values.
+   */
   export interface ObjectType {
+    /**
+     * Discriminator type. Always "object"
+     */
     type: 'object';
   }
 
+  /**
+   * Parameter type for JSON values.
+   */
   export interface JsonType {
+    /**
+     * Discriminator type. Always "json"
+     */
     type: 'json';
   }
 
+  /**
+   * Parameter type for union values.
+   */
   export interface UnionType {
+    /**
+     * Discriminator type. Always "union"
+     */
     type: 'union';
   }
 
+  /**
+   * Parameter type for chat completion input.
+   */
   export interface ChatCompletionInputType {
+    /**
+     * Discriminator type. Always "chat_completion_input"
+     */
     type: 'chat_completion_input';
   }
 
+  /**
+   * Parameter type for completion input.
+   */
   export interface CompletionInputType {
+    /**
+     * Discriminator type. Always "completion_input"
+     */
     type: 'completion_input';
   }
 
+  /**
+   * Parameter type for agent turn input.
+   */
   export interface AgentTurnInputType {
+    /**
+     * Discriminator type. Always "agent_turn_input"
+     */
     type: 'agent_turn_input';
   }
 }
@@ -510,7 +642,7 @@ export interface QueryConfig {
    * Search mode for retrieval—either "vector", "keyword", or "hybrid". Default
    * "vector".
    */
-  mode?: string;
+  mode?: 'vector' | 'keyword' | 'hybrid';
 
   /**
    * Configuration for the ranker to use in hybrid search. Defaults to RRF ranker.
@@ -525,8 +657,7 @@ export namespace QueryConfig {
   export interface RrfRanker {
     /**
      * The impact factor for RRF scoring. Higher values give more weight to
-     * higher-ranked results. Must be greater than 0. Default of 60 is from the
-     * original RRF paper (Cormack et al., 2009).
+     * higher-ranked results. Must be greater than 0
      */
     impact_factor: number;
 
@@ -553,31 +684,61 @@ export namespace QueryConfig {
   }
 }
 
+/**
+ * Configuration for the default RAG query generator.
+ */
 export type QueryGeneratorConfig =
   | QueryGeneratorConfig.DefaultRagQueryGeneratorConfig
   | QueryGeneratorConfig.LlmragQueryGeneratorConfig;
 
 export namespace QueryGeneratorConfig {
+  /**
+   * Configuration for the default RAG query generator.
+   */
   export interface DefaultRagQueryGeneratorConfig {
+    /**
+     * String separator used to join query terms
+     */
     separator: string;
 
+    /**
+     * Type of query generator, always 'default'
+     */
     type: 'default';
   }
 
+  /**
+   * Configuration for the LLM-based RAG query generator.
+   */
   export interface LlmragQueryGeneratorConfig {
+    /**
+     * Name of the language model to use for query generation
+     */
     model: string;
 
+    /**
+     * Template string for formatting the query generation prompt
+     */
     template: string;
 
+    /**
+     * Type of query generator, always 'llm'
+     */
     type: 'llm';
   }
 }
 
+/**
+ * Result of a RAG query containing retrieved content and metadata.
+ */
 export interface QueryResult {
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * Additional metadata about the query result
+   */
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
-   * A image content item
+   * (Optional) The retrieved content from the query
    */
   content?: InterleavedContent;
 }
@@ -596,7 +757,7 @@ export namespace ResponseFormat {
      * The JSON schema the response should conform to. In a Python SDK, this is often a
      * `pydantic` model.
      */
-    json_schema: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    json_schema: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
     /**
      * Must be "json_schema" to identify this format type
@@ -611,7 +772,7 @@ export namespace ResponseFormat {
     /**
      * The BNF grammar specification the response should conform to
      */
-    bnf: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    bnf: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
     /**
      * Must be "grammar" to identify this format type
@@ -634,11 +795,24 @@ export interface ReturnType {
     | 'agent_turn_input';
 }
 
+/**
+ * Details of a safety violation detected by content moderation.
+ */
 export interface SafetyViolation {
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * Additional metadata including specific violation codes for debugging and
+   * telemetry
+   */
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
+  /**
+   * Severity level of the violation
+   */
   violation_level: 'info' | 'warn' | 'error';
 
+  /**
+   * (Optional) Message to convey to the user about the violation
+   */
   user_message?: string;
 }
 
@@ -675,21 +849,50 @@ export interface SamplingParams {
 }
 
 export namespace SamplingParams {
+  /**
+   * Greedy sampling strategy that selects the highest probability token at each
+   * step.
+   */
   export interface GreedySamplingStrategy {
+    /**
+     * Must be "greedy" to identify this sampling strategy
+     */
     type: 'greedy';
   }
 
+  /**
+   * Top-p (nucleus) sampling strategy that samples from the smallest set of tokens
+   * with cumulative probability >= p.
+   */
   export interface TopPSamplingStrategy {
+    /**
+     * Must be "top_p" to identify this sampling strategy
+     */
     type: 'top_p';
 
+    /**
+     * Controls randomness in sampling. Higher values increase randomness
+     */
     temperature?: number;
 
+    /**
+     * Cumulative probability threshold for nucleus sampling. Defaults to 0.95
+     */
     top_p?: number;
   }
 
+  /**
+   * Top-k sampling strategy that restricts sampling to the k most likely tokens.
+   */
   export interface TopKSamplingStrategy {
+    /**
+     * Number of top tokens to consider for sampling. Must be at least 1
+     */
     top_k: number;
 
+    /**
+     * Must be "top_k" to identify this sampling strategy
+     */
     type: 'top_k';
   }
 }
@@ -701,12 +904,12 @@ export interface ScoringResult {
   /**
    * Map of metric name to aggregated value
    */
-  aggregated_results: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  aggregated_results: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   /**
    * The scoring result for each row. Each row is a map of column name to value.
    */
-  score_rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  score_rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 }
 
 /**
@@ -729,15 +932,15 @@ export interface SystemMessage {
 export interface ToolCall {
   arguments:
     | string
-    | Record<
-        string,
-        | string
-        | number
-        | boolean
-        | Array<string | number | boolean | null>
-        | Record<string, string | number | boolean | null>
-        | null
-      >;
+    | {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | Array<string | number | boolean | null>
+          | { [key: string]: string | number | boolean | null }
+          | null;
+      };
 
   call_id: string;
 
@@ -746,6 +949,9 @@ export interface ToolCall {
   arguments_json?: string;
 }
 
+/**
+ * Either an in-progress tool call string or the final parsed tool call
+ */
 export type ToolCallOrString = string | ToolCall;
 
 export interface ToolParamDefinition {

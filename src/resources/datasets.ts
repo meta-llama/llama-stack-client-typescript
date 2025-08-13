@@ -22,6 +22,21 @@ export class Datasets extends APIResource {
   }
 
   /**
+   * Append rows to a dataset.
+   */
+  appendrows(
+    datasetId: string,
+    body: DatasetAppendrowsParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<void> {
+    return this._client.post(`/v1/datasetio/append-rows/${datasetId}`, {
+      body,
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
+  }
+
+  /**
    * Get a paginated list of rows from a dataset. Uses offset-based pagination where:
    *
    * - start_index: The starting index (0-based). If None, starts from beginning.
@@ -70,27 +85,42 @@ export class Datasets extends APIResource {
   }
 }
 
+/**
+ * Response from listing datasets.
+ */
 export interface ListDatasetsResponse {
+  /**
+   * List of datasets
+   */
   data: DatasetListResponse;
 }
 
+/**
+ * Dataset resource for storing and accessing training or evaluation data.
+ */
 export interface DatasetRetrieveResponse {
   identifier: string;
 
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * Additional metadata for the dataset
+   */
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   provider_id: string;
 
   /**
-   * Purpose of the dataset. Each purpose has a required input data schema.
+   * Purpose of the dataset indicating its intended use
    */
   purpose: 'post-training/messages' | 'eval/question-answer' | 'eval/messages-answer';
 
   /**
-   * A dataset that can be obtained from a URI.
+   * Data source configuration for the dataset
    */
   source: DatasetRetrieveResponse.UriDataSource | DatasetRetrieveResponse.RowsDataSource;
 
+  /**
+   * Type of resource, always 'dataset' for datasets
+   */
   type: 'dataset';
 
   provider_resource_id?: string;
@@ -120,32 +150,44 @@ export namespace DatasetRetrieveResponse {
      * "content": "Hello, world!"}, {"role": "assistant", "content": "Hello, world!"}]}
      * ]
      */
-    rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
     type: 'rows';
   }
 }
 
+/**
+ * List of datasets
+ */
 export type DatasetListResponse = Array<DatasetListResponse.DatasetListResponseItem>;
 
 export namespace DatasetListResponse {
+  /**
+   * Dataset resource for storing and accessing training or evaluation data.
+   */
   export interface DatasetListResponseItem {
     identifier: string;
 
-    metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+    /**
+     * Additional metadata for the dataset
+     */
+    metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
     provider_id: string;
 
     /**
-     * Purpose of the dataset. Each purpose has a required input data schema.
+     * Purpose of the dataset indicating its intended use
      */
     purpose: 'post-training/messages' | 'eval/question-answer' | 'eval/messages-answer';
 
     /**
-     * A dataset that can be obtained from a URI.
+     * Data source configuration for the dataset
      */
     source: DatasetListResponseItem.UriDataSource | DatasetListResponseItem.RowsDataSource;
 
+    /**
+     * Type of resource, always 'dataset' for datasets
+     */
     type: 'dataset';
 
     provider_resource_id?: string;
@@ -175,7 +217,7 @@ export namespace DatasetListResponse {
        * "content": "Hello, world!"}, {"role": "assistant", "content": "Hello, world!"}]}
        * ]
        */
-      rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+      rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
       type: 'rows';
     }
@@ -189,7 +231,7 @@ export interface DatasetIterrowsResponse {
   /**
    * The list of items for the current page
    */
-  data: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+  data: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
   /**
    * Whether there are more items available after this set
@@ -202,23 +244,32 @@ export interface DatasetIterrowsResponse {
   url?: string;
 }
 
+/**
+ * Dataset resource for storing and accessing training or evaluation data.
+ */
 export interface DatasetRegisterResponse {
   identifier: string;
 
-  metadata: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  /**
+   * Additional metadata for the dataset
+   */
+  metadata: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 
   provider_id: string;
 
   /**
-   * Purpose of the dataset. Each purpose has a required input data schema.
+   * Purpose of the dataset indicating its intended use
    */
   purpose: 'post-training/messages' | 'eval/question-answer' | 'eval/messages-answer';
 
   /**
-   * A dataset that can be obtained from a URI.
+   * Data source configuration for the dataset
    */
   source: DatasetRegisterResponse.UriDataSource | DatasetRegisterResponse.RowsDataSource;
 
+  /**
+   * Type of resource, always 'dataset' for datasets
+   */
   type: 'dataset';
 
   provider_resource_id?: string;
@@ -248,10 +299,17 @@ export namespace DatasetRegisterResponse {
      * "content": "Hello, world!"}, {"role": "assistant", "content": "Hello, world!"}]}
      * ]
      */
-    rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
     type: 'rows';
   }
+}
+
+export interface DatasetAppendrowsParams {
+  /**
+   * The rows to append to the dataset.
+   */
+  rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 }
 
 export interface DatasetIterrowsParams {
@@ -302,7 +360,7 @@ export interface DatasetRegisterParams {
   /**
    * The metadata for the dataset. - E.g. {"description": "My dataset"}.
    */
-  metadata?: Record<string, boolean | number | string | Array<unknown> | unknown | null>;
+  metadata?: { [key: string]: boolean | number | string | Array<unknown> | unknown | null };
 }
 
 export namespace DatasetRegisterParams {
@@ -329,7 +387,7 @@ export namespace DatasetRegisterParams {
      * "content": "Hello, world!"}, {"role": "assistant", "content": "Hello, world!"}]}
      * ]
      */
-    rows: Array<Record<string, boolean | number | string | Array<unknown> | unknown | null>>;
+    rows: Array<{ [key: string]: boolean | number | string | Array<unknown> | unknown | null }>;
 
     type: 'rows';
   }
@@ -342,6 +400,7 @@ export declare namespace Datasets {
     type DatasetListResponse as DatasetListResponse,
     type DatasetIterrowsResponse as DatasetIterrowsResponse,
     type DatasetRegisterResponse as DatasetRegisterResponse,
+    type DatasetAppendrowsParams as DatasetAppendrowsParams,
     type DatasetIterrowsParams as DatasetIterrowsParams,
     type DatasetRegisterParams as DatasetRegisterParams,
   };

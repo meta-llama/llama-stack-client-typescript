@@ -95,7 +95,7 @@ export function getRuntime({ manuallyImported }: { manuallyImported?: boolean } 
     getDefaultAgent: (url: string) => undefined,
     fileFromPath: () => {
       throw new Error(
-        'The `fileFromPath` function is only supported in Node. See the README for more details: https://www.github.com/stainless-sdks/llama-stack-node#file-uploads',
+        'The `fileFromPath` function is only supported in Node. See the README for more details: https://www.github.com/llamastack/llama-stack-client-typescript#file-uploads',
       );
     },
     isFsReadStream: (value: any) => false,

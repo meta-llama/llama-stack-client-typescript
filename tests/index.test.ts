@@ -25,13 +25,13 @@ describe('instantiate client', () => {
       defaultHeaders: { 'X-My-Default-Header': '2' },
     });
 
-    test('they are used in the request', () => {
-      const { req } = client.buildRequest({ path: '/foo', method: 'post' });
+    test('they are used in the request', async () => {
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post' });
       expect((req.headers as Headers)['x-my-default-header']).toEqual('2');
     });
 
-    test('can ignore `undefined` and leave the default', () => {
-      const { req } = client.buildRequest({
+    test('can ignore `undefined` and leave the default', async () => {
+      const { req } = await client.buildRequest({
         path: '/foo',
         method: 'post',
         headers: { 'X-My-Default-Header': undefined },
@@ -39,8 +39,8 @@ describe('instantiate client', () => {
       expect((req.headers as Headers)['x-my-default-header']).toEqual('2');
     });
 
-    test('can be removed with `null`', () => {
-      const { req } = client.buildRequest({
+    test('can be removed with `null`', async () => {
+      const { req } = await client.buildRequest({
         path: '/foo',
         method: 'post',
         headers: { 'X-My-Default-Header': null },
@@ -146,7 +146,7 @@ describe('instantiate client', () => {
     });
 
     afterEach(() => {
-      process.env['LLAMA_STACK_BASE_URL'] = undefined;
+      process.env['LLAMA_STACK_CLIENT_BASE_URL'] = undefined;
     });
 
     test('explicit option', () => {
@@ -155,19 +155,19 @@ describe('instantiate client', () => {
     });
 
     test('env variable', () => {
-      process.env['LLAMA_STACK_BASE_URL'] = 'https://example.com/from_env';
+      process.env['LLAMA_STACK_CLIENT_BASE_URL'] = 'https://example.com/from_env';
       const client = new LlamaStackClient({});
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
-      process.env['LLAMA_STACK_BASE_URL'] = ''; // empty
+      process.env['LLAMA_STACK_CLIENT_BASE_URL'] = ''; // empty
       const client = new LlamaStackClient({});
       expect(client.baseURL).toEqual('http://any-hosted-llama-stack.com');
     });
 
     test('blank env variable', () => {
-      process.env['LLAMA_STACK_BASE_URL'] = '  '; // blank
+      process.env['LLAMA_STACK_CLIENT_BASE_URL'] = '  '; // blank
       const client = new LlamaStackClient({});
       expect(client.baseURL).toEqual('http://any-hosted-llama-stack.com');
     });
@@ -187,7 +187,7 @@ describe('instantiate client', () => {
     });
 
     test('in request options overridden by env variable', () => {
-      process.env['LLAMA_STACK_BASE_URL'] = 'http://localhost:5000/env';
+      process.env['LLAMA_STACK_CLIENT_BASE_URL'] = 'http://localhost:5000/env';
       const client = new LlamaStackClient({});
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
@@ -209,20 +209,20 @@ describe('request building', () => {
   const client = new LlamaStackClient({});
 
   describe('Content-Length', () => {
-    test('handles multi-byte characters', () => {
-      const { req } = client.buildRequest({ path: '/foo', method: 'post', body: { value: '—' } });
+    test('handles multi-byte characters', async () => {
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post', body: { value: '—' } });
       expect((req.headers as Record<string, string>)['content-length']).toEqual('20');
     });
 
-    test('handles standard characters', () => {
-      const { req } = client.buildRequest({ path: '/foo', method: 'post', body: { value: 'hello' } });
+    test('handles standard characters', async () => {
+      const { req } = await client.buildRequest({ path: '/foo', method: 'post', body: { value: 'hello' } });
       expect((req.headers as Record<string, string>)['content-length']).toEqual('22');
     });
   });
 
   describe('custom headers', () => {
-    test('handles undefined', () => {
-      const { req } = client.buildRequest({
+    test('handles undefined', async () => {
+      const { req } = await client.buildRequest({
         path: '/foo',
         method: 'post',
         body: { value: 'hello' },

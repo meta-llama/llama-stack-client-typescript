@@ -1,18 +1,21 @@
-# Llama Stack Client TypeScript and JavaScript API Library
+# Llama Stack Client Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/llama-stack-client.svg)](https://npmjs.org/package/llama-stack-client) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/llama-stack-client) [![Discord](https://img.shields.io/discord/1257833999603335178)](https://discord.gg/llama-stack)
+[![NPM version](https://img.shields.io/npm/v/llama-stack-client.svg)](https://npmjs.org/package/llama-stack-client) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/llama-stack-client)
 
 This library provides convenient access to the Llama Stack Client REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [https://llama-stack.readthedocs.io/en/latest/references/api_reference/index.html](https://llama-stack.readthedocs.io/en/latest/references/api_reference/index.html). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [llama-stack.readthedocs.io](https://llama-stack.readthedocs.io/en/latest/). The full API of this library can be found in [api.md](api.md).
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
 ```sh
-npm install llama-stack-client
+npm install git+ssh://git@github.com:llamastack/llama-stack-client-typescript.git
 ```
+
+> [!NOTE]
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install llama-stack-client`
 
 ## Usage
 
@@ -22,17 +25,11 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import LlamaStackClient from 'llama-stack-client';
 
-const client = new LlamaStackClient({
-  baseURL: 'http://localhost:8321'
-});
+const client = new LlamaStackClient();
 
-async function main() {
-  const models = await client.models.list();
+const model = await client.models.register({ model_id: 'model_id' });
 
-  console.log(models);
-}
-
-main();
+console.log(model.identifier);
 ```
 
 ## Streaming responses
@@ -46,11 +43,11 @@ const client = new LlamaStackClient();
 
 const stream = await client.inference.chatCompletion({
   messages: [{ content: 'string', role: 'user' }],
-  model_id: 'meta-llama/Llama-3.2-3B-Instruct',
+  model_id: 'model_id',
   stream: true,
 });
-for await (const inferenceChatCompletionResponse of stream) {
-  process.stdout.write(inferenceChatCompletionResponse.event.delta.text || '');
+for await (const chatCompletionResponseStreamChunk of stream) {
+  console.log(chatCompletionResponseStreamChunk.completion_message);
 }
 ```
 
@@ -67,20 +64,46 @@ import LlamaStackClient from 'llama-stack-client';
 
 const client = new LlamaStackClient();
 
-async function main() {
-  const params: LlamaStackClient.InferenceChatCompletionParams = {
-    messages: [{ content: 'string', role: 'user' }],
-    model_id: 'model_id',
-  };
-  const response: LlamaStackClient.InferenceChatCompletionResponse = await client.inference.chatCompletion(
-    params,
-  );
-}
-
-main();
+const params: LlamaStackClient.InferenceChatCompletionParams = {
+  messages: [{ content: 'string', role: 'user' }],
+  model_id: 'model_id',
+};
+const chatCompletionResponse: LlamaStackClient.ChatCompletionResponse = await client.inference.chatCompletion(
+  params,
+);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
+
+## File uploads
+
+Request parameters that correspond to file uploads can be passed in many different forms:
+
+- `File` (or an object with the same structure)
+- a `fetch` `Response` (or an object with the same structure)
+- an `fs.ReadStream`
+- the return value of our `toFile` helper
+
+```ts
+import fs from 'fs';
+import fetch from 'node-fetch';
+import LlamaStackClient, { toFile } from 'llama-stack-client';
+
+const client = new LlamaStackClient();
+
+// If you have access to Node `fs` we recommend using `fs.createReadStream()`:
+await client.files.create({ file: fs.createReadStream('/path/to/file'), purpose: 'assistants' });
+
+// Or if you have the web `File` API you can pass a `File` instance:
+await client.files.create({ file: new File(['my bytes'], 'file'), purpose: 'assistants' });
+
+// You can also pass a `fetch` `Response`:
+await client.files.create({ file: await fetch('https://somesite/file'), purpose: 'assistants' });
+
+// Finally, if none of the above are convenient, you can use our `toFile` helper:
+await client.files.create({ file: await toFile(Buffer.from('my bytes'), 'file'), purpose: 'assistants' });
+await client.files.create({ file: await toFile(new Uint8Array([0, 1, 2]), 'file'), purpose: 'assistants' });
+```
 
 ## Handling errors
 
@@ -90,24 +113,20 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const response = await client.inference
-    .chatCompletion({ messages: [{ content: 'string', role: 'user' }], model_id: 'model_id' })
-    .catch(async (err) => {
-      if (err instanceof LlamaStackClient.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
-}
-
-main();
+const chatCompletionResponse = await client.inference
+  .chatCompletion({ messages: [{ content: 'string', role: 'user' }], model_id: 'model_id' })
+  .catch(async (err) => {
+    if (err instanceof LlamaStackClient.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
-Error codes are as followed:
+Error codes are as follows:
 
 | Status Code | Error Type                 |
 | ----------- | -------------------------- |
@@ -180,11 +199,11 @@ const response = await client.inference
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: response, response: raw } = await client.inference
+const { data: chatCompletionResponse, response: raw } = await client.inference
   .chatCompletion({ messages: [{ content: 'string', role: 'user' }], model_id: 'model_id' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(response);
+console.log(chatCompletionResponse.completion_message);
 ```
 
 ### Making custom/undocumented requests
@@ -247,7 +266,7 @@ import LlamaStackClient from 'llama-stack-client';
 ```
 
 To do the inverse, add `import "llama-stack-client/shims/node"` (which does import polyfills).
-This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/stainless-sdks/llama-stack-node/tree/main/src/_shims#readme)).
+This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/llamastack/llama-stack-client-typescript/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
 
@@ -306,7 +325,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/llama-stack-node/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/llamastack/llama-stack-client-typescript/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 

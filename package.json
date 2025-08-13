@@ -1,20 +1,20 @@
 {
   "name": "llama-stack-client",
-  "version": "0.2.13",
+  "version": "0.2.17",
   "description": "The official TypeScript library for the Llama Stack Client API",
   "author": "Llama Stack Client <llamastack@meta.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
-  "repository": "github:meta-llama/llama-stack-client-node",
-  "license": "Apache-2.0",
+  "repository": "github:llamastack/llama-stack-client-typescript",
+  "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "files": [
     "**/*"
   ],
   "private": false,
   "scripts": {
-    "test": "jest",
+    "test": "./scripts/test",
     "build": "./scripts/build",
     "prepublishOnly": "echo 'to publish, run yarn build && (cd dist; yarn publish)' && exit 1",
     "format": "prettier --write --cache --cache-strategy metadata . !dist",
@@ -30,8 +30,7 @@
     "agentkeepalive": "^4.2.1",
     "form-data-encoder": "1.7.2",
     "formdata-node": "^4.3.2",
-    "node-fetch": "^2.6.7",
-    "tsx": "^4.19.2"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "@swc/core": "^1.3.102",
@@ -59,10 +58,6 @@
     "./shims/web.js",
     "./shims/web.mjs"
   ],
-  "imports": {
-    "llama-stack-client": ".",
-    "llama-stack-client/*": "./src/*"
-  },
   "exports": {
     "./_shims/auto/*": {
       "deno": {
