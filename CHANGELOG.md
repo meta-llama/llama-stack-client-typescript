@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.2.18-alpha.3 (2025-08-14)
+
+Full Changelog: [v0.2.17...v0.2.18-alpha.3](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.17...v0.2.18-alpha.3)
+
+### Features
+
+* **api:** update via SDK Studio ([cda87f0](https://github.com/llamastack/llama-stack-client-typescript/commit/cda87f0a9c62078aadd380069502f689051db420))
+* include tavily secret if available in requests ([#18](https://github.com/llamastack/llama-stack-client-typescript/issues/18)) ([b86d1da](https://github.com/llamastack/llama-stack-client-typescript/commit/b86d1da2d249b555079e02c849e39b231632b0b1))
+
+
+### Bug Fixes
+
+* update inference/agent example scripts to be more robust ([#14](https://github.com/llamastack/llama-stack-client-typescript/issues/14)) ([697e755](https://github.com/llamastack/llama-stack-client-typescript/commit/697e755902e2b3b7c471ea33ed387e542e622eda))
+
+
+### Chores
+
+* **copy:** Copy changes over from llamastack/ org repository ([#28](https://github.com/llamastack/llama-stack-client-typescript/issues/28)) ([26105c4](https://github.com/llamastack/llama-stack-client-typescript/commit/26105c463b2d73c52d3bb989baa5282d5923c8a3))
+* sync repo ([6416e59](https://github.com/llamastack/llama-stack-client-typescript/commit/6416e59b0803e074c3be862b46b84d55fc0045f8))
+* Update CODEOWNERS ([#26](https://github.com/llamastack/llama-stack-client-typescript/issues/26)) ([3d9d160](https://github.com/llamastack/llama-stack-client-typescript/commit/3d9d160f0a141344c5230c2b96bb4dd1c01f91e6))
+
+
+### Build System
+
+* Bump version to 0.2.10 ([8f251cb](https://github.com/llamastack/llama-stack-client-typescript/commit/8f251cb192739b65e0f9b6943f919494aff6bc28))
+* Bump version to 0.2.11 ([ddf1578](https://github.com/llamastack/llama-stack-client-typescript/commit/ddf1578c4e66754afbe209b01807e666da67f545))
+* Bump version to 0.2.12 ([5f5f0cc](https://github.com/llamastack/llama-stack-client-typescript/commit/5f5f0cc2ee15f4771180cff83d3cfdf0ddfa99d0))
+* Bump version to 0.2.13 ([55e639a](https://github.com/llamastack/llama-stack-client-typescript/commit/55e639a13e2efa091ddfd0304181380882840371))
+* Bump version to 0.2.4 ([8ee7dd6](https://github.com/llamastack/llama-stack-client-typescript/commit/8ee7dd698f2175dc76028f3af042ad0f5d7e3ae0))
+* Bump version to 0.2.5 ([1508978](https://github.com/llamastack/llama-stack-client-typescript/commit/1508978dba176b8423e2837820ce5143fa1e999a))
+* Bump version to 0.2.6 ([59edd92](https://github.com/llamastack/llama-stack-client-typescript/commit/59edd92329118c3beef87ad4018db5488a3133f1))
+* Bump version to 0.2.7 ([de56089](https://github.com/llamastack/llama-stack-client-typescript/commit/de56089dd0b08b289b5bcaf9d876000403045546))
+* Bump version to 0.2.8 ([6067307](https://github.com/llamastack/llama-stack-client-typescript/commit/6067307289b2ef32fa9bf72cfbf694967746e264))
+* Bump version to 0.2.9 ([9d38ef8](https://github.com/llamastack/llama-stack-client-typescript/commit/9d38ef8aa6c3e7201a9e16094df9d5df27770a5c))
+
 ## 0.2.17 (2025-08-06)
 
 Full Changelog: [v0.2.15...v0.2.17](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.15...v0.2.17)
