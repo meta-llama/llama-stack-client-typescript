@@ -590,6 +590,8 @@ export type ResponseObjectStream =
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallInProgress
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallFailed
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseMcpCallCompleted
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseContentPartAdded
+  | ResponseObjectStream.OpenAIResponseObjectStreamResponseContentPartDone
   | ResponseObjectStream.OpenAIResponseObjectStreamResponseCompleted;
 
 export namespace ResponseObjectStream {
@@ -1681,6 +1683,98 @@ export namespace ResponseObjectStream {
      * Event type identifier, always "response.mcp_call.completed"
      */
     type: 'response.mcp_call.completed';
+  }
+
+  /**
+   * Streaming event for when a new content part is added to a response item.
+   */
+  export interface OpenAIResponseObjectStreamResponseContentPartAdded {
+    /**
+     * Unique identifier of the output item containing this content part
+     */
+    item_id: string;
+
+    /**
+     * The content part that was added
+     */
+    part:
+      | OpenAIResponseObjectStreamResponseContentPartAdded.OpenAIResponseContentPartOutputText
+      | OpenAIResponseObjectStreamResponseContentPartAdded.OpenAIResponseContentPartRefusal;
+
+    /**
+     * Unique identifier of the response containing this content
+     */
+    response_id: string;
+
+    /**
+     * Sequential number for ordering streaming events
+     */
+    sequence_number: number;
+
+    /**
+     * Event type identifier, always "response.content_part.added"
+     */
+    type: 'response.content_part.added';
+  }
+
+  export namespace OpenAIResponseObjectStreamResponseContentPartAdded {
+    export interface OpenAIResponseContentPartOutputText {
+      text: string;
+
+      type: 'output_text';
+    }
+
+    export interface OpenAIResponseContentPartRefusal {
+      refusal: string;
+
+      type: 'refusal';
+    }
+  }
+
+  /**
+   * Streaming event for when a content part is completed.
+   */
+  export interface OpenAIResponseObjectStreamResponseContentPartDone {
+    /**
+     * Unique identifier of the output item containing this content part
+     */
+    item_id: string;
+
+    /**
+     * The completed content part
+     */
+    part:
+      | OpenAIResponseObjectStreamResponseContentPartDone.OpenAIResponseContentPartOutputText
+      | OpenAIResponseObjectStreamResponseContentPartDone.OpenAIResponseContentPartRefusal;
+
+    /**
+     * Unique identifier of the response containing this content
+     */
+    response_id: string;
+
+    /**
+     * Sequential number for ordering streaming events
+     */
+    sequence_number: number;
+
+    /**
+     * Event type identifier, always "response.content_part.done"
+     */
+    type: 'response.content_part.done';
+  }
+
+  export namespace OpenAIResponseObjectStreamResponseContentPartDone {
+    export interface OpenAIResponseContentPartOutputText {
+      text: string;
+
+      type: 'output_text';
+    }
+
+    export interface OpenAIResponseContentPartRefusal {
+      refusal: string;
+
+      type: 'refusal';
+    }
   }
 
   /**
