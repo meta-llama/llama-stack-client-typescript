@@ -429,6 +429,7 @@ LlamaStackClient.ScoringFunctions = ScoringFunctions;
 LlamaStackClient.Benchmarks = Benchmarks;
 LlamaStackClient.Files = Files;
 LlamaStackClient.FilesOpenAICursorPage = FilesOpenAICursorPage;
+
 export declare namespace LlamaStackClient {
   export type RequestOptions = Core.RequestOptions;
 
