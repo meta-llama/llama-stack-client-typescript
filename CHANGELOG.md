@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.18-alpha.4 (2025-08-16)
+
+Full Changelog: [v0.2.18-alpha.3...v0.2.18-alpha.4](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.18-alpha.3...v0.2.18-alpha.4)
+
+### Chores
+
+* **deps:** update dependency node-fetch to v2.6.13 ([ddc29b4](https://github.com/llamastack/llama-stack-client-typescript/commit/ddc29b4ce6a8a0fac2c58477878e8b790d31bf81))
+* **internal:** formatting change ([f04118d](https://github.com/llamastack/llama-stack-client-typescript/commit/f04118d997a95b80c0edb96bd74c40a215578dfb))
+
 ## 0.2.18-alpha.3 (2025-08-14)
 
 Full Changelog: [v0.2.17...v0.2.18-alpha.3](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.17...v0.2.18-alpha.3)
