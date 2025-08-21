@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.0-alpha.1 (2025-08-21)
+
+Full Changelog: [v0.2.18-alpha.3...v0.3.0-alpha.1](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.18-alpha.3...v0.3.0-alpha.1)
+
+### Features
+
+* **api:** manual updates ([58379c6](https://github.com/llamastack/llama-stack-client-typescript/commit/58379c6961ac0af1296f016fe05a9713c799f623))
+
+
+### Chores
+
+* **deps:** update dependency node-fetch to v2.6.13 ([4d1ef8f](https://github.com/llamastack/llama-stack-client-typescript/commit/4d1ef8fb5e58927d2c2b80d21a95e6b53153ba6d))
+* **internal:** formatting change ([6ea2c4e](https://github.com/llamastack/llama-stack-client-typescript/commit/6ea2c4e31d861f23aa5b2cc36664a6d48623e881))
+* **internal:** formatting change ([2221870](https://github.com/llamastack/llama-stack-client-typescript/commit/2221870d728ed08ddf10c2f037784ab67005df43))
+* update ([3a17e19](https://github.com/llamastack/llama-stack-client-typescript/commit/3a17e196b631a62ac1642b67a6dbd8ada0bb5244))
+
+
+### Build System
+
+* Bump version to 0.2.18 ([7549391](https://github.com/llamastack/llama-stack-client-typescript/commit/754939187da2726e54d902241747351d120f5174))
+
 ## 0.2.18-alpha.3 (2025-08-14)
 
 Full Changelog: [v0.2.17...v0.2.18-alpha.3](https://github.com/llamastack/llama-stack-client-typescript/compare/v0.2.17...v0.2.18-alpha.3)
