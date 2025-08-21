@@ -65,7 +65,6 @@ export {
 export {
   Inference,
   type ChatCompletionResponseStreamChunk,
-  type CompletionResponse,
   type EmbeddingsResponse,
   type TokenLogProbs,
   type InferenceBatchChatCompletionResponse,
@@ -156,7 +155,6 @@ export {
 } from './telemetry';
 export {
   ToolRuntime,
-  type ToolDef,
   type ToolInvocationResult,
   type ToolRuntimeListToolsResponse,
   type ToolRuntimeInvokeToolParams,
