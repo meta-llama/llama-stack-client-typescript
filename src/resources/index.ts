@@ -53,6 +53,7 @@ export {
   type EvalRunEvalAlphaParams,
 } from './eval/eval';
 export {
+  FilesOpenAICursorPage,
   Files,
   type DeleteFileResponse,
   type File,
@@ -97,6 +98,7 @@ export {
 } from './post-training/post-training';
 export { Providers, type ListProvidersResponse, type ProviderListResponse } from './providers';
 export {
+  ResponseListResponsesOpenAICursorPage,
   Responses,
   type ResponseObject,
   type ResponseObjectStream,
@@ -144,10 +146,12 @@ export {
   type Trace,
   type TelemetryGetSpanResponse,
   type TelemetryGetSpanTreeResponse,
+  type TelemetryQueryMetricsResponse,
   type TelemetryQuerySpansResponse,
   type TelemetryQueryTracesResponse,
   type TelemetryGetSpanTreeParams,
   type TelemetryLogEventParams,
+  type TelemetryQueryMetricsParams,
   type TelemetryQuerySpansParams,
   type TelemetryQueryTracesParams,
   type TelemetrySaveSpansToDatasetParams,
@@ -189,6 +193,7 @@ export {
   type VectorIoQueryParams,
 } from './vector-io';
 export {
+  VectorStoresOpenAICursorPage,
   VectorStores,
   type ListVectorStoresResponse,
   type VectorStore,

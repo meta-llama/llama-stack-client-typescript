@@ -109,7 +109,7 @@ export interface ChatCompletionResponseStreamChunk {
   /**
    * (Optional) List of metrics associated with the API response
    */
-  metrics?: Array<ChatCompletionResponseStreamChunk.Metric>;
+  metrics?: Array<Shared.Metric>;
 }
 
 export namespace ChatCompletionResponseStreamChunk {
@@ -138,26 +138,6 @@ export namespace ChatCompletionResponseStreamChunk {
      */
     stop_reason?: 'end_of_turn' | 'end_of_message' | 'out_of_tokens';
   }
-
-  /**
-   * A metric value included in API responses.
-   */
-  export interface Metric {
-    /**
-     * The name of the metric
-     */
-    metric: string;
-
-    /**
-     * The numeric value of the metric
-     */
-    value: number;
-
-    /**
-     * (Optional) The unit of measurement for the metric value
-     */
-    unit?: string;
-  }
 }
 
 /**
@@ -182,29 +162,7 @@ export interface CompletionResponse {
   /**
    * (Optional) List of metrics associated with the API response
    */
-  metrics?: Array<CompletionResponse.Metric>;
-}
-
-export namespace CompletionResponse {
-  /**
-   * A metric value included in API responses.
-   */
-  export interface Metric {
-    /**
-     * The name of the metric
-     */
-    metric: string;
-
-    /**
-     * The numeric value of the metric
-     */
-    value: number;
-
-    /**
-     * (Optional) The unit of measurement for the metric value
-     */
-    unit?: string;
-  }
+  metrics?: Array<Shared.Metric>;
 }
 
 /**
